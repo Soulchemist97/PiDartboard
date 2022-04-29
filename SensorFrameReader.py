@@ -3,8 +3,9 @@ import datetime as dt
 import RPi.GPIO as GPIO
 
 #Raspberry Pi Pins
-freeGPIOSenderPins = [11,12,13,15,16,18,22,29]
-freeGPIOListenerPins = [31,32,33,35,36,37,38,40]
+freeGPIOListenerPins = [31,32,33,35,36,37,38,40] #Input
+freeGPIOSenderPins = [11,12,13,15,16,18,22,29] #Output 
+
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -50,26 +51,31 @@ class SensorFrame():
         setupListenerPins()
         self.CaptureReferenceMatrix()
 
-        while True:
+        while True: #Start Detection
             self.CaptureListenerMatrix()
             
             # Trigger
             if self.referenceMatrix != self.listenerMatrix:
                 
                 print(self.listenerMatrix)
-
+                self.ListenerPin = self.listenerMatrix.index(1)
+                
+                #Pins Resetten
                 for pin in freeGPIOSenderPins:
                     GPIO.output(pin, GPIO.LOW) 
                     GPIO.output(pin, GPIO.HIGH)
 
-                    senderMatrix = [GPIO.input(pin) for pin in freeGPIOListenerPins]
+                self.senderMatrix = [GPIO.input(pin) for pin in freeGPIOListenerPins]
+                
 
-                    if self.referenceMatrix != senderMatrix:
-                        print(f'Sender matrix for {self.name}: {senderMatrix}')
-                    else:
-                        senderMatrix = []
+                if self.referenceMatrix != senderMatrix:
+                    self.SenderPin = self.senderMatrix.index(1)
+                    print(f'Sender matrix for {self.name}: {senderMatrix}')
+                else:
+                    senderMatrix = []
+                    continue
                 break
-        # return (ListenerPin,SenderPin)
+        return (self.ListenerPin,self.SenderPin)
 
     def main():
         pass
