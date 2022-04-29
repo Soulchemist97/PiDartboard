@@ -9,7 +9,7 @@ freeGPIOListenerPins = [31,32,33,35,36,37,38,40]
 GPIO.setmode(GPIO.BOARD)
 
 
-def setupListerPins():
+def setupListenerPins():
         for pin in freeGPIOListenerPins:
             GPIO.cleanup(pin)
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -35,7 +35,7 @@ class SensorFrame():
         self.currentTime_str = self.currentTime.strftime("%H:%M:%S %d.%m.%Y")
         return self.currentTime_str
     
-    def CaptureReference(self):
+    def CaptureReferenceMatrix(self):
         self.referenceMatrix = [GPIO.input(pin) for pin in freeGPIOListenerPins]
         return self.referenceMatrix
 
@@ -47,11 +47,13 @@ class SensorFrame():
         pass
     
     def Detect(self):
-        setupListerPins()
-        self.CaptureReference()
+        setupListenerPins()
+        self.CaptureReferenceMatrix()
+
         while True:
             self.CaptureListenerMatrix()
             
+            # Trigger
             if self.referenceMatrix != self.listenerMatrix:
                 
                 print(self.listenerMatrix)
