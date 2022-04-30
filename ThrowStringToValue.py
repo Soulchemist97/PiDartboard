@@ -1,10 +1,10 @@
 import re
 
-
-regex_pattern_numbers =r"\d{1,3}"
-regex_pattern_Letter =r"[a-zA-Z]"
-
 def StrToValue(Throw_String):
+
+    regex_pattern_numbers =r"\d{1,3}"
+    regex_pattern_Letter =r"[a-zA-Z]"
+
     Throw_String=Throw_String.replace("be","25")
 
     Value_str = re.findall(regex_pattern_numbers,Throw_String)
