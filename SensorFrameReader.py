@@ -7,14 +7,11 @@ freeGPIOListenerPins = [31,32,33,35,36,37,38,40] #Input
 freeGPIOSenderPins = [11,12,13,15,16,18,22,29] #Output 
 
 
-GPIO.setmode(GPIO.BOARD)
-
 
 def setupListenerPins():
-        for pin in freeGPIOListenerPins:
-            GPIO.cleanup(pin)
-            GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
+    for pin in freeGPIOListenerPins:
+        GPIO.cleanup(pin)
+        GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 class SensorFrame():
@@ -71,10 +68,11 @@ class SensorFrame():
                 if self.referenceMatrix != senderMatrix:
                     self.SenderPin = self.senderMatrix.index(1)
                     print(f'Sender matrix for {self.name}: {senderMatrix}')
+                    break
                 else:
                     senderMatrix = []
                     continue
-                break
+                
         return (self.ListenerPin,self.SenderPin)
 
     def main():
@@ -83,4 +81,12 @@ class SensorFrame():
 
 
 if __name__ == '__main__':
-    pass
+
+    print("...",flush=True,end="\r")
+
+    GPIO.setmode(GPIO.BOARD)
+
+    Frame = SensorFrame()
+    Frame.setName("t20")
+
+    Frame.Detect()
