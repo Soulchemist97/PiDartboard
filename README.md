@@ -4,4 +4,4 @@
 # piDartboard - enhance cheap electronic dart boards with your Raspberry Pi.
 
 ## License
-`piDartboard` is made with ♥  by @Soulchemist97 and @ThisLimn0 and is released under the MIT license. See LICENSE file for more information.
+`piDartboard` is made with ♥  by [🤖Soulchemist97](https://github.com/Soulchemist97) and [🤖ThisLimn0](https://github.com/ThisLimn0) and is released under the MIT license. See LICENSE file for more information.
