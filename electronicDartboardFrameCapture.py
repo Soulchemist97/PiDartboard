@@ -10,7 +10,6 @@ __status__ = "Stable"
 import colorama as cc
 import pickle
 import RPi.GPIO as GPIO
-#import time
 
 ###TODO###TODO###TODO###TODO###TODO##############################
 ## Edge case detection: if the listener matrix is set and the sender matrix is all nil and stuck in second loop. Timeout event?
@@ -52,15 +51,14 @@ reset = cc.Style.RESET_ALL
 def splash():
     #Display a splash screen once at initial startup
     print("""
-    pyDartsFrameCapture: A python library for electronic dart board interfaces.
-    This is a library for capturing frames of the dart board matrix interface.
+    electronicDartsFrameCapture: Map the interface matrix of an electronic dartboard to csv and pickle.
     """)
 
-def frameCaptureNameInput():
+def frameNameInput():
     #This part of the script calls for a user input of the tile that is about to be pressed
     #For us things like 't20' or 'be' worked just fine
     #It is later saved to a pickle file
-    print(f'Please input a name for the frame that is being captured: {green}', end=f'{reset}')
+    print(f'Please specify a name for the frame that is being captured: {green}', end=f'{reset}')
     frameName = input()
     print(f'{lightGrey}Frame: {frameName}{reset}')
     return frameName
@@ -97,7 +95,7 @@ def RPiGPIOSetup(frameName):
     return referenceMatrix
     
 def getListenerMatrix(referenceMatrix):
-    #Grab listener matrix by checking for changes on the GPIO pin voltages
+    #Grab listener matrix by checking for changes on the GPIO pin signals
     #Example output is: [0, 0, 0, 1, 0, 0, 0, 0]
     #Example return is the index of above output: 3
     #Reminder: Index starts at 0!
@@ -138,7 +136,6 @@ def getSenderMatrix(referenceMatrix, listenerMatrixIndex):
                 GPIO.output(pin, GPIO.LOW)
         print(f"{green}You're good!{reset}")
         break
-    print(f'{lightGrey}Sender matrix for {yellow}{frameName}{lightGrey}: {green}{senderMatrix}{reset}')
     return senderMatrix
         
 def cleanUp():
@@ -173,15 +170,15 @@ if __name__ == "__main__":
     splash()
     while True:
         #runRepeatedly
-        frameName = frameCaptureNameInput()
+        frameName = frameNameInput()
         referenceMatrix = RPiGPIOSetup(frameName)
         listenerMatrix,listenerMatrixIndex = getListenerMatrix(referenceMatrix)
-        print(f'{green}Listener matrix index: {listenerMatrixIndex}{reset}')
         senderMatrix = getSenderMatrix(referenceMatrix, listenerMatrixIndex)
-        # save mapping as csv
+        print(f'{lightGrey}Listener matrix and index for {yellow}{frameName}{lightGrey}: {green}{listenerMatrix}{lightGrey}Index: {green}{listenerMatrixIndex}{reset}')
+        print(f'{lightGrey}Sender matrix for {yellow}{frameName}{lightGrey}: {green}{senderMatrix}{reset}')
+        # save mapping to a csv file
         with open("DartboardCapture.csv","a") as file:
-            print('Saving to DartboardCapture.csv')
+            print(f'{lightGrey}Saving to DartboardCapture.csv{reset}')
             file.write(f"{frameName};{str(senderMatrix)};{str(listenerMatrix)}\n")
-        
         cleanUp()
         print('\n')

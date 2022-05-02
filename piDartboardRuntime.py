@@ -123,7 +123,7 @@ def interpretSenderListener(senderMatrix, listenerMatrix, matrixMap):
     #scoreInteger = StrToInt.get(OneLetter_Str[0])(int(OneLetter_Str[1:]))
 
     #prefix=ShortToLong.get(interpretedResult[0])
-    alternativeInterpretedResult = interpretedResult.replace('d', 'Double ').replace('t', 'Triple ').replace('i', '').replace('o', '').replace('be', 'Bulls-Eye').replace('dbe', 'Double Bulls-Eye')
+    alternativeInterpretedResult = interpretedResult.replace('i', '').replace('o', '').replace('d', 'Double ').replace('t', 'Triple ').replace('be', 'Bulls-Eye').replace('dbe', 'Double Bulls-Eye')
     return interpretedResult, alternativeInterpretedResult, #scoreInteger
     
 def cleanUp():
