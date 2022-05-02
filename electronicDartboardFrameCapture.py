@@ -18,7 +18,7 @@ import RPi.GPIO as GPIO
 
 #NOTE############################################################
 # We need the following free RPi GPIO pins: 
-# [11,GPIO17;12,;13,GPIO27;15,GPIO22;29,GPIO5;31,GPIO6;33,GPIO13;35,GPIO19;37,GPIO26;16,GPIO23;18,GPIO24;22,GPIO25;32,GPIO12;36,GPIO16;38,GPIO20;40,GPIO21]
+# [11,GPIO17;12,GPIO18;13,GPIO27;15,GPIO22;29,GPIO5;31,GPIO6;33,GPIO13;35,GPIO19;37,GPIO26;16,GPIO23;18,GPIO24;22,GPIO25;32,GPIO12;36,GPIO16;38,GPIO20;40,GPIO21]
 # Half of them should send a signal to the upper matrix layer
 # Half of them should listen on the pins of the lower matrix layer   
 #
