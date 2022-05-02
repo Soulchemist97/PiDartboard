@@ -1,63 +1,72 @@
 #!/usr/bin/env python3
 
-__doc__ = "electronicDartboardFrameCapture: A Python library for electronic dart board interfaces."
+__doc__ = "electronicDartboardFrameCapture: Map the interface matrix of an electronic dartboard to csv and pickle."
 __author__ = "ThisLimn0, Soulchemist97"
 __license__ = "MIT"
-__version__ = "0.0.0"
+__version__ = "0.0.1"
 __maintainer__ = "ThisLimn0, Soulchemist97"
-__status__ = "Development"
+__status__ = "Stable"
 
 import colorama as cc
+import pickle
 import RPi.GPIO as GPIO
-import time
 
-# We need the following free RPi GPIO pins 
-# [1,3v3;39,Ground;11,GPIO17;12,;13,GPIO27;15,GPIO22;29,GPIO5;31,GPIO6;33,GPIO13;35,GPIO19;37,GPIO26;16,GPIO23;18,GPIO24;22,GPIO25;32,GPIO12;36,GPIO16;38,GPIO20;40,GPIO21]
+###TODO###TODO###TODO###TODO###TODO##############################
+## Edge case detection: if the listener matrix is set and the sender matrix is all nil and stuck in second loop. Timeout event?
+## Automatic process of naming frame data after a specific list with possibility to correct last frame or to abort. Maybe even save and load a project?
+## Save finished matrixMap to a pickle file for improved reading speed as well als a readable csv and provide a conversion tool between the two.
+
+#NOTE############################################################
+# We need the following free RPi GPIO pins: 
+# [11,GPIO17;12,GPIO18;13,GPIO27;15,GPIO22;29,GPIO5;31,GPIO6;33,GPIO13;35,GPIO19;37,GPIO26;16,GPIO23;18,GPIO24;22,GPIO25;32,GPIO12;36,GPIO16;38,GPIO20;40,GPIO21]
 # Half of them should send a signal to the upper matrix layer
 # Half of them should listen on the pins of the lower matrix layer   
+#
+# IMOPRTANT:
+#   You have to wire up the GPIO pins the same way to the upper and lower dartboard matrix you wire them up later as a finished game machine. We wired the SenderPins to the lower matrix layer and the ListenerPins to the upper matrix layer. But you obviously don't have to do it like us.
+#
+# Our Wiring:
+#                                               [upper dartboard input matrix layer]
+#   [lower dartboard input matrix layer]            [1] [2] [3] [4] [5] [6] [7] [8]
+#     [1] [2] [3] [4] [5] [6] [7] [8]                |   |   |   |   |   |   |   |
+#      |   |   |   |   |   |   |   |                 |   |   |   |   |   |   |   |
+#     [11][12][13][15][16][18][29][22]              [31][32][33][35][36][37][38][40]
+#   [                             RaspberryPi3 GPIO                                ]  
+
+GPIOMODE = GPIO.BOARD
 freeGPIOSenderPins = [11,12,13,15,16,18,22,29]
 freeGPIOListenerPins = [31,32,33,35,36,37,38,40]
 pinHigh = 1
 pinLow = 0
 
+#Initialize console colors
+cc.init()
+lightGrey = cc.Fore.LIGHTBLACK_EX
+white = cc.Fore.LIGHTWHITE_EX
+red = cc.Fore.LIGHTRED_EX
+green = cc.Fore.LIGHTGREEN_EX
+yellow = cc.Fore.LIGHTYELLOW_EX
+reset = cc.Style.RESET_ALL
 
-def consoleColorSetup():
-    #initialize console colors
-    cc.init()
-    global lightGrey
-    global white
-    global red
-    global green
-    global yellow
-    global reset
-    lightGrey = cc.Fore.LIGHTBLACK_EX
-    white = cc.Fore.LIGHTWHITE_EX
-    red = cc.Fore.LIGHTRED_EX
-    green = cc.Fore.LIGHTGREEN_EX
-    yellow = cc.Fore.LIGHTYELLOW_EX
-    reset = cc.Style.RESET_ALL
-
-def help():
-    #display splash screen
+def splash():
+    #Display a splash screen once at initial startup
     print("""
-    pyDartsFrameCapture: A Python library for electronic dart board interfaces.
-    This is a library for capturing frames of the dart board matrix interface.
+    electronicDartsFrameCapture: Map the interface matrix of an electronic dartboard to csv and pickle.
     """)
 
-def frameCaptureNameInput():
-    #manage user inputs
-    print('Please input a name for the frame that is being captured: '+ green, end='')
+def frameNameInput():
+    #This part of the script calls for a user input of the tile that is about to be pressed
+    #For us things like 't20' or 'be' worked just fine
+    #It is later saved to a pickle file
+    print(f'Please specify a name for the frame that is being captured: {green}', end=f'{reset}')
     frameName = input()
-    datetimeCompact = time.strftime("%Y%m%d_%H%M%S")
-    frameName = frameName.replace(' ', '_')
-    frameName = f'{frameName}_pyDartsFrame-{datetimeCompact}'
-    print(f'{lightGrey}Set frame name: {frameName}{reset}')
+    print(f'{lightGrey}Frame: {frameName}{reset}')
     return frameName
 
 def RPiGPIOSetup(frameName):
 
     ### Set Raspberry Pi GPIO pins to capture dartboard segment matrix data for each tile pressed ###
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIOMODE)
 
     # Set up GPIO pins:
     ####Sender
@@ -78,7 +87,7 @@ def RPiGPIOSetup(frameName):
             pass
         GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
-    # while loop to send signals to the upper matrix layer and compare to reference matrix to 
+    # Get a reference matrix when nothing is pressed (startup)
     referenceMatrix = []
     for pin in freeGPIOListenerPins:
         referenceMatrix.append(GPIO.input(pin))
@@ -86,8 +95,8 @@ def RPiGPIOSetup(frameName):
     return referenceMatrix
     
 def getListenerMatrix(referenceMatrix):
-    #Grab listener matrix by checking for changes on the GPIO pin voltages
-    #Example output is: [0,0,0,1,0,0,0,0]
+    #Grab listener matrix by checking for changes on the GPIO pin signals
+    #Example output is: [0, 0, 0, 1, 0, 0, 0, 0]
     #Example return is the index of above output: 3
     #Reminder: Index starts at 0!
     print(f'{lightGrey}Sending signals to upper matrix layer{reset}')
@@ -106,54 +115,70 @@ def getListenerMatrix(referenceMatrix):
         else:
             listenerMatrix = []
     listenerMatrixIndex = listenerMatrix.index(pinHigh)
-    return listenerMatrixIndex
+    return listenerMatrix,listenerMatrixIndex
 
 def getSenderMatrix(referenceMatrix, listenerMatrixIndex):
     #Grab sender matrix by checking for changes on the GPIO pin voltages of the defined listener pin
-    #Example output is: [0,0,0,1,0,0,0,0]
-    #Example return is the index of above output: 3
+    #Example output is: [0, 0, 1, 0, 0, 0, 0, 0]
+    #Example return is the index of above output: 2
     #Reminder: index starts at 0!
     senderMatrix = []
     while True:
         for pin in freeGPIOSenderPins:
             GPIO.output(pin, GPIO.LOW) 
             GPIO.output(pin, GPIO.HIGH)
-            for lpin in freeGPIOListenerPins:
-                senderMatrix.append(GPIO.input(lpin))
-
+            senderMatrix.append(GPIO.input(freeGPIOListenerPins[listenerMatrixIndex]))
             if not senderMatrix == referenceMatrix:
-                print(f"{green}You're good!{reset}")
-                print(f'{lightGrey}Sender matrix for {yellow}{frameName}{lightGrey}: {green}{senderMatrix}{reset} at SenderPin {yellow}{pin}{reset}')
+                GPIO.output(pin, GPIO.LOW)
                 continue
             else:
                 senderMatrix = []
+                GPIO.output(pin, GPIO.LOW)
+        print(f"{green}You're good!{reset}")
         break
-    senderMatrixIndex = senderMatrix.index(pinHigh)
-    return senderMatrixIndex
-    
-def analyzeMatrices(senderMatrix, listenerMatrix):
-    #analyze matrices given by previous functions
-    listenerIndex = f'{yellow}Position: [{senderMatrix.index(pinHigh)}/{listenerMatrix.index(pinHigh)}]{reset}'
-    print(listenerIndex)
+    return senderMatrix
         
 def cleanUp():
     print(f'{lightGrey}Cleaning up...{reset}')
     for pin in freeGPIOSenderPins:
-        GPIO.cleanup(pin)
+        try:
+            GPIO.cleanup(pin)
+        except:
+            pass
     for pin in freeGPIOListenerPins:
-        GPIO.cleanup(pin)
+        try:
+            GPIO.cleanup(pin)
+        except:
+            pass
+
+####SaveFileFormat n=Number=1
+###o1;[senderMatrix];[listenerMatrix]
+#Outer Ring(n)
+###i1;[senderMatrix];[listenerMatrix]
+#Inner Ring(n)
+###d1;[senderMatrix];[listenerMatrix]
+#Double Ring
+###t1;[senderMatrix];[listenerMatrix]
+#Triple Ring
+###be;[senderMatrix];[listenerMatrix]
+#Bulls-Eye
+###dbe;[senderMatrix];[listenerMatrix]
+#Double Bulls-Eye
 
 if __name__ == "__main__":
     #runOnce
-    consoleColorSetup()
-    help()
+    splash()
     while True:
         #runRepeatedly
-        frameName = frameCaptureNameInput()
+        frameName = frameNameInput()
         referenceMatrix = RPiGPIOSetup(frameName)
-        listenerMatrixIndex = getListenerMatrix(referenceMatrix)
-        print(f'{green}Listener matrix index: {listenerMatrixIndex}{reset}')
-        #senderMatrixIndex = getSenderMatrix(referenceMatrix)
-        #matrixCoords = analyzeMatrices(senderMatrixIndex, listenerMatrixIndex)
+        listenerMatrix,listenerMatrixIndex = getListenerMatrix(referenceMatrix)
+        senderMatrix = getSenderMatrix(referenceMatrix, listenerMatrixIndex)
+        print(f'{lightGrey}Listener matrix and index for {yellow}{frameName}{lightGrey}: {green}{listenerMatrix}{lightGrey}Index: {green}{listenerMatrixIndex}{reset}')
+        print(f'{lightGrey}Sender matrix for {yellow}{frameName}{lightGrey}: {green}{senderMatrix}{reset}')
+        # save mapping to a csv file
+        with open("DartboardCapture.csv","a") as file:
+            print(f'{lightGrey}Saving to DartboardCapture.csv{reset}')
+            file.write(f"{frameName};{str(senderMatrix)};{str(listenerMatrix)}\n")
         cleanUp()
         print('\n')
