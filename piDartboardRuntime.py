@@ -148,6 +148,18 @@ def cleanUp():
         except:
             pass
 
+### If called as a module, return the interpreted result ###
+
+def piBoardRuntime():
+    global interpretedResult, alternativeInterpretedResult
+    matrixMap = loadMappedMatrix(matrixFile)
+    referenceMatrix = RPiGPIOSetup()
+    while True:
+        listenerMatrix,listenerMatrixIndex = getListenerMatrix(referenceMatrix)
+        senderMatrix = getSenderMatrix(referenceMatrix, listenerMatrixIndex)
+        interpretedResult, alternativeInterpretedResult = interpretSenderListener(senderMatrix, listenerMatrix, matrixMap)
+        time.sleep(triggerResetTime)
+
 ### If called standalone, run the program in debug mode ###
 
 if __name__ == "__main__":
@@ -165,6 +177,4 @@ if __name__ == "__main__":
         #prevent overly triggering
         time.sleep(triggerResetTime)
     cleanUp()
-
-### If called as a module, return the interpreted result ###
 
