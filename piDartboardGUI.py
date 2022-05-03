@@ -12,6 +12,8 @@ import time
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 
+
+###
 # Get information about primary monitor
 n = 0
 MonitorInfo = []
@@ -20,7 +22,12 @@ for m in get_monitors():
         MonitorInfo = str(m)
         MonitorHeight = m.height
         MonitorWidth = m.width
+#
+###
 
+
+###
+# Handle all events
 def callback_handler(sender):
     print(f'{sender} was pressed')
     if sender == 'gameExitNow':
@@ -38,13 +45,25 @@ def callback_handler(sender):
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
 
+    # Test trigger for experimental functions
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
-        time.sleep(5)
+        time.sleep(3)
+        refreshWindows()
         gui.configure_item("collectDarts", show=False)
+###
 
+
+###
+# Refresh all shown windows
+def refreshWindows():
+###
+
+###
 # Create DearPyGui context
 gui.create_context()
+###
+
 
 ###
 # Load Images
@@ -52,11 +71,13 @@ gui.create_context()
 dartL = {}
 dartL = gui.load_image('./images/dartL.png')
 with gui.texture_registry():
+    print(f'Loading image: {dartL=}')
     dartL = gui.add_static_texture(width=dartL[0], height=dartL[1], default_value=dartL[3], tag="dartL")
 # load dartR image into memory
 dartR = {}
 dartR = gui.load_image('./images/dartR.png')
 with gui.texture_registry():
+    print(f'Loading image: {dartR=}')
     dartR = gui.add_static_texture(width=dartR[0], height=dartR[1], default_value=dartR[3], tag="dartR")
 # load favicon image into memory
 faviconData = {}
@@ -70,7 +91,6 @@ dartboardData = gui.load_image("./images/dartboard.png")
 with gui.texture_registry():
     print(f'Loading image: {dartboardData=}')
     dartboardImage = gui.add_static_texture(width=dartboardData[0], height=dartboardData[1], default_value=dartboardData[3], tag="dartboardImage")
-#
 ###
 
 
@@ -86,7 +106,7 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="301", tag='GameMode301', callback=callback_handler)
             gui.add_menu_item(label="501", tag='GameMode501', callback=callback_handler)
             gui.add_menu_item(label="701", tag='GameMode701', callback=callback_handler)
-            gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', check=True ,callback=callback_handler)
+            gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', default_value=True, check=True, callback=callback_handler)
     with gui.menu(label="Settings"):
         gui.add_menu_item(label="Player Manager", tag='playerManager', callback=callback_handler)
         #Quick settings for each player if possible
@@ -100,7 +120,6 @@ with gui.viewport_menu_bar():
     gui.add_menu_item(label="TestTrigger", tag='testTrigger', callback=callback_handler)
     gui.add_text(f"piDartboard {__version__}", pos=(1780,0), color=(255,255,255,60))
     gui.add_image(logoImage, height=20, width=20, pos=(1900,2))
-#
 ###
 
 
@@ -110,27 +129,30 @@ with gui.window(tag="Main"):
     # Fix space occupied by top bar
     gui.add_spacer(height=13)
     # Draw overlay to highlight current player
-    with gui.drawlist(width=8, height=100, pos=(0,45)):
-        gui.draw_line((0, 0), (0, 100), color=(0, 255, 0, 255), thickness=8)
+    with gui.drawlist(width=15, height=400, pos=(4,45)):
+        with gui.draw_layer():
+            gui.draw_line((3, 0), (3, 100), color=(0, 255, 0, 255), thickness=8)
+            gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
-            
             gui.add_text("Jannis:", tag='currentPlayerItem')
             gui.add_text("301", tag='currentScoreItem')
         with gui.group(horizontal=True, tag='followingPlayers'):
-            gui.add_text("Lino:")
+            gui.add_text(" Lino:")
             gui.add_text("301")
         with gui.group(horizontal=True, tag='followingPlayers2'):
-            gui.add_text("Jan:")
+            gui.add_text(" Jan:")
             gui.add_text("301")
         with gui.group(horizontal=True, tag='followingPlayers3'):
-            gui.add_text("Darc:")
+            gui.add_text(" Darc:")
             gui.add_text("301")
         with gui.group(horizontal=True):
             gui.add_button(label="Add player", tag='addPlayer',callback=callback_handler)
             gui.add_button(label="Remove player", tag='removePlayer', callback=callback_handler)
     gui.add_text(f'[DBG] Primary Monitor: {MonitorInfo}', pos=(5,1055))
-#
 ###
 
 
@@ -151,10 +173,18 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
 
 
 ###
-# Draw ontop the dartboard
-# with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
-#     gui.draw_circle(radius=10, pos=(0,0), color=(1,0,0,1))
-#
+# Draw on top the dartboard
+dartboardMiddleW = dartboardW/2 - 8
+dartboardMiddleH = dartboardH/2 - 8
+dartboardMiddlePos = (dartboardMiddleW, dartboardMiddleH)
+with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
+    # draw circle on overlay where the dart hit
+    gui.draw_circle(center=dartboardMiddlePos, radius=10, color=(0,255,0,255), thickness=2)
+    # draw cross in circle
+    gui.draw_line((dartboardMiddlePos[0]-7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]+7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
+    gui.draw_line((dartboardMiddlePos[0]+7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]-7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
+    # point arrow to circle
+    gui.draw_arrow(p1=(dartboardMiddlePos[0] + 8, dartboardMiddlePos[1] + 8), p2=(dartboardMiddlePos[0] + 50, dartboardMiddlePos[1] + 50), color=(100,255,255,255), thickness=5)
 ###
 
 
@@ -163,7 +193,7 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
 dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
-    with gui.group(horizontal=True, pos=(0,0)):
+    with gui.group(horizontal=True, pos=(4,0)):
         with gui.group(horizontal=True, pos=(0,20)):
             gui.add_text('Remaining:')
             gui.add_image(dartL, tag='throw1', width=50, height=50)
@@ -172,11 +202,10 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
         gui.add_spacer(width=60)
         gui.add_text('Last throw:')
         gui.add_text('{throwInfo}')
-    with gui.group(horizontal=False, tag='throwOverview', pos=(0,80)):
+    with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
         gui.add_text('1.: {throw1}')
         gui.add_text('2.: {throw2}')
         gui.add_text('3.: {throw3}')
-#
 ###
 
 ###
@@ -188,8 +217,8 @@ with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=
     with gui.group(horizontal=True, pos=(135,86)):
         gui.add_button(label=" OK ", tag='langOK', callback=callback_handler)
         gui.add_button(label=" Cancel ", tag='langClose', callback=callback_handler)
-#
 ###
+
 
 ###
 # Collect your darts window
@@ -203,15 +232,14 @@ with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=coll
         gui.add_image(dartL, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(10,10))
         gui.add_text('Please collect your darts!', pos=(collectDartsW/4.7,collectDartsH/5.35))
         gui.add_image(dartR, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(collectDartsW-(dartImageResponsiveSideLength+10),10))
-#
 ###
 
 
 ###
 # Exit tooltip
-with gui.window(label="Exiting", show=False, id="exiting", width=170, pos=(850,450), no_resize=True, no_title_bar=True):
-    gui.add_text('Exiting...')
-#
+with gui.window(label="Exiting", show=False, id="exiting", width=300, pos=(800,450), no_resize=True, no_title_bar=True, no_move=True):
+    gui.add_spacer(height=40)
+    gui.add_text('  Exiting...', pos=(4,0))
 ###
 
 
@@ -224,7 +252,7 @@ with gui.font_registry():
     robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
     robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
     gui.bind_font(robotoDefault18)
-    gui.bind_item_font('exiting', robotoTitle48)
+    gui.bind_item_font('exiting', robotoBig72)
     gui.bind_item_font('dartboard', robotoTitle48)
     gui.bind_item_font('dartboardInfo', robotoTitle48)
     gui.bind_item_font('currentPlayerItem', robotoGiant108)
@@ -234,15 +262,15 @@ with gui.font_registry():
     gui.bind_item_font('followingPlayers3', robotoTitle48)
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
-#
 ###
 
-
-# Set icon
+###
+# Set app icon
 try:
     gui.set_viewport_small_icon('./favicon.ico')
 except:
     Exception
+###
 
 
 # Start window maximized
