@@ -71,6 +71,7 @@ for m in get_monitors():
 #
 ###
 
+
 ###
 # Proceed to next player
 def proceedToNextPlayer():
@@ -88,7 +89,6 @@ def outsideSignal_handler(signal):
     if signal == 'skipToNextPlayer':
         pass
 ###
-
 
 
 ###
@@ -150,6 +150,7 @@ def callback_handler(sender):
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
         currentPlayerName, currentPlayerScore, currentPlayerIdRotation = proceedToNextPlayer()
+        print(f'Current player: {currentPlayerName}: {currentPlayerScore} [{currentPlayerIdRotation}]')
         time.sleep(3)
         gui.configure_item("collectDarts", show=False)
 ###
