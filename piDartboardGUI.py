@@ -117,7 +117,8 @@ def outsideSignal_handler(signal):
 # Handle all events
 def callback_handler(sender, callback_type, callback_id, value):
     print(f'{sender} was pressed')
-    print(f'Callback: {callback_type} with id {callback_id} and value {value}')
+    if not callback_type == 'None':
+        print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
     ### Main Window Buttons ###
     # Exit Button
@@ -173,6 +174,11 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'playerManagerAddPlayer':
         gui.configure_item("playerManagerAddPlayerWindow", show=True)
         print('Player manager add player window opened')
+    
+    # Player Manager - Add Player - Close Button
+    if sender == 'playerManagerAddPlayerCancelBtn':
+        gui.configure_item("playerManagerAddPlayerWindow", show=False)
+        print('Player manager add player window closed')
 
     # Test trigger for experimental functions
     if sender == 'testTrigger':
@@ -368,14 +374,14 @@ dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     with gui.group(horizontal=True, pos=(4,0)):
-        with gui.group(horizontal=True, pos=(0,20)):
-            gui.add_text('Remaining:')
+        with gui.group(horizontal=True, pos=(4,20)):
+            # gui.add_text('Remaining:')
             gui.add_image(dartL, tag='throw1', width=50, height=50)
             gui.add_image(dartL, tag='throw2', width=50, height=50)
             gui.add_image(dartL, tag='throw3', width=50, height=50)
-        gui.add_spacer(width=60)
-        gui.add_text('Last throw:')
-        gui.add_text('{throwInfo}')
+        gui.add_spacer(width=40)
+        gui.add_text('Round Score:')
+        gui.add_text('{roundScore}')
     with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
         gui.add_text('1.: {throw1}')
         gui.add_text('2.: {throw2}')
@@ -470,12 +476,13 @@ with gui.font_registry():
     robotoTitle48 = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
     robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
     robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
+    robotoGiant170 = gui.add_font("./fonts/Roboto-Regular.ttf", 170)
     gui.bind_font(robotoDefault18)
     gui.bind_item_font('exiting', robotoBig72)
     gui.bind_item_font('dartboard', robotoTitle48)
     gui.bind_item_font('dartboardInfo', robotoTitle48)
-    gui.bind_item_font('currentPlayerItem', robotoGiant108)
-    gui.bind_item_font('currentScoreItem', robotoGiant108)
+    gui.bind_item_font('currentPlayerItem', robotoGiant170)
+    gui.bind_item_font('currentScoreItem', robotoGiant170)
     gui.bind_item_font('followingPlayers1', robotoTitle48)
     gui.bind_item_font('followingPlayers2', robotoTitle48)
     gui.bind_item_font('followingPlayers3', robotoTitle48)
