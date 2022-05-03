@@ -115,8 +115,9 @@ def outsideSignal_handler(signal):
 
 ###
 # Handle all events
-def callback_handler(sender):
+def callback_handler(sender, callback_type, callback_id, value):
     print(f'{sender} was pressed')
+    print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
     ### Main Window Buttons ###
     # Exit Button
@@ -167,6 +168,11 @@ def callback_handler(sender):
     # Player Manager - Close Button
     if sender == 'playerManagerCloseBtn':
         gui.configure_item("playerManagerWindow", show=False)
+
+    # Player Manager - Add Player Button
+    if sender == 'playerManagerAddPlayer':
+        gui.configure_item("playerManagerAddPlayerWindow", show=True)
+        print('Player manager add player window opened')
 
     # Test trigger for experimental functions
     if sender == 'testTrigger':
@@ -400,6 +406,26 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
         gui.add_spacer(width=15)
         gui.add_button(label=' Close ', tag='playerManagerCloseBtn', callback=callback_handler)
 ###
+
+
+###
+# Player Manager Add Player Window
+# Player manager add player window should be a pop-up style window in the middle of the screen
+playerManagerAddPlayerW = 200
+playerManagerAddPlayerH = 100
+playerManagerAddPlayerPositionW = MonitorWidth/2 - playerManagerAddPlayerW/2
+playerManagerAddPlayerPositionH = MonitorHeight/2 - playerManagerAddPlayerH/2
+with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
+    with gui.group(horizontal=False, pos=(5,4)):
+        gui.add_text(' Add Player:')
+        gui.add_input_text(tag='playerManagerAddPlayerName', default_value='Name', width=190)
+    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-35)):
+        gui.add_spacer(width=20)
+        gui.add_button(label=" Add ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
+        gui.add_spacer(width=10)
+        gui.add_button(label=" Cancel ", tag='playerManagerAddPlayerCancelBtn', callback=callback_handler)
+###
+
 
 ###
 # Language selection window
