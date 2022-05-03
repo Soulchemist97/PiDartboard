@@ -289,10 +289,11 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
-        for entries in overviewWindowItems:
-            with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
-                gui.add_text(f"{player{entries}['name']}:", tag=f'followingPlayer{entries}Item')
-                gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
+        # for entries in overviewWindowItems:
+        #     with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
+        #         playerFStringHelper=f'player{entries}'
+        #         gui.add_text(f"{playerFStringHelper['name']}:", tag=f'followingPlayer{entries}Item')
+        #         gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
         with gui.group(horizontal=True, tag='followingPlayers1'):
             gui.add_text(f" {player2['name']}:", tag='followingPlayer1Item')
             gui.add_text(f"{player2['score']}", tag='followingPlayer1Score')
