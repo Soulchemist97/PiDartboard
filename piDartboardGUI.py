@@ -21,17 +21,14 @@ for m in get_monitors():
         MonitorHeight = m.height
         MonitorWidth = m.width
 
-# Create DearPyGui context
-gui.create_context()
-
 def callback_handler(sender):
     print(f'{sender} was pressed')
-    if sender == 'exitBtn':
+    if sender == 'gameExitNow':
         gui.configure_item("exiting", show=True)
         print('Exiting...')
         time.sleep(0.1)
         gui.destroy_context()
-    if sender == 'langBtn':
+    if sender == 'gameLanguage':
         gui.configure_item("languageSelection", show=True)
         print('Language menu opened')
     if sender == 'langClose':
@@ -41,6 +38,13 @@ def callback_handler(sender):
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
 
+    if sender == 'testTrigger':
+        gui.configure_item("collectDarts", show=True)
+        time.sleep(5)
+        gui.configure_item("collectDarts", show=False)
+
+# Create DearPyGui context
+gui.create_context()
 
 ###
 # Load Images
@@ -74,24 +78,26 @@ with gui.texture_registry():
 # Menu bar
 with gui.viewport_menu_bar():
     with gui.menu(label="Game"):
-        gui.add_menu_item(label="Restart", callback=callback_handler)
-        gui.add_menu_item(label="Save", callback=callback_handler)
-        gui.add_menu_item(label="Save As", callback=callback_handler)
-        gui.add_menu_item(label="Manual Mode", callback=callback_handler)
+        gui.add_menu_item(label="Restart", tag='restartGame', callback=callback_handler)
+        gui.add_menu_item(label="Save", tag='saveGame', callback=callback_handler)
+        gui.add_menu_item(label="Save As", tag='saveGameAs', callback=callback_handler)
+        gui.add_menu_item(label="Manual Mode", tag='manualGameMode', callback=callback_handler)
         with gui.menu(label="Game Modes"):
-            gui.add_menu_item(label="301", callback=callback_handler)
-            gui.add_menu_item(label="501", callback=callback_handler)
-            gui.add_menu_item(label="701", callback=callback_handler)
-
+            gui.add_menu_item(label="301", tag='GameMode301', callback=callback_handler)
+            gui.add_menu_item(label="501", tag='GameMode501', callback=callback_handler)
+            gui.add_menu_item(label="701", tag='GameMode701', callback=callback_handler)
+            gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', check=True ,callback=callback_handler)
     with gui.menu(label="Settings"):
-        gui.add_menu_item(label="Player", callback=callback_handler)
+        gui.add_menu_item(label="Player Manager", tag='playerManager', callback=callback_handler)
+        #Quick settings for each player if possible
         with gui.menu(label="Player 1"):
-            gui.add_menu_item(label="Name", callback=callback_handler)
-            gui.add_menu_item(label="Color", callback=callback_handler)
-            gui.add_menu_item(label="Score", callback=callback_handler)
-    gui.add_menu_item(label="Language", tag='langBtn', callback=callback_handler)
-    gui.add_menu_item(label="Help", tag='hlpBtn',callback=callback_handler)
-    gui.add_menu_item(label="Exit", tag='exitBtn', callback=callback_handler)
+            gui.add_menu_item(label="Name", tag='Player1_NameSettings', callback=callback_handler)
+            gui.add_menu_item(label="Score", tag='Player1_ScoreSettings', callback=callback_handler)
+    gui.add_menu_item(label="Language", tag='gameLanguage', callback=callback_handler)
+    gui.add_menu_item(label="Help", tag='gameHelp',callback=callback_handler)
+    gui.add_menu_item(label="Exit", tag='gameExitNow', callback=callback_handler)
+    gui.add_spacer(width=55)
+    gui.add_menu_item(label="TestTrigger", tag='testTrigger', callback=callback_handler)
     gui.add_text(f"piDartboard {__version__}", pos=(1780,0), color=(255,255,255,60))
     gui.add_image(logoImage, height=20, width=20, pos=(1900,2))
 #
@@ -157,16 +163,19 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
 dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
-    with gui.group(horizontal=True):
+    with gui.group(horizontal=True, pos=(0,0)):
+        with gui.group(horizontal=True, pos=(0,20)):
+            gui.add_text('Remaining:')
+            gui.add_image(dartL, tag='throw1', width=50, height=50)
+            gui.add_image(dartL, tag='throw2', width=50, height=50)
+            gui.add_image(dartL, tag='throw3', width=50, height=50)
+        gui.add_spacer(width=60)
         gui.add_text('Last throw:')
         gui.add_text('{throwInfo}')
-        gui.add_spacer(width=10)
-        gui.add_text('Remaining:')
-        gui.add_text('{remainingThrows}')
-    with gui.group(horizontal=False, tag='throwOverview'):
-        gui.add_text('Throw1: {throw1}')
-        gui.add_text('Throw2: {throw2}')
-        gui.add_text('Throw3: {throw3}')
+    with gui.group(horizontal=False, tag='throwOverview', pos=(0,80)):
+        gui.add_text('1.: {throw1}')
+        gui.add_text('2.: {throw2}')
+        gui.add_text('3.: {throw3}')
 #
 ###
 
@@ -189,7 +198,7 @@ collectDartsH = 180
 collectDartsPositionW = MonitorWidth / 2- collectDartsW 
 collectDartsPositionH = (MonitorHeight + 20) / 2 - collectDartsH + 120
 dartImageResponsiveSideLength = collectDartsH - 20
-with gui.window(tag="collectDarts", show=True, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
+with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
     with gui.group(horizontal=True, tag='collectDartsGroup'):
         gui.add_image(dartL, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(10,10))
         gui.add_text('Please collect your darts!', pos=(collectDartsW/4.7,collectDartsH/5.35))
