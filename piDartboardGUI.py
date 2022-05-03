@@ -75,7 +75,7 @@ player8 = {
 
 players = [player1, player2, player3, player4, player5, player6, player7, player8]
 
-
+overviewWindowItems = [1, 2, 3, 4, 5, 6, 7]
 currentPlayerIdRotation = [1, 2, 3, 4, 5, 6, 7, 8]
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
@@ -174,6 +174,15 @@ def callback_handler(sender):
         currentPlayerName, currentPlayerScore, currentPlayerIdRotation = proceedToNextPlayer()
         print(f'Current player: {currentPlayerName}: {currentPlayerScore} {currentPlayerIdRotation}')
         time.sleep(3)
+        gui.set_value("currentPlayerItem", f"{currentPlayerName}: ")
+        gui.set_value("currentPlayerScore", currentPlayerScore)
+        for id in overviewWindowItems:
+            currentPlayerOnOverview = currentPlayerIdRotation[id - 1]
+            for players in currentPlayerIdRotation:
+                if not players == currentPlayerIdRotation[0]:
+                    gui.set_value(f"followingPlayer{id}Name", f' {currentPlayerOnOverview["name"]}:')
+                    gui.set_value(f"followingPlayer{id}Score", f'{currentPlayerOnOverview["score"]}')
+        print('Updated GUI')
         gui.configure_item("collectDarts", show=False)
 ###
 
@@ -265,28 +274,46 @@ with gui.window(tag="Main"):
             gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
     # for players in currentPlayerIdRotation:
     #     with gui.group(tag='playerOverview', pos=(20,30)):
-    #         # Draw current player
-    #         with gui.group(horizontal=True, tag='CurrentPlayer'):
-    #             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
-    #             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
-    #         # Draw following players
-    #         with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
-    #             gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
-    #             gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
+    #         if players == currentPlayerIdRotation[0]:
+    #             # Draw current player
+    #             with gui.group(horizontal=True, tag='CurrentPlayer'):
+    #                 gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+    #                 gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+    #         else:
+    #             # Draw following players
+    #             with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
+    #                 gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
+    #                 gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
                 
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
-        with gui.group(horizontal=True, tag='followingPlayers'):
-            gui.add_text(f" {player2['name']}:")
-            gui.add_text(f"{player2['score']}")
+        for entries in overviewWindowItems:
+            with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
+                gui.add_text(f"{player{entries}['name']}:", tag=f'followingPlayer{entries}Item')
+                gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
+        with gui.group(horizontal=True, tag='followingPlayers1'):
+            gui.add_text(f" {player2['name']}:", tag='followingPlayer1Item')
+            gui.add_text(f"{player2['score']}", tag='followingPlayer1Score')
         with gui.group(horizontal=True, tag='followingPlayers2'):
-            gui.add_text(f" {player3['name']}:")
-            gui.add_text(f"{player3['score']}")
+            gui.add_text(f" {player3['name']}:", tag='followingPlayer2Item')
+            gui.add_text(f"{player3['score']}", tag='followingPlayer2Score')
         with gui.group(horizontal=True, tag='followingPlayers3'):
-            gui.add_text(f" {player4['name']}:")
-            gui.add_text(f"{player4['score']}")
+            gui.add_text(f" {player4['name']}:", tag='followingPlayer3Item')
+            gui.add_text(f"{player4['score']}", tag='followingPlayer3Score')
+        with gui.group(horizontal=True, tag='followingPlayers4'):
+            gui.add_text(f" {player5['name']}:", tag='followingPlayer4Item')
+            gui.add_text(f"{player5['score']}", tag='followingPlayer4Score')
+        with gui.group(horizontal=True, tag='followingPlayers5'):
+            gui.add_text(f" {player6['name']}:", tag='followingPlayer5Item')
+            gui.add_text(f"{player6['score']}", tag='followingPlayer5Score')
+        with gui.group(horizontal=True, tag='followingPlayers6'):
+            gui.add_text(f" {player7['name']}:", tag='followingPlayer6Item')
+            gui.add_text(f"{player7['score']}", tag='followingPlayer6Score')
+        with gui.group(horizontal=True, tag='followingPlayers7'):
+            gui.add_text(f" {player8['name']}:", tag='followingPlayer7Item')
+            gui.add_text(f"{player8['score']}", tag='followingPlayer7Score')
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
@@ -422,9 +449,13 @@ with gui.font_registry():
     gui.bind_item_font('dartboardInfo', robotoTitle48)
     gui.bind_item_font('currentPlayerItem', robotoGiant108)
     gui.bind_item_font('currentScoreItem', robotoGiant108)
-    gui.bind_item_font('followingPlayers', robotoTitle48)
+    gui.bind_item_font('followingPlayers1', robotoTitle48)
     gui.bind_item_font('followingPlayers2', robotoTitle48)
     gui.bind_item_font('followingPlayers3', robotoTitle48)
+    gui.bind_item_font('followingPlayers4', robotoTitle48)
+    gui.bind_item_font('followingPlayers5', robotoTitle48)
+    gui.bind_item_font('followingPlayers6', robotoTitle48)
+    gui.bind_item_font('followingPlayers7', robotoTitle48)
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
