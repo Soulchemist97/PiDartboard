@@ -12,6 +12,13 @@ import time
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 
+###
+# Create DearPyGui context
+gui.create_context()
+###
+
+# Variable initialization
+currentConfig = {}
 
 ###
 # Get information about primary monitor
@@ -30,26 +37,61 @@ for m in get_monitors():
 # Handle all events
 def callback_handler(sender):
     print(f'{sender} was pressed')
+
+    ### Main Window Buttons ###
+    # Exit Button
     if sender == 'gameExitNow':
         gui.configure_item("exiting", show=True)
         print('Exiting...')
         time.sleep(0.1)
         gui.destroy_context()
+    
+    # Language Button
     if sender == 'gameLanguage':
-        gui.configure_item("languageSelection", show=True)
-        print('Language menu opened')
+        currentConfig = gui.get_item_configuration("languageSelection")
+        if currentConfig['show'] == True:
+            gui.configure_item("languageSelection", show=False)
+            print('Language menu was open, closed')
+        else:
+            gui.configure_item("languageSelection", show=True)
+            print('Language menu opened')
+    # Language Menu - Close Button
     if sender == 'langClose':
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed')
+    # Language Menu - OK Button
     if sender == 'langOK':
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
+    
+    # MainWindow - Player Manager Button
+    if sender == 'playerManagerButton':
+        currentConfig = gui.get_item_configuration("playerManagerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("playerManagerWindow", show=False)
+            print('Player manager was open, closed')
+        else:
+            gui.configure_item("playerManagerWindow", show=True)
+            print('Player manager opened')
+    
+    # Settings - Player Manager Button
+    if sender == 'togglePlayerManager':
+        currentConfig = gui.get_item_configuration("playerManagerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("playerManagerWindow", show=False)
+            print('Player manager was open, closed')
+        else:
+            gui.configure_item("playerManagerWindow", show=True)
+            print('Player manager opened')
+    
+    # Player Manager - Close Button
+    if sender == 'playerManagerCloseBtn':
+        gui.configure_item("playerManagerWindow", show=False)
 
     # Test trigger for experimental functions
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
         time.sleep(3)
-        refreshWindows()
         gui.configure_item("collectDarts", show=False)
 ###
 
@@ -58,11 +100,6 @@ def callback_handler(sender):
 # Refresh all shown windows
 def refreshWindows():
     pass
-###
-
-###
-# Create DearPyGui context
-gui.create_context()
 ###
 
 
@@ -109,7 +146,7 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="701", tag='GameMode701', callback=callback_handler)
             gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', default_value=True, check=True, callback=callback_handler)
     with gui.menu(label="Settings"):
-        gui.add_menu_item(label="Player Manager", tag='playerManager', callback=callback_handler)
+        gui.add_menu_item(label="Player Manager", tag='togglePlayerManager', callback=callback_handler)
         #Quick settings for each player if possible
         with gui.menu(label="Player 1"):
             gui.add_menu_item(label="Name", tag='Player1_NameSettings', callback=callback_handler)
@@ -151,8 +188,8 @@ with gui.window(tag="Main"):
             gui.add_text(" Darc:")
             gui.add_text("301")
         with gui.group(horizontal=True):
-            gui.add_button(label="Add player", tag='addPlayer',callback=callback_handler)
-            gui.add_button(label="Remove player", tag='removePlayer', callback=callback_handler)
+            gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
+            gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
     gui.add_text(f'[DBG] Primary Monitor: {MonitorInfo}', pos=(5,1055))
 ###
 
@@ -174,7 +211,8 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
 
 
 ###
-# Draw on top the dartboard
+# Dartboard overlay
+# Draw overlay to highlight current throw
 dartboardMiddleW = dartboardW/2 - 8
 dartboardMiddleH = dartboardH/2 - 8
 dartboardMiddlePos = (dartboardMiddleW, dartboardMiddleH)
@@ -190,6 +228,7 @@ with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositio
 
 
 ###
+# Dartboard Info Widget
 # Dartboart throw info window should translate over the dartboard
 dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
@@ -208,6 +247,37 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
         gui.add_text('2.: {throw2}')
         gui.add_text('3.: {throw3}')
 ###
+
+###
+# Player Manager
+# Player manager window should be a pop-up style window in the middle of the screen
+playerManagerW = 500
+playerManagerH = 600
+playerManagerPositionW = MonitorWidth/2 - playerManagerW/2
+playerManagerPositionH = MonitorHeight/2 - playerManagerH/2
+with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, pos=(playerManagerPositionW,playerManagerPositionH), width=playerManagerW, height=playerManagerH, no_resize=True):
+    with gui.group(horizontal=True, pos=(0,0)):
+        with gui.group(horizontal=True, tag='playerManagerOverview'):
+            gui.add_text("Jannis:")
+            gui.add_text("301")
+        with gui.group(horizontal=True, tag='playerManagerOverview2'):
+            gui.add_text("Lino:")
+            gui.add_text("301")
+        with gui.group(horizontal=True, tag='playerManagerOverview3'):
+            gui.add_text("Jan:")
+            gui.add_text("301")
+        with gui.group(horizontal=True, tag='playerManagerOverview4'):
+            gui.add_text("Darc:")
+            gui.add_text("301")
+    with gui.group(horizontal=True, pos=(playerManagerW/20,playerManagerH-45)):
+        gui.add_button(label=" Add player ", tag='playerManagerAddPlayer', callback=callback_handler)
+        gui.add_spacer(width=15)
+        gui.add_button(label=" Remove player ", tag='playerManagerRemovePlayer', callback=callback_handler)
+        gui.add_spacer(width=15)
+        gui.add_button(label=" Edit player ", tag='playerManagerEditPlayer', callback=callback_handler)
+        gui.add_spacer(width=15)
+        gui.add_button(label=' Close ', tag='playerManagerCloseBtn', callback=callback_handler)
+
 
 ###
 # Language selection window
