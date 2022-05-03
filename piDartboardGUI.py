@@ -15,6 +15,8 @@ import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 from Player_Manager import ScoreBoard
 
+SB = ScoreBoard()
+
 
 ###
 # Create DearPyGui context
@@ -153,6 +155,11 @@ def callback_handler(sender):
         print(f'Current player: {currentPlayerName}: {currentPlayerScore} [{currentPlayerIdRotation}]')
         time.sleep(3)
         gui.configure_item("collectDarts", show=False)
+        gui.set_value("DebugBox", str(SB))
+
+    if sender == 'playerManagerAddPlayer' :
+        SB.addPlayer(gui.get_value('AddPlayerBox'))
+        print(SB)
 ###
 
 
@@ -257,7 +264,7 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
-    gui.add_text(f'[DBG] Primary Monitor: {MonitorInfo}', pos=(5,1055))
+    gui.add_text(f'[DBG] {str(SB)}', pos=(5,1055),tag="DebugBox")
 ###
 
 
@@ -329,6 +336,9 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
                 gui.add_text(f'{player["name"]}:')
                 gui.add_text(f'{player["score"]}')
                 gui.add_button(label='Edit', tag=f'playerManagerPlayer{player["id"]}Edit', callback=callback_handler)
+
+        gui.add_input_text(tag='AddPlayerBox', callback=callback_handler) # Eingabe Box
+
     with gui.group(horizontal=True, pos=(playerManagerW/20,playerManagerH-45)):
         gui.add_button(label=" Add player ", tag='playerManagerAddPlayer', callback=callback_handler)
         gui.add_spacer(width=15)
