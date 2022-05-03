@@ -7,5 +7,8 @@
   - Manual mode for use without an electronic dartboard
 - Support custom sound effects (Sound Manager)
 - Support custom fonts for the GUI
+- Multi language support
+- Help window (Manual)
+
 
 
