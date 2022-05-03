@@ -10,9 +10,7 @@ __status__ = "Development"
 ###TODO###TODO###TODO###TODO###TODO##############################
 ##
 ##
-from gc import callbacks
 import time
-from tkinter import font
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 
@@ -37,26 +35,32 @@ def callback_handler(sender):
         print('Exiting...')
         time.sleep(0.1)
         gui.destroy_context()
+    if sender == 'langBtn':
+        gui.configure_item("languageSelection", show=True)
+        print('Language menu opened')
+    if sender == 'langClose':
+        gui.configure_item("languageSelection", show=False)
+        print('Language menu closed')
+    if sender == 'langOK':
+        gui.configure_item("languageSelection", show=False)
+        print('Language menu closed and language changed')
 
-# Load favicon
+###
+#Load Images
+# Load favicon image into memory
 faviconData = {}
 faviconData = gui.load_image("./images/favicon.png")
 with gui.texture_registry():
     print(f'Loading image: {faviconData=}')
     logoImage = gui.add_static_texture(width=faviconData[0], height=faviconData[1], default_value=faviconData[3], tag="logoImage")
-
-# Load dartboard
+# Load dartboard image into memory
 dartboardData = {}
 dartboardData = gui.load_image("./images/dartboard.png")
 with gui.texture_registry():
     print(f'Loading image: {dartboardData=}')
     dartboardImage = gui.add_static_texture(width=dartboardData[0], height=dartboardData[1], default_value=dartboardData[3], tag="dartboardImage")
-
-with gui.window(label="Exiting", show=False, id="exiting", width=170, pos=(850,450), no_resize=True, no_title_bar=True):
-    gui.add_text('Exiting...')
-
-
-
+#
+###
 
 with gui.viewport_menu_bar():
     with gui.menu(label="Game"):
@@ -71,26 +75,36 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="Name", callback=callback_handler)
             gui.add_menu_item(label="Color", callback=callback_handler)
             gui.add_menu_item(label="Score", callback=callback_handler)
-    gui.add_menu_item(label="Language", callback=callback_handler)
-    gui.add_menu_item(label="Help", callback=callback_handler)
+    gui.add_menu_item(label="Language", tag='langBtn', callback=callback_handler)
+    gui.add_menu_item(label="Help", tag='hlpBtn',callback=callback_handler)
     gui.add_menu_item(label="Exit", tag='exitBtn', callback=callback_handler)
+    gui.add_text(f"piDartboard {__version__}", pos=(1780,0))
     gui.add_image(logoImage, height=20, width=20, pos=(1900,2))
+
+
 
 with gui.window(tag="Main"):
     # Fix space occupied by top bar
     gui.add_spacer(height=13)
-    gui.add_text(f'Primary Monitor: {MonitorInfo}')
-    with gui.group(horizontal=True):
-        gui.add_text("Player Jannis")
-        gui.add_text("Score:")
-        gui.add_text("0")
-    with gui.group(horizontal=True):
-        gui.add_text("Player Lino")
-        gui.add_text("Score:")
-        gui.add_text("0")      
-    with gui.group(horizontal=True):
-        gui.add_button(label="Add player", callback=callback_handler)
-        gui.add_button(label="Remove player", callback=callback_handler)
+    with gui.group(tag="playerOverview", pos=(20,30)):
+        with gui.group(horizontal=True, tag='CurrentPlayer'):
+            gui.add_text("Jannis:", tag='currentPlayerItem')
+            gui.add_text("301", tag='currentScoreItem')
+        with gui.group(horizontal=True, tag='followingPlayers'):
+            gui.add_text("Lino:")
+            gui.add_text("301")
+        with gui.group(horizontal=True, tag='followingPlayers2'):
+            gui.add_text("Jan:")
+            gui.add_text("301")
+        with gui.group(horizontal=True, tag='followingPlayers3'):
+            gui.add_text("Darc:")
+            gui.add_text("301")
+        with gui.group(horizontal=True):
+            gui.add_button(label="Add player", tag='addPlr',callback=callback_handler)
+            gui.add_button(label="Remove player", tag='rmvPlr', callback=callback_handler)
+    gui.add_text(f'[DBG] Primary Monitor: {MonitorInfo}', pos=(5,1055))
+
+
 
 # Even windows without borders have an invisible border of around 4px, resize wrapper window +8px to compensate
 # Calculate dartboard position horizontally: windowWidth - dartboardWidth
@@ -107,18 +121,48 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
         gui.add_item_clicked_handler(callback=clicked)
 # gui.bind_item_handler_registry('dartboardClicked', 'dartboard')
 
+
+
+# Language selection window
+with gui.window(tag="languageSelection", show=False, width=250, height=150, pos=(800,400), no_resize=True):
+    gui.add_text(' Select a language:')
+    gui.add_combo(items=['English', 'Deutsch (German)'], tag='langCombo', callback=callback_handler)
+    
+    with gui.group(horizontal=True):
+        gui.add_button(label="OK", tag='langOK', callback=callback_handler)
+        gui.add_button(label="Cancel", tag='langClose', callback=callback_handler)
+
+
+
+with gui.window(label="Exiting", show=False, id="exiting", width=170, pos=(850,450), no_resize=True, no_title_bar=True):
+    gui.add_text('Exiting...')
+
+
+
+# Set icon
 try:
     gui.set_viewport_small_icon('./favicon.ico')
 except:
     Exception
 
+
+# Register fonts
 with gui.font_registry():
     defaultFont = gui.add_font("./fonts/Roboto-Regular.ttf", 18)
     titleFont = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
     bigFont = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
+    currentPlayerFont = gui.add_font("./fonts/Roboto-Regular.ttf", 84)
+    currentPlayerScoreFont = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
     gui.bind_font(defaultFont)
     gui.bind_item_font('exiting', titleFont)
     gui.bind_item_font('dartboard', titleFont)
+    gui.bind_item_font('currentPlayerItem', currentPlayerFont)
+    gui.bind_item_font('currentScoreItem', currentPlayerScoreFont)
+    gui.bind_item_font('followingPlayers', titleFont)
+    gui.bind_item_font('followingPlayers2', titleFont)
+    gui.bind_item_font('followingPlayers3', titleFont)
+
+
 
 # Start window maximized
 gui.create_viewport(title='piDartboard', decorated=False, width=1920, height=1080)
