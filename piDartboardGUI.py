@@ -12,6 +12,7 @@ import os
 import time
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
+from Player_Manager import ScoreBoard
 
 
 ###
@@ -67,6 +68,15 @@ for m in get_monitors():
         MonitorHeight = m.height
         MonitorWidth = m.width
 #
+###
+
+###
+# Proceed to next player
+def proceedToNextPlayer():
+    currentPlayerIdRotation.append(currentPlayerIdRotation.pop(0))
+    currentPlayerName = players[currentPlayerIdRotation[0] - 1]["name"]
+    currentPlayerScore = players[currentPlayerIdRotation[0] - 1]["score"]
+    return currentPlayerName, currentPlayerScore, currentPlayerIdRotation
 ###
 
 
@@ -138,6 +148,7 @@ def callback_handler(sender):
     # Test trigger for experimental functions
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
+        currentPlayerName, currentPlayerScore, currentPlayerIdRotation = proceedToNextPlayer()
         time.sleep(3)
         gui.configure_item("collectDarts", show=False)
 ###
@@ -228,6 +239,14 @@ with gui.window(tag="Main"):
             gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+    for players in currentPlayerIdRotation:
+        with gui.group(tag="playerOverview", pos=(20,30)):
+            with gui.group(horizontal=True, tag='CurrentPlayer'):
+                gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+                gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+            with gui.group(horizontal=True, tag='followingPlayer1'):
+                gui.add_text(f"{players['name']}:", tag='followingPlayer1Item')
+                gui.add_text(f"{players['score']}", tag='followingScore1Item')
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
