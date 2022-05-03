@@ -93,6 +93,10 @@ class ScoreBoard:
 
     def getPlayerNames(self):
         return self.PlayerNames
+    
+    def TogglePlayer(self):
+        self.PlayerNames.append(self.PlayerNames.pop(0))
+        return self.PlayerNames[0]
 
 
     def Throw(self,Throw,Multiplicator=1):
