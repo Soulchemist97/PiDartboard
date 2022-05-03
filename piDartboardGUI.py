@@ -82,7 +82,7 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="301", callback=callback_handler)
             gui.add_menu_item(label="501", callback=callback_handler)
             gui.add_menu_item(label="701", callback=callback_handler)
-            
+
     with gui.menu(label="Settings"):
         gui.add_menu_item(label="Player", callback=callback_handler)
         with gui.menu(label="Player 1"):
@@ -184,15 +184,16 @@ with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=
 
 ###
 # Collect your darts window
-collectDartsW = 600
-collectDartsH = 120
+collectDartsW = 800
+collectDartsH = 180
 collectDartsPositionW = MonitorWidth / 2- collectDartsW 
 collectDartsPositionH = (MonitorHeight + 20) / 2 - collectDartsH + 120
-with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
+dartImageResponsiveSideLength = collectDartsH - 20
+with gui.window(tag="collectDarts", show=True, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
     with gui.group(horizontal=True, tag='collectDartsGroup'):
-        gui.add_image(dartL, width=100, height=100, pos=(10,10))
-        gui.add_text('Please collect your darts!', pos=(collectDartsW/5,35))
-        gui.add_image(dartR, width=100, height=100, pos=(collectDartsW-110,10))
+        gui.add_image(dartL, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(10,10))
+        gui.add_text('Please collect your darts!', pos=(collectDartsW/4.7,collectDartsH/5.35))
+        gui.add_image(dartR, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(collectDartsW-(dartImageResponsiveSideLength+10),10))
 #
 ###
 
@@ -223,7 +224,7 @@ with gui.font_registry():
     gui.bind_item_font('followingPlayers2', robotoTitle48)
     gui.bind_item_font('followingPlayers3', robotoTitle48)
     gui.bind_item_font('throwOverview', robotoTitle36)
-    gui.bind_item_font('collectDartsGroup', robotoTitle36)
+    gui.bind_item_font('collectDartsGroup', robotoTitle48)
 #
 ###
 
