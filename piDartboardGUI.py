@@ -424,7 +424,7 @@ playerManagerAddPlayerPositionH = MonitorHeight/2 - playerManagerAddPlayerH/2
 with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
     with gui.group(horizontal=False, pos=(5,4)):
         gui.add_text(' Add Player:')
-        gui.add_input_text(tag='playerManagerAddPlayerName', default_value='Name', width=190)
+        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=190)
     with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-35)):
         gui.add_spacer(width=20)
         gui.add_button(label=" Add ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
