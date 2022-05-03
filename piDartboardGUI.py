@@ -150,7 +150,7 @@ def callback_handler(sender):
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
         currentPlayerName, currentPlayerScore, currentPlayerIdRotation = proceedToNextPlayer()
-        print(f'Current player: {currentPlayerName}: {currentPlayerScore} [{currentPlayerIdRotation}]')
+        print(f'Current player: {currentPlayerName}: {currentPlayerScore} {currentPlayerIdRotation}')
         time.sleep(3)
         gui.configure_item("collectDarts", show=False)
 ###
