@@ -8,14 +8,23 @@ __maintainer__ = "ThisLimn0, Soulchemist97"
 __status__ = "Development"
 
 # Imports
+import os
 import time
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
+
 
 ###
 # Create DearPyGui context
 gui.create_context()
 ###
+
+
+###
+# Set current working directory
+cwd = os.getcwd()
+###
+
 
 # Variable initialization
 currentConfig = {}
@@ -46,8 +55,6 @@ players = [player1, player2, player3, player4]
 currentPlayerIdRotation = [1, 2, 3, 4]
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
-
-
 
 
 ###
@@ -378,7 +385,7 @@ with gui.font_registry():
 ###
 # Set app icon
 try:
-    gui.set_viewport_small_icon('./favicon.ico')
+    gui.set_viewport_small_icon('./images/favicon.ico')
 except:
     Exception
 ###
