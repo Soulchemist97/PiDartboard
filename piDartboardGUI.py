@@ -15,6 +15,7 @@ from screeninfo import get_monitors
 from Player_Manager import ScoreBoard
 
 
+
 ###
 # Create DearPyGui context
 gui.create_context()
@@ -57,6 +58,7 @@ currentPlayerIdRotation = [1, 2, 3, 4]
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
 
+#test
 
 ###
 # Get information about primary monitor
