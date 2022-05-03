@@ -74,11 +74,15 @@ with gui.texture_registry():
 # Menu bar
 with gui.viewport_menu_bar():
     with gui.menu(label="Game"):
-        gui.add_menu_item(label="New Game", callback=callback_handler)
-        gui.add_menu_item(label="Load Game", callback=callback_handler)
+        gui.add_menu_item(label="Restart", callback=callback_handler)
         gui.add_menu_item(label="Save", callback=callback_handler)
         gui.add_menu_item(label="Save As", callback=callback_handler)
         gui.add_menu_item(label="Manual Mode", callback=callback_handler)
+        with gui.menu(label="Game Modes"):
+            gui.add_menu_item(label="301", callback=callback_handler)
+            gui.add_menu_item(label="501", callback=callback_handler)
+            gui.add_menu_item(label="701", callback=callback_handler)
+            
     with gui.menu(label="Settings"):
         gui.add_menu_item(label="Player", callback=callback_handler)
         with gui.menu(label="Player 1"):
