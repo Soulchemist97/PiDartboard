@@ -315,6 +315,7 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
         gui.add_text('3.: {throw3}')
 ###
 
+
 ###
 # Player Manager
 # Player manager window should be a pop-up style window in the middle of the screen
@@ -394,6 +395,7 @@ with gui.font_registry():
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
+
 
 ###
 # Set app icon
