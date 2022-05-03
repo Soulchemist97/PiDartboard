@@ -51,10 +51,32 @@ player4 = {
     "score": 301,
     "id": 4
 }
+player5 = {
+    "name": "Alex",
+    "score": 301,
+    "id": 5
+}
+player6 = {
+    "name": "Isy",
+    "score": 301,
+    "id": 6
+}
+player7 = {
+    "name": "Leon",
+    "score": 301,
+    "id": 7
+}
+player8 = {
+    "name": "Lea",
+    "score": 301,
+    "id": 8
+}
 
-players = [player1, player2, player3, player4]
 
-currentPlayerIdRotation = [1, 2, 3, 4]
+players = [player1, player2, player3, player4, player5, player6, player7, player8]
+
+
+currentPlayerIdRotation = [1, 2, 3, 4, 5, 6, 7, 8]
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
 
@@ -241,6 +263,17 @@ with gui.window(tag="Main"):
             gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+    # for players in currentPlayerIdRotation:
+    #     with gui.group(tag='playerOverview', pos=(20,30)):
+    #         # Draw current player
+    #         with gui.group(horizontal=True, tag='CurrentPlayer'):
+    #             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+    #             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+    #         # Draw following players
+    #         with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
+    #             gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
+    #             gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
+                
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
@@ -338,7 +371,7 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
         gui.add_button(label=" Edit player ", tag='playerManagerEditPlayer', callback=callback_handler)
         gui.add_spacer(width=15)
         gui.add_button(label=' Close ', tag='playerManagerCloseBtn', callback=callback_handler)
-
+###
 
 ###
 # Language selection window
