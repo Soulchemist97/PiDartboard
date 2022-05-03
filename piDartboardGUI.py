@@ -57,6 +57,7 @@ def callback_handler(sender):
 ###
 # Refresh all shown windows
 def refreshWindows():
+    pass
 ###
 
 ###
