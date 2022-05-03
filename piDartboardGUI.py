@@ -7,14 +7,12 @@ __version__ = "0.0.1"
 __maintainer__ = "ThisLimn0, Soulchemist97"
 __status__ = "Development"
 
-###TODO###TODO###TODO###TODO###TODO##############################
-##
-##
+# Imports
 import time
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 
-#get Info about primary monitor
+# Get information about primary monitor
 n = 0
 MonitorInfo = []
 for m in get_monitors():
@@ -23,10 +21,8 @@ for m in get_monitors():
         MonitorHeight = m.height
         MonitorWidth = m.width
 
+# Create DearPyGui context
 gui.create_context()
-
-def clicked():
-    print('clicked on the dartboard')
 
 def callback_handler(sender):
     print(f'{sender} was pressed')
@@ -45,15 +41,26 @@ def callback_handler(sender):
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
 
+
 ###
-#Load Images
-# Load favicon image into memory
+# Load Images
+# load dartL image into memory
+dartL = {}
+dartL = gui.load_image('./images/dartL.png')
+with gui.texture_registry():
+    dartL = gui.add_static_texture(width=dartL[0], height=dartL[1], default_value=dartL[3], tag="dartL")
+# load dartR image into memory
+dartR = {}
+dartR = gui.load_image('./images/dartR.png')
+with gui.texture_registry():
+    dartR = gui.add_static_texture(width=dartR[0], height=dartR[1], default_value=dartR[3], tag="dartR")
+# load favicon image into memory
 faviconData = {}
 faviconData = gui.load_image("./images/favicon.png")
 with gui.texture_registry():
     print(f'Loading image: {faviconData=}')
     logoImage = gui.add_static_texture(width=faviconData[0], height=faviconData[1], default_value=faviconData[3], tag="logoImage")
-# Load dartboard image into memory
+# load dartboard image into memory
 dartboardData = {}
 dartboardData = gui.load_image("./images/dartboard.png")
 with gui.texture_registry():
@@ -61,6 +68,7 @@ with gui.texture_registry():
     dartboardImage = gui.add_static_texture(width=dartboardData[0], height=dartboardData[1], default_value=dartboardData[3], tag="dartboardImage")
 #
 ###
+
 
 ###
 # Menu bar
@@ -115,6 +123,7 @@ with gui.window(tag="Main"):
 #
 ###
 
+
 ###
 # Dartboard
 # Even windows without borders have an invisible border of around 4px, resize wrapper window +8px to compensate
@@ -127,10 +136,9 @@ dartboardPositionH = MonitorHeight - dartboardH + 3
 # Dartboard should be fixed to the bottom right corner of the screen
 with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     gui.add_image(dartboardImage, width=dartboardW-8, height=dartboardH-8, pos=(4,4))
-    with gui.item_handler_registry():
-        gui.add_item_clicked_handler(callback=clicked)
 # gui.bind_item_handler_registry('dartboardClicked', 'dartboard')
 ###
+
 
 ###
 # Draw ontop the dartboard
@@ -138,6 +146,7 @@ with gui.window(tag="dartboard", pos=(dartboardPositionW,dartboardPositionH), wi
 #     gui.draw_circle(radius=10, pos=(0,0), color=(1,0,0,1))
 #
 ###
+
 
 ###
 # Dartboart throw info window should translate over the dartboard
@@ -150,10 +159,14 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
         gui.add_spacer(width=10)
         gui.add_text('Remaining:')
         gui.add_text('{remainingThrows}')
-
+    with gui.group(horizontal=False, tag='throwOverview'):
+        gui.add_text('Throw1: {throw1}')
+        gui.add_text('Throw2: {throw2}')
+        gui.add_text('Throw3: {throw3}')
 #
 ###
 
+###
 # Language selection window
 with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=(800,400), no_resize=True, no_scrollbar=True):
     gui.add_text('Select a language:', pos=(8,26))
@@ -162,12 +175,53 @@ with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=
     with gui.group(horizontal=True, pos=(135,86)):
         gui.add_button(label=" OK ", tag='langOK', callback=callback_handler)
         gui.add_button(label=" Cancel ", tag='langClose', callback=callback_handler)
+#
+###
+
+###
+# Collect your darts window
+collectDartsW = 600
+collectDartsH = 120
+collectDartsPositionW = MonitorWidth / 2- collectDartsW 
+collectDartsPositionH = (MonitorHeight + 20) / 2 - collectDartsH + 120
+with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
+    with gui.group(horizontal=True, tag='collectDartsGroup'):
+        gui.add_image(dartL, width=100, height=100, pos=(10,10))
+        gui.add_text('Please collect your darts!', pos=(collectDartsW/5,35))
+        gui.add_image(dartR, width=100, height=100, pos=(collectDartsW-110,10))
+#
+###
 
 
-# Exiting tooltip
+###
+# Exit tooltip
 with gui.window(label="Exiting", show=False, id="exiting", width=170, pos=(850,450), no_resize=True, no_title_bar=True):
     gui.add_text('Exiting...')
+#
+###
 
+
+###
+# Fonts
+with gui.font_registry():
+    robotoDefault18 = gui.add_font("./fonts/Roboto-Regular.ttf", 18)
+    robotoTitle36 = gui.add_font("./fonts/Roboto-Regular.ttf", 36)
+    robotoTitle48 = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
+    robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
+    robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
+    gui.bind_font(robotoDefault18)
+    gui.bind_item_font('exiting', robotoTitle48)
+    gui.bind_item_font('dartboard', robotoTitle48)
+    gui.bind_item_font('dartboardInfo', robotoTitle48)
+    gui.bind_item_font('currentPlayerItem', robotoGiant108)
+    gui.bind_item_font('currentScoreItem', robotoGiant108)
+    gui.bind_item_font('followingPlayers', robotoTitle48)
+    gui.bind_item_font('followingPlayers2', robotoTitle48)
+    gui.bind_item_font('followingPlayers3', robotoTitle48)
+    gui.bind_item_font('throwOverview', robotoTitle36)
+    gui.bind_item_font('collectDartsGroup', robotoTitle36)
+#
+###
 
 
 # Set icon
@@ -176,25 +230,6 @@ try:
 except:
     Exception
 
-###
-# Fonts
-with gui.font_registry():
-    defaultFont = gui.add_font("./fonts/Roboto-Regular.ttf", 18)
-    titleFont = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
-    bigFont = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
-    currentPlayerFont = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
-    currentPlayerScoreFont = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
-    gui.bind_font(defaultFont)
-    gui.bind_item_font('exiting', titleFont)
-    gui.bind_item_font('dartboard', titleFont)
-    gui.bind_item_font('dartboardInfo', titleFont)
-    gui.bind_item_font('currentPlayerItem', currentPlayerFont)
-    gui.bind_item_font('currentScoreItem', currentPlayerScoreFont)
-    gui.bind_item_font('followingPlayers', titleFont)
-    gui.bind_item_font('followingPlayers2', titleFont)
-    gui.bind_item_font('followingPlayers3', titleFont)
-#
-###
 
 # Start window maximized
 gui.create_viewport(title='piDartboard', decorated=False, width=1920, height=1080)
