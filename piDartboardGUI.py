@@ -263,22 +263,24 @@ with gui.window(tag="Main"):
             gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-    # for players in currentPlayerIdRotation:
-    #     with gui.group(tag='playerOverview', pos=(20,30)):
-    #         # Draw current player
-    #         with gui.group(horizontal=True, tag='CurrentPlayer'):
-    #             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
-    #             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
-    #         # Draw following players
-    #         with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
-    #             gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
-    #             gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
+    for players in currentPlayerIdRotation:
+        with gui.group(tag='playerOverview', pos=(20,30)):
+            if players == currentPlayerIdRotation[0]:
+                # Draw current player
+                with gui.group(horizontal=True, tag='CurrentPlayer'):
+                    gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+                    gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+            else:
+                # Draw following players
+                with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
+                    gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
+                    gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
                 
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
             gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
-        with gui.group(horizontal=True, tag='followingPlayers'):
+        with gui.group(horizontal=True, tag='followingPlayers1'):
             gui.add_text(f" {player2['name']}:")
             gui.add_text(f"{player2['score']}")
         with gui.group(horizontal=True, tag='followingPlayers2'):
@@ -287,6 +289,18 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True, tag='followingPlayers3'):
             gui.add_text(f" {player4['name']}:")
             gui.add_text(f"{player4['score']}")
+        with gui.group(horizontal=True, tag='followingPlayers4'):
+            gui.add_text(f" {player5['name']}:")
+            gui.add_text(f"{player5['score']}")
+        with gui.group(horizontal=True, tag='followingPlayers5'):
+            gui.add_text(f" {player6['name']}:")
+            gui.add_text(f"{player6['score']}")
+        with gui.group(horizontal=True, tag='followingPlayers6'):
+            gui.add_text(f" {player7['name']}:")
+            gui.add_text(f"{player7['score']}")
+        with gui.group(horizontal=True, tag='followingPlayers7'):
+            gui.add_text(f" {player8['name']}:")
+            gui.add_text(f"{player8['score']}")
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
