@@ -39,48 +39,6 @@ cwd = os.getcwd()
 # Variable initialization
 currentConfig = {}
 
-player1 = {
-    "name": "Jannis",
-    "score": 301,
-    "id": 1
-}
-player2 = {
-    "name": "Lino",
-    "score": 301,
-    "id": 2
-}
-player3 = {
-    "name": "Jan",
-    "score": 301,
-    "id": 3
-}
-player4 = {
-    "name": "Darc",
-    "score": 301,
-    "id": 4
-}
-player5 = {
-    "name": "Alex",
-    "score": 301,
-    "id": 5
-}
-player6 = {
-    "name": "Isy",
-    "score": 301,
-    "id": 6
-}
-player7 = {
-    "name": "Leon",
-    "score": 301,
-    "id": 7
-}
-player8 = {
-    "name": "Lea",
-    "score": 301,
-    "id": 8
-}
-
-
 
 players = SB.PlayerNames
 
@@ -99,8 +57,6 @@ for m in get_monitors():
         MonitorWidth = m.width
 #
 ###
-
-
 
 
 ###
@@ -337,7 +293,6 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True, tag='followingPlayers1'):
             gui.add_text(f" {player2['name']}: ", tag='followingPlayer1Item', color=(255,255,255,230))
             gui.add_text(f"{player2['score']}", tag='followingPlayer1Score', color=(255,255,255,230))
-
         with gui.group(horizontal=True, tag='followingPlayers2'):
             gui.add_text(f" {player3['name']}: ", tag='followingPlayer2Item', color=(255,255,255,190))
             gui.add_text(f"{player3['score']}", tag='followingPlayer2Score', color=(255,255,255,190))
