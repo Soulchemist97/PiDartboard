@@ -117,7 +117,7 @@ def outsideSignal_handler(signal):
 # Handle all events
 def callback_handler(sender, callback_type, callback_id, value):
     print(f'{sender} was pressed')
-    if not callback_type == 'None':
+    if callback_type != 'None':
         print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
     ### Main Window Buttons ###
@@ -145,6 +145,16 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'langOK':
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
+
+    # Help Button
+    if sender == 'gameHelp':
+        currentConfig = gui.get_item_configuration("helpWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("helpWindow", show=False)
+            print('Help menu was open, closed')
+        else:
+            gui.configure_item("helpWindow", show=True)
+            print('Help menu opened')
     
     # MainWindow - Player Manager Button
     if sender == 'playerManagerButton':
@@ -184,6 +194,7 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'playerManagerAddPlayerBtn':
         gui.configure_item("playerManagerAddPlayerWindow", show=False)
         print('Player was added, Player Manager Add Player window closed')
+
 
 
     # Test trigger for experimental functions
