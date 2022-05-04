@@ -92,7 +92,7 @@ class ScoreBoard:
 
     def getCurrentScore(self):
         self.Current_Score = self.target - self.ScoreBoard[self.getActivePlayer()]["Points"] - np.sum(self.Current_Throw)
-        return self.Current_Score
+        return int(self.Current_Score)
     
 
     def setTargetScore(self, target):
@@ -119,7 +119,11 @@ class ScoreBoard:
 
     def TogglePlayer(self):
         self.PlayerNames.append(self.PlayerNames.pop(0)) #Swap first to last player
-        self.setActivePlayer(self.PlayerNames[0])
+        self.setActivePlayer(self.PlayerNames[0]) #Set active player to first player in List
+
+        self.addThrows(self.getActivePlayer(), self.Current_Throw)
+        self.ResetCurrentThrow()
+        
         return self.ActivePlayer
 
 
@@ -135,7 +139,8 @@ class ScoreBoard:
         self.Current_Throw.append(Throw)
         return Throw,Multiplicator
 
-    def addThrows(self, name, throws,multiplicator=1):
+    def addThrows(self, name, throws:list,multiplicator=1):
+        
         self.LastMultiplicator = multiplicator
         self.ScoreBoard[name]["Throws"].append(throws)
         return self.ScoreBoard[name]["Throws"]
@@ -161,19 +166,6 @@ class ScoreBoard:
 
     def getScoreBoardSorted(self):
         return sorted(self.ScoreBoard.items(), key=lambda x: x["Score"], reverse=True)
-
-    
-
-    # def NextPlayer(self):
-    #     self.addThrows(self.getActivePlayer(), self.Current_Throw)
-    #     self.ResetCurrentThrow()
-
-    #     self.n_active += 1
-    #     if self.n_active >= len(self.PlayerNames):
-    #         self.n_active = 0
-    #     self.ActivePlayer = self.PlayerNames[self.n_active % len(self.PlayerNames)]
-
-    #     return self.ActivePlayer
 
     def SaveScoreBoard(self,):
         with open("Scoreboards.json", "a") as file:
@@ -204,7 +196,8 @@ if __name__ == '__main__':
     print(SB.getCurrentScore())
 
 
-    SB.NextPlayer()
+    SB.TogglePlayer()
+    SB.refresh()
 
     #Throw
     SB.Throw(np.random.randint(1,25))
@@ -214,9 +207,9 @@ if __name__ == '__main__':
     SB.Throw(np.random.randint(1,25))
     print(SB.getCurrentScore())
 
-    SB.NextPlayer()
-
-    
+    SB.TogglePlayer()   
     SB.refresh()
-    SB.SaveScoreBoard()
+
+
+    # SB.SaveScoreBoard()
     print(SB)  

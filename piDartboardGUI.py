@@ -249,17 +249,10 @@ with gui.window(tag="Main"):
     with gui.group(tag="playerOverview", pos=(20,30)):
 
         with gui.group(horizontal=True, tag='CurrentPlayer'):
-            gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
-            gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+            gui.add_text(f"{SB.getActivePlayer()}:", tag='currentPlayerItem')
+            gui.add_text(f"{SB.CurrentPlayerScore()}", tag='currentScoreItem')
 
-        for player in players:
-            with gui.group(horizontal=True,tag=f"{player}"):
-                gui.add_text(f" {player}:")
-                gui.add_text(f"{SB.ScoreCalculation(player)}")
-
-
-
-        with gui.group(horizontal=True, tag='followingPlayers'):
+        with gui.group(horizontal=True, tag='followingPlayers1'):
             gui.add_text(f" {player2['name']}:")
             gui.add_text(f"{player2['score']}")
 
@@ -272,6 +265,7 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
+
     gui.add_text(f'[DBG] {str(SB)}', pos=(5,1055),tag="DebugBox")
 ###
 
@@ -317,7 +311,7 @@ dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     with gui.group(horizontal=True, pos=(4,0)):
         with gui.group(horizontal=True, pos=(0,20)):
-            gui.add_text('Remaining:')
+            # gui.add_text('Remaining:')
             gui.add_image(dartL, tag='throw1', width=50, height=50)
             gui.add_image(dartL, tag='throw2', width=50, height=50)
             gui.add_image(dartL, tag='throw3', width=50, height=50)
@@ -406,12 +400,15 @@ with gui.font_registry():
     gui.bind_item_font('dartboardInfo', robotoTitle48)
     gui.bind_item_font('currentPlayerItem', robotoGiant108)
     gui.bind_item_font('currentScoreItem', robotoGiant108)
-    gui.bind_item_font('followingPlayers', robotoTitle48)
+    gui.bind_item_font('followingPlayers1', robotoTitle48)
     gui.bind_item_font('followingPlayers2', robotoTitle48)
     gui.bind_item_font('followingPlayers3', robotoTitle48)
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
+
+
+
 
 ###
 # Set app icon
