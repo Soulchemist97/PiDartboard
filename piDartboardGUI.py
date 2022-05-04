@@ -73,6 +73,29 @@ def callback_handler(sender, callback_type, callback_id, value):
     if callback_type != 'None':
         print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
+    ##### Debug Code 
+    if sender == 'refreshWindow':
+        print(sender,"was pressed")
+        refreshWindows()
+
+    if sender == "DebugPoints":
+        print(sender,"was pressed")
+        SB.Throw(5)
+        refreshWindows()
+
+
+    if sender == "NextPlayer":
+        SB.TogglePlayer()
+        refreshWindows()
+        print(SB.PlayerNames)
+
+    if sender == "ResetThrows":
+        SB.ResetCurrentThrow()
+        refreshWindows()
+        
+    #### Debug Code
+
+
     ### Main Window Buttons ###
     # Exit Button
     if sender == 'gameExitNow':
@@ -219,7 +242,27 @@ def callback_handler(sender, callback_type, callback_id, value):
 ###
 # Refresh all shown windows
 def refreshWindows():
-    pass
+    # Refresh main window
+    
+    #Throws
+    gui.set_value(value=f'1.: {SB.CurrentThrow_Round(1)}',item='throw1Text')
+    gui.set_value(value=f'2.: {SB.CurrentThrow_Round(2)}',item='throw2Text')
+    gui.set_value(value=f'3.: {SB.CurrentThrow_Round(3)}',item='throw3Text')
+
+    # Round Score
+    gui.set_value(value=f'{SB.CurrentRoundPoints()}',item='roundScoreItem')
+
+    ## Player Score Overview
+    gui.set_value("currentPlayerItem", f"{SB.getActivePlayer()}: ")
+    gui.set_value("currentScore", SB.getActivePlayerScore())
+
+    gui.set_value(value=players[1],item='followingPlayer1Item')
+    gui.set_value(value=SB.getPlayerScore(players[1]),item='followingPlayer1Score')
+
+    gui.set_value('followingPlayer2Item',players[2])
+    gui.set_value(value=SB.getPlayerScore(players[2]),item='followingPlayer2Score')
+    
+
 ###
 
 
@@ -281,6 +324,15 @@ with gui.viewport_menu_bar():
     gui.add_menu_item(label="Language", tag='gameLanguage', callback=callback_handler)
     gui.add_menu_item(label="Help", tag='gameHelp',callback=callback_handler)
     gui.add_menu_item(label="Exit", tag='gameExitNow', callback=callback_handler)
+
+    ### Debug Menu
+    with gui.menu(label="DebugWindow"):
+        gui.add_menu_item(label="Refresh", tag='refreshWindow', callback=callback_handler)
+        gui.add_menu_item(label="DebugPoints",tag="DebugPoints" ,callback=callback_handler)
+        gui.add_menu_item(label="NextPlayer",tag="NextPlayer", callback=callback_handler)
+        gui.add_menu_item(label="ResetThrows",tag="ResetThrows", callback=callback_handler)
+
+
     gui.add_spacer(width=55)
     gui.add_menu_item(label="TestTrigger", tag='testTrigger', callback=callback_handler)
     gui.add_text(f"piDartboard {__version__}", pos=(1780,0), color=(255,255,255,60))
@@ -328,7 +380,7 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
 
             gui.add_text(f"{SB.getActivePlayer()}: ", tag='currentPlayerItem')
-            gui.add_text(f"{SB.ActivePlayerScore()}", tag='currentScoreItem')
+            gui.add_text(f"{SB.getActivePlayerScore()}", tag='currentScoreItem')
 
         # for entries in overviewWindowItems:
         #     with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
@@ -400,14 +452,15 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
         gui.add_text(f'Round Score: {SB.CurrentRoundPoints()}')
         gui.add_spacer(height=10)
         with gui.group(horizontal=True, tag="dartboardInfoRounds"):
-            gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}')
+            gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}',tag='throw1Text')
             gui.add_spacer(width=50)
-            gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}')
+            gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}',tag='throw2Text')
             gui.add_spacer(width=50)
-            gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}')
+            gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}',tag='throw3Text')
             
         with gui.group(horizontal=True):
             # gui.add_text('Remaining:')
+
             gui.add_image(dartR, tag='throw1Pic', width=75, height=75, pos=(dartboardW-245,20))
             gui.add_image(dartR, tag='throw2Pic', width=75, height=75, pos=(dartboardW-170,20))
             gui.add_image(dartR, tag='throw3Pic', width=75, height=75, pos=(dartboardW-90,20))
@@ -417,8 +470,7 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
             gui.add_text(f'SHOTS REMAINING', tag='dartboardInfoRemaining', pos=(dartboardW-145,100), color=(255,255,255,60))
         
 
-    
-###
+ 
 
 
 ###
