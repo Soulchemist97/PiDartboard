@@ -179,6 +179,12 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'playerManagerAddPlayerCancelBtn':
         gui.configure_item("playerManagerAddPlayerWindow", show=False)
         print('Player manager add player window closed')
+    
+    # Player Manager - Add Player - Add Button
+    if sender == 'playerManagerAddPlayerBtn':
+        gui.configure_item("playerManagerAddPlayerWindow", show=False)
+        print('Player was added, Player Manager Add Player window closed')
+
 
     # Test trigger for experimental functions
     if sender == 'testTrigger':
@@ -277,13 +283,17 @@ with gui.window(tag="Main"):
     # Fix space occupied by top bar
     gui.add_spacer(height=13)
     # Draw overlay to highlight current player
-    with gui.drawlist(width=15, height=400, pos=(4,45)):
+    with gui.drawlist(width=15, height=800, pos=(4,45)):
         with gui.draw_layer():
-            gui.draw_line((3, 0), (3, 100), color=(0, 255, 0, 255), thickness=8)
-            gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
+            arrowTopBase = 150
+            iterator = 50
+            for player in players:
+                gui.draw_arrow(p1=(4, arrowTopBase+player["id"]*iterator), p2=(4, arrowTopBase+iterator) , color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
     # for players in currentPlayerIdRotation:
     #     with gui.group(tag='playerOverview', pos=(20,30)):
     #         if players == currentPlayerIdRotation[0]:
