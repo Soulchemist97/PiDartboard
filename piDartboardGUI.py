@@ -165,8 +165,13 @@ def callback_handler(sender, callback_type, callback_id, value):
     
     # Player Manager - Add Player - Add Button
     if sender == 'playerManagerAddPlayerBtn':
-        gui.configure_item("playerManagerAddPlayerWindow", show=False)
-        print('Player was added, Player Manager Add Player window closed')
+        AddPlayerName = gui.get_value("playerManagerAddPlayerName")
+        if AddPlayerName != "":
+            gui.configure_item("playerManagerAddPlayerName", default_value='')
+            gui.configure_item("playerManagerAddPlayerWindow", show=False)
+            print(f'Player {AddPlayerName} was added, Player Manager Add Player window closed')
+        else:
+            print('Player name was empty')
 
 
 
@@ -275,13 +280,14 @@ with gui.window(tag="Main"):
     with gui.drawlist(width=15, height=800, pos=(4,45)):
         with gui.draw_layer():
             gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
-            arrowTopBase = 148
-            iterator = 52
+            arrowTopBase = 0
+            iterator = 100
+            iteratorPlus = 110
             i = 1
             #generate arrows bottom up for each player except current player
             for player in players[1:]:
                 i+=1
-                gui.draw_arrow(p1=(4,200+i*iterator), p2=(4,240+i*iterator), color=(255, 255, 255, 255), thickness=4)
+                gui.draw_arrow(p1=(4,arrowTopBase+i*iterator), p2=(4,arrowTopBase+iteratorPlus+i*iterator), color=(255, 255, 255, 255), thickness=6)
                 # gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , )
             # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
