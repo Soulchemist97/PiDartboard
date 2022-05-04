@@ -286,10 +286,10 @@ with gui.window(tag="Main"):
     with gui.drawlist(width=15, height=800, pos=(4,45)):
         with gui.draw_layer():
             gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
-            arrowTopBase = 150
-            iterator = 50
+            arrowTopBase = 148
+            iterator = 52
             for player in players:
-                gui.draw_arrow(p1=(4, arrowTopBase+player["id"]*iterator), p2=(4, arrowTopBase+iterator) , color=(255, 255, 255, 255), thickness=4)
+                gui.draw_arrow(p1=(4, arrowTopBase+player["id"]*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
@@ -467,6 +467,13 @@ with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=coll
         gui.add_image(dartL, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(10,10))
         gui.add_text('Please collect your darts!', pos=(collectDartsW/4.7,collectDartsH/5.35))
         gui.add_image(dartR, width=dartImageResponsiveSideLength, height=dartImageResponsiveSideLength, pos=(collectDartsW-(dartImageResponsiveSideLength+10),10))
+###
+
+
+###
+# Help window
+with gui.window(tag="helpWindow", show=False, width=1200, height=800, pos=(100,100), no_resize=True, no_title_bar=True):
+    gui.add_text('Help', pos=(10,10))
 ###
 
 
