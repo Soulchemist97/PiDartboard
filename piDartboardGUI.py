@@ -132,6 +132,26 @@ def callback_handler(sender, callback_type, callback_id, value):
             gui.configure_item("helpWindow", show=True)
             print('Help menu opened')
     
+    # MainWindow - Add Player Button
+    if sender == 'mainWindowAddPlayer':
+        currentConfig = gui.get_item_configuration("playerManagerAddPlayerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("playerManagerAddPlayerWindow", show=False)
+            print('Add Player menu was open, closed')
+        else:
+            gui.configure_item("playerManagerAddPlayerWindow", show=True)
+            print('Add Player menu opened')
+
+    # MainWindow - Remove Player Button
+    if sender == 'mainWindowRemovePlayer':
+        currentConfig = gui.get_item_configuration("playerManagerRemovePlayerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("playerManagerRemovePlayerWindow", show=False)
+            print('Remove Player menu was open, closed')
+        else:
+            gui.configure_item("playerManagerRemovePlayerWindow", show=True)
+            print('Remove Player menu opened')
+
     # MainWindow - Player Manager Button
     if sender == 'playerManagerButton':
         currentConfig = gui.get_item_configuration("playerManagerWindow")
@@ -161,6 +181,11 @@ def callback_handler(sender, callback_type, callback_id, value):
         gui.configure_item("playerManagerAddPlayerWindow", show=True)
         print('Player manager add player window opened')
     
+    # Player Manager - Remove Player Button
+    if sender == 'playerManagerRemovePlayer':
+        gui.configure_item("playerManagerRemovePlayerWindow", show=True)
+        print('Player manager remove player window opened')
+    
     # Player Manager - Add Player - Close Button
     if sender == 'playerManagerAddPlayerCancelBtn':
         gui.configure_item("playerManagerAddPlayerWindow", show=False)
@@ -168,9 +193,26 @@ def callback_handler(sender, callback_type, callback_id, value):
     
     # Player Manager - Add Player - Add Button
     if sender == 'playerManagerAddPlayerBtn':
-        gui.configure_item("playerManagerAddPlayerWindow", show=False)
-        print('Player was added, Player Manager Add Player window closed')
+        AddPlayerName = gui.get_value("playerManagerAddPlayerName")
+        if AddPlayerName != "":
+            SB.addPlayer(AddPlayerName)
+            gui.configure_item("playerManagerAddPlayerName", default_value='')
+            gui.configure_item("playerManagerAddPlayerWindow", show=False)
+            print(f'Player {AddPlayerName} was added, Player Manager Add Player window closed')
+        else:
+            print('Player name cannot be empty')
 
+    # Player Manager - Remove Player - Remove Button
+    if sender == 'playerManagerRemovePlayerBtn':
+        RemovePlayerName = gui.get_value("playerManagerRemovePlayerName")
+        if RemovePlayerName != "":
+            SB.removePlayer(RemovePlayerName)
+            print(f'Player {RemovePlayerName} was removed, Remove Player window closed')
+
+    # Player Manager - Remove Player - Cancel Button
+    if sender == 'playerManagerRemovePlayerCancelBtn':
+        gui.configure_item("playerManagerRemovePlayerWindow", show=False)
+        print('Remove Player window closed')
 
 
     # Test trigger for experimental functions
@@ -307,10 +349,15 @@ with gui.window(tag="Main"):
     with gui.drawlist(width=15, height=800, pos=(4,45)):
         with gui.draw_layer():
             gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
-            arrowTopBase = 148
-            iterator = 52
+            arrowTopBase = 0
+            iterator = 100
+            iteratorPlus = 110
+            i = 1
+            #generate arrows bottom up for each player except current player
             for player in players[1:]:
-                gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
+                i+=1
+                gui.draw_arrow(p1=(4,arrowTopBase+i*iterator), p2=(4,arrowTopBase+iteratorPlus+i*iterator), color=(255, 255, 255, 255), thickness=6)
+                # gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , )
             # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
@@ -347,11 +394,14 @@ with gui.window(tag="Main"):
             gui.add_text(f" {players[2]}: ", tag='followingPlayer2Item', color=(255,255,255,190))
             gui.add_text(f"{SB.getPlayerScore(players[2])}", tag='followingPlayer2Score', color=(255,255,255,190))
 
-    
+        gui.add_spacer(height=10)
         with gui.group(horizontal=True, tag='mainWindowButtons'):
             gui.add_button(label="  +  ", tag='mainWindowAddPlayer', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label="  -  ", tag='mainWindowRemovePlayer', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label=" Player Manager ", tag='playerManagerButton', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label=" Edit ", tag="mainEditButton", callback=callback_handler)
 
     gui.add_text(f'[DBG] {str(SB)}', pos=(5,1055),tag="DebugBox")
@@ -382,12 +432,12 @@ dartboardMiddleH = dartboardH/2 - 8
 dartboardMiddlePos = (dartboardMiddleW, dartboardMiddleH)
 with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     # draw circle on overlay where the dart hit
-    gui.draw_circle(center=dartboardMiddlePos, radius=10, color=(0,255,0,255), thickness=2)
+    gui.draw_circle(center=dartboardMiddlePos, radius=10, color=(0,255,0,255), thickness=3)
     # draw cross in circle
     gui.draw_line((dartboardMiddlePos[0]-7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]+7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
     gui.draw_line((dartboardMiddlePos[0]+7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]-7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
     # point arrow to circle
-    gui.draw_arrow(p1=(dartboardMiddlePos[0] + 8, dartboardMiddlePos[1] + 8), p2=(dartboardMiddlePos[0] + 50, dartboardMiddlePos[1] + 50), color=(100,255,255,255), thickness=5)
+    # gui.draw_arrow(p1=(dartboardMiddlePos[0] + 8, dartboardMiddlePos[1] + 8), p2=(dartboardMiddlePos[0] + 50, dartboardMiddlePos[1] + 50), color=(100,255,255,255), thickness=5)
 ###
 
 
@@ -397,23 +447,30 @@ with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositio
 dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
-    with gui.group(horizontal=True, pos=(4,0)):
-        with gui.group(horizontal=True, pos=(4,20)):
-
+    with gui.group(horizontal=False, pos=(dartboardW/3-10,10), tag="dartboardInfoGroup"):
+        gui.add_spacer(height=20)
+        gui.add_text(f'Round Score: {SB.CurrentRoundPoints()}')
+        gui.add_spacer(height=10)
+        with gui.group(horizontal=True, tag="dartboardInfoRounds"):
+            gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}',tag='throw1Text')
+            gui.add_spacer(width=50)
+            gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}',tag='throw2Text')
+            gui.add_spacer(width=50)
+            gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}',tag='throw3Text')
+            
+        with gui.group(horizontal=True):
             # gui.add_text('Remaining:')
-            gui.add_image(dartL, tag='throw1Pic', width=50, height=50)
-            gui.add_image(dartL, tag='throw2Pic', width=50, height=50)
-            gui.add_image(dartL, tag='throw3Pic', width=50, height=50)
 
-        gui.add_spacer(width=65)
-        gui.add_text('Round Score:')
-        gui.add_text(f'{SB.CurrentRoundPoints()}',tag='roundScoreItem')
+            gui.add_image(dartR, tag='throw1Pic', width=75, height=75, pos=(dartboardW-245,20))
+            gui.add_image(dartR, tag='throw2Pic', width=75, height=75, pos=(dartboardW-170,20))
+            gui.add_image(dartR, tag='throw3Pic', width=75, height=75, pos=(dartboardW-90,20))
+            gui.add_image(dartR, tag='throw1ShotPic', width=75, height=75, pos=(dartboardW-245,20), tint_color=(255,255,255,80))
+            gui.add_image(dartR, tag='throw2ShotPic', width=75, height=75, pos=(dartboardW-170,20), tint_color=(255,255,255,80))
+            gui.add_image(dartR, tag='throw3ShotPic', width=75, height=75, pos=(dartboardW-90,20), tint_color=(255,255,255,80))
+            gui.add_text(f'SHOTS REMAINING', tag='dartboardInfoRemaining', pos=(dartboardW-145,100), color=(255,255,255,60))
+        
 
-    with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
-        gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}',tag='throw1Text')
-        gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}',tag='throw2Text')
-        gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}',tag='throw3Text')
-###
+ 
 
 
 ###
@@ -447,20 +504,41 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
 ###
 # Player Manager Add Player Window
 # Player manager add player window should be a pop-up style window in the middle of the screen
-playerManagerAddPlayerW = 200
-playerManagerAddPlayerH = 100
+playerManagerAddPlayerW = 400
+playerManagerAddPlayerH = 200
 playerManagerAddPlayerPositionW = MonitorWidth/2 - playerManagerAddPlayerW/2
 playerManagerAddPlayerPositionH = MonitorHeight/2 - playerManagerAddPlayerH/2
-with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
+with gui.window(tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
     with gui.group(horizontal=False, pos=(5,4)):
-        gui.add_text(' Add Player:')
-        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=190)
-    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-35)):
+        gui.add_text('               Add Player')
+        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=playerManagerAddPlayerW-10)
+    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-55)):
+        gui.add_spacer(width=60)
+        gui.add_button(label="  Add  ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
         gui.add_spacer(width=20)
-        gui.add_button(label=" Add ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
-        gui.add_spacer(width=10)
         gui.add_button(label=" Cancel ", tag='playerManagerAddPlayerCancelBtn', callback=callback_handler)
 ###
+
+
+###
+# Player Manager Remove Player Window
+# Player manager remove player window should be a pop-up style window in the middle of the screen
+playerManagerRemovePlayerW = 200
+playerManagerRemovePlayerH = 100
+playerManagerRemovePlayerPositionW = MonitorWidth/2 - playerManagerRemovePlayerW/2
+playerManagerRemovePlayerPositionH = MonitorHeight/2 - playerManagerRemovePlayerH/2
+with gui.window(label='Remove Player', tag="playerManagerRemovePlayerWindow", show=False, pos=(playerManagerRemovePlayerPositionW,playerManagerRemovePlayerPositionH), width=playerManagerRemovePlayerW, height=playerManagerRemovePlayerH, no_resize=True, no_title_bar=True):
+    with gui.group(horizontal=False, pos=(5,4)):
+        gui.add_text(' Remove Player:')
+        playerList = []
+        for player in players:
+            playerList.append(player)
+        gui.add_combo(items=playerList, tag=f'playerManagerRemovePlayerCombo', width=190, callback=callback_handler)
+    with gui.group(horizontal=True, pos=(4,playerManagerRemovePlayerH-35)):
+        gui.add_spacer(width=20)
+        gui.add_button(label=" Remove ", tag='playerManagerRemovePlayerBtn', callback=callback_handler)
+        gui.add_spacer(width=10)
+        gui.add_button(label=" Cancel ", tag='playerManagerRemovePlayerCancelBtn', callback=callback_handler)
 
 
 ###
@@ -529,8 +607,11 @@ with gui.font_registry():
     # gui.bind_item_font('followingPlayers5', robotoGiant100)
     # gui.bind_item_font('followingPlayers6', robotoGiant100)
     # gui.bind_item_font('followingPlayers7', robotoGiant100)
-    gui.bind_item_font('throwOverview', robotoTitle36)
+    gui.bind_item_font('dartboardInfoGroup', robotoTitle48)
+    gui.bind_item_font('dartboardInfoRounds', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
+    gui.bind_item_font('dartboardInfoRemaining', robotoDefault18)
+    gui.bind_item_font('playerManagerAddPlayerWindow', robotoTitle36)
 ###
 
 
