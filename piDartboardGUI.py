@@ -158,6 +158,11 @@ def callback_handler(sender, callback_type, callback_id, value):
         gui.configure_item("playerManagerAddPlayerWindow", show=True)
         print('Player manager add player window opened')
     
+    # Player Manager - Remove Player Button
+    if sender == 'playerManagerRemovePlayer':
+        gui.configure_item("playerManagerRemovePlayerWindow", show=True)
+        print('Player manager remove player window opened')
+    
     # Player Manager - Add Player - Close Button
     if sender == 'playerManagerAddPlayerCancelBtn':
         gui.configure_item("playerManagerAddPlayerWindow", show=False)
@@ -167,16 +172,19 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'playerManagerAddPlayerBtn':
         AddPlayerName = gui.get_value("playerManagerAddPlayerName")
         if AddPlayerName != "":
+            SB.addPlayer(AddPlayerName)
             gui.configure_item("playerManagerAddPlayerName", default_value='')
             gui.configure_item("playerManagerAddPlayerWindow", show=False)
             print(f'Player {AddPlayerName} was added, Player Manager Add Player window closed')
         else:
-            print('Player name was empty')
+            print('Player name cannot be empty')
 
     # Player Manager - Remove Player - Remove Button
     if sender == 'playerManagerRemovePlayerBtn':
         RemovePlayerName = gui.get_value("playerManagerRemovePlayerName")
-        print(f'Player {RemovePlayerName} was removed, Remove Player window closed')
+        if RemovePlayerName != "":
+            SB.removePlayer(RemovePlayerName)
+            print(f'Player {RemovePlayerName} was removed, Remove Player window closed')
 
     # Player Manager - Remove Player - Cancel Button
     if sender == 'playerManagerRemovePlayerCancelBtn':
@@ -444,18 +452,18 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
 ###
 # Player Manager Add Player Window
 # Player manager add player window should be a pop-up style window in the middle of the screen
-playerManagerAddPlayerW = 200
-playerManagerAddPlayerH = 100
+playerManagerAddPlayerW = 400
+playerManagerAddPlayerH = 200
 playerManagerAddPlayerPositionW = MonitorWidth/2 - playerManagerAddPlayerW/2
 playerManagerAddPlayerPositionH = MonitorHeight/2 - playerManagerAddPlayerH/2
-with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
+with gui.window(tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
     with gui.group(horizontal=False, pos=(5,4)):
-        gui.add_text(' Add Player:')
-        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=190)
-    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-35)):
+        gui.add_text('               Add Player')
+        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=playerManagerAddPlayerW-10)
+    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-55)):
+        gui.add_spacer(width=60)
+        gui.add_button(label="  Add  ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
         gui.add_spacer(width=20)
-        gui.add_button(label=" Add ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
-        gui.add_spacer(width=10)
         gui.add_button(label=" Cancel ", tag='playerManagerAddPlayerCancelBtn', callback=callback_handler)
 ###
 
@@ -551,6 +559,7 @@ with gui.font_registry():
     gui.bind_item_font('dartboardInfoRounds', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
     gui.bind_item_font('dartboardInfoRemaining', robotoDefault18)
+    gui.bind_item_font('playerManagerAddPlayerWindow', robotoTitle36)
 ###
 
 
