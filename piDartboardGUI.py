@@ -59,9 +59,30 @@ player4 = {
     "score": 301,
     "id": 4
 }
+player5 = {
+    "name": "Alex",
+    "score": 301,
+    "id": 5
+}
+player6 = {
+    "name": "Isy",
+    "score": 301,
+    "id": 6
+}
+player7 = {
+    "name": "Leon",
+    "score": 301,
+    "id": 7
+}
+player8 = {
+    "name": "Lea",
+    "score": 301,
+    "id": 8
+}
+
+
 
 players = SB.PlayerNames
-
 
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
@@ -93,8 +114,10 @@ def outsideSignal_handler(signal):
 
 ###
 # Handle all events
-def callback_handler(sender):
+def callback_handler(sender, callback_type, callback_id, value):
     print(f'{sender} was pressed')
+    if callback_type != 'None':
+        print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
     ### Main Window Buttons ###
     # Exit Button
@@ -121,6 +144,16 @@ def callback_handler(sender):
     if sender == 'langOK':
         gui.configure_item("languageSelection", show=False)
         print('Language menu closed and language changed')
+
+    # Help Button
+    if sender == 'gameHelp':
+        currentConfig = gui.get_item_configuration("helpWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("helpWindow", show=False)
+            print('Help menu was open, closed')
+        else:
+            gui.configure_item("helpWindow", show=True)
+            print('Help menu opened')
     
     # MainWindow - Player Manager Button
     if sender == 'playerManagerButton':
@@ -146,12 +179,38 @@ def callback_handler(sender):
     if sender == 'playerManagerCloseBtn':
         gui.configure_item("playerManagerWindow", show=False)
 
+    # Player Manager - Add Player Button
+    if sender == 'playerManagerAddPlayer':
+        gui.configure_item("playerManagerAddPlayerWindow", show=True)
+        print('Player manager add player window opened')
+    
+    # Player Manager - Add Player - Close Button
+    if sender == 'playerManagerAddPlayerCancelBtn':
+        gui.configure_item("playerManagerAddPlayerWindow", show=False)
+        print('Player manager add player window closed')
+    
+    # Player Manager - Add Player - Add Button
+    if sender == 'playerManagerAddPlayerBtn':
+        gui.configure_item("playerManagerAddPlayerWindow", show=False)
+        print('Player was added, Player Manager Add Player window closed')
+
+
+
     # Test trigger for experimental functions
     if sender == 'testTrigger':
         gui.configure_item("collectDarts", show=True)
         currentPlayerName, currentPlayerScore, currentPlayerIdRotation = proceedToNextPlayer()
-        print(f'Current player: {currentPlayerName}: {currentPlayerScore} [{currentPlayerIdRotation}]')
+        print(f'Current player: {currentPlayerName}: {currentPlayerScore} {currentPlayerIdRotation}')
         time.sleep(3)
+        gui.set_value("currentPlayerItem", f"{currentPlayerName}: ")
+        gui.set_value("currentPlayerScore", currentPlayerScore)
+        for id in overviewWindowItems:
+            currentPlayerOnOverview = currentPlayerIdRotation[id - 1]
+            for players in currentPlayerIdRotation:
+                if not players == currentPlayerIdRotation[0]:
+                    gui.set_value(f"followingPlayer{id}Name", f' {currentPlayerOnOverview["name"]}:')
+                    gui.set_value(f"followingPlayer{id}Score", f'{currentPlayerOnOverview["score"]}')
+        print('Updated GUI')
         gui.configure_item("collectDarts", show=False)
         gui.set_value("DebugBox", str(SB))
 
@@ -239,29 +298,64 @@ with gui.window(tag="Main"):
     # Fix space occupied by top bar
     gui.add_spacer(height=13)
     # Draw overlay to highlight current player
-    with gui.drawlist(width=15, height=400, pos=(4,45)):
+    with gui.drawlist(width=15, height=800, pos=(4,45)):
         with gui.draw_layer():
-            gui.draw_line((3, 0), (3, 100), color=(0, 255, 0, 255), thickness=8)
-            gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
-            gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
+            arrowTopBase = 148
+            iterator = 52
+            for player in players:
+                gui.draw_arrow(p1=(4, arrowTopBase+player["id"]*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+            # gui.draw_arrow(p1=(4, 280), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
+    # for players in currentPlayerIdRotation:
+    #     with gui.group(tag='playerOverview', pos=(20,30)):
+    #         if players == currentPlayerIdRotation[0]:
+    #             # Draw current player
+    #             with gui.group(horizontal=True, tag='CurrentPlayer'):
+    #                 gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+    #                 gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
+    #         else:
+    #             # Draw following players
+    #             with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
+    #                 gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
+    #                 gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
+                
     with gui.group(tag="playerOverview", pos=(20,30)):
 
         with gui.group(horizontal=True, tag='CurrentPlayer'):
+
             gui.add_text(f"{SB.getActivePlayer()}:", tag='currentPlayerItem')
             gui.add_text(f"{SB.CurrentPlayerScore()}", tag='currentScoreItem')
 
+        # for entries in overviewWindowItems:
+        #     with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
+        #         playerFStringHelper=f'player{entries}'
+        #         gui.add_text(f"{playerFStringHelper['name']}:", tag=f'followingPlayer{entries}Item')
+        #         gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
         with gui.group(horizontal=True, tag='followingPlayers1'):
-            gui.add_text(f" {player2['name']}:")
-            gui.add_text(f"{player2['score']}")
+            gui.add_text(f" {player2['name']}: ", tag='followingPlayer1Item', color=(255,255,255,230))
+            gui.add_text(f"{player2['score']}", tag='followingPlayer1Score', color=(255,255,255,230))
 
         with gui.group(horizontal=True, tag='followingPlayers2'):
-            gui.add_text(f" {player3['name']}:")
-            gui.add_text(f"{player3['score']}")
+            gui.add_text(f" {player3['name']}: ", tag='followingPlayer2Item', color=(255,255,255,190))
+            gui.add_text(f"{player3['score']}", tag='followingPlayer2Score', color=(255,255,255,190))
         with gui.group(horizontal=True, tag='followingPlayers3'):
-            gui.add_text(f" {player4['name']}:")
-            gui.add_text(f"{player4['score']}")
+            gui.add_text(f" {player4['name']}: ", tag='followingPlayer3Item', color=(255,255,255,150))
+            gui.add_text(f"{player4['score']}", tag='followingPlayer3Score', color=(255,255,255,150))
+        with gui.group(horizontal=True, tag='followingPlayers4'):
+            gui.add_text(f" {player5['name']}: ", tag='followingPlayer4Item', color=(255,255,255,120))
+            gui.add_text(f"{player5['score']}", tag='followingPlayer4Score', color=(255,255,255,120))
+        with gui.group(horizontal=True, tag='followingPlayers5'):
+            gui.add_text(f" {player6['name']}: ", tag='followingPlayer5Item', color=(255,255,255,120))
+            gui.add_text(f"{player6['score']}", tag='followingPlayer5Score', color=(255,255,255,120))
+        with gui.group(horizontal=True, tag='followingPlayers6'):
+            gui.add_text(f" {player7['name']}: ", tag='followingPlayer6Item', color=(255,255,255,120))
+            gui.add_text(f"{player7['score']}", tag='followingPlayer6Score', color=(255,255,255,120))
+        with gui.group(horizontal=True, tag='followingPlayers7'):
+            gui.add_text(f" {player8['name']}: ", tag='followingPlayer7Item', color=(255,255,255,120))
+            gui.add_text(f"{player8['score']}", tag='followingPlayer7Score', color=(255,255,255,120))
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
@@ -310,19 +404,23 @@ dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     with gui.group(horizontal=True, pos=(4,0)):
-        with gui.group(horizontal=True, pos=(0,20)):
+        with gui.group(horizontal=True, pos=(4,20)):
+
             # gui.add_text('Remaining:')
             gui.add_image(dartL, tag='throw1', width=50, height=50)
             gui.add_image(dartL, tag='throw2', width=50, height=50)
             gui.add_image(dartL, tag='throw3', width=50, height=50)
-        gui.add_spacer(width=60)
+
+        gui.add_spacer(width=65)
         gui.add_text('Round Score:')
         gui.add_text(f'{SB.CurrentRoundPoints()}')
+
     with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
         gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}')
         gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}')
         gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}')
 ###
+
 
 ###
 # Player Manager
@@ -349,6 +447,26 @@ with gui.window(label='Player Manager', tag="playerManagerWindow", show=False, p
         gui.add_button(label=" Edit player ", tag='playerManagerEditPlayer', callback=callback_handler)
         gui.add_spacer(width=15)
         gui.add_button(label=' Close ', tag='playerManagerCloseBtn', callback=callback_handler)
+###
+
+
+###
+# Player Manager Add Player Window
+# Player manager add player window should be a pop-up style window in the middle of the screen
+playerManagerAddPlayerW = 200
+playerManagerAddPlayerH = 100
+playerManagerAddPlayerPositionW = MonitorWidth/2 - playerManagerAddPlayerW/2
+playerManagerAddPlayerPositionH = MonitorHeight/2 - playerManagerAddPlayerH/2
+with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=False, pos=(playerManagerAddPlayerPositionW,playerManagerAddPlayerPositionH), width=playerManagerAddPlayerW, height=playerManagerAddPlayerH, no_resize=True, no_title_bar=True):
+    with gui.group(horizontal=False, pos=(5,4)):
+        gui.add_text(' Add Player:')
+        gui.add_input_text(tag='playerManagerAddPlayerName', hint='Name', width=190)
+    with gui.group(horizontal=True, pos=(4,playerManagerAddPlayerH-35)):
+        gui.add_spacer(width=20)
+        gui.add_button(label=" Add ", tag='playerManagerAddPlayerBtn', callback=callback_handler)
+        gui.add_spacer(width=10)
+        gui.add_button(label=" Cancel ", tag='playerManagerAddPlayerCancelBtn', callback=callback_handler)
+###
 
 
 ###
@@ -379,6 +497,13 @@ with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=coll
 
 
 ###
+# Help window
+with gui.window(label="Help", tag="helpWindow", show=False, width=1200, height=800, pos=(100,100), no_resize=True,):
+    gui.add_text(f'piDartboard Version: {__version__} - Help Document', pos=(5,22))
+###
+
+
+###
 # Exit tooltip
 with gui.window(label="Exiting", show=False, id="exiting", width=300, pos=(800,450), no_resize=True, no_title_bar=True, no_move=True):
     gui.add_spacer(height=40)
@@ -393,20 +518,26 @@ with gui.font_registry():
     robotoTitle36 = gui.add_font("./fonts/Roboto-Regular.ttf", 36)
     robotoTitle48 = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
     robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
-    robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
+    robotoGiant100 = gui.add_font("./fonts/Roboto-Regular.ttf", 100)
+    robotoGiant170 = gui.add_font("./fonts/Roboto-Regular.ttf", 170)
+    robotoGiantBold170 = gui.add_font("./fonts/Roboto-Bold.ttf", 170)
     gui.bind_font(robotoDefault18)
     gui.bind_item_font('exiting', robotoBig72)
     gui.bind_item_font('dartboard', robotoTitle48)
     gui.bind_item_font('dartboardInfo', robotoTitle48)
-    gui.bind_item_font('currentPlayerItem', robotoGiant108)
-    gui.bind_item_font('currentScoreItem', robotoGiant108)
-    gui.bind_item_font('followingPlayers1', robotoTitle48)
-    gui.bind_item_font('followingPlayers2', robotoTitle48)
-    gui.bind_item_font('followingPlayers3', robotoTitle48)
+    gui.bind_item_font('currentPlayerItem', robotoGiant170)
+    gui.bind_item_font('currentScoreItem', robotoGiantBold170)
+    gui.bind_item_font('followingPlayers1', robotoGiant100)
+    gui.bind_item_font('followingPlayers2', robotoGiant100)
+    gui.bind_item_font('followingPlayers3', robotoGiant100)
+    gui.bind_item_font('followingPlayers4', robotoGiant100)
+    gui.bind_item_font('followingPlayers5', robotoGiant100)
+    gui.bind_item_font('followingPlayers6', robotoGiant100)
+    gui.bind_item_font('followingPlayers7', robotoGiant100)
+
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
-
 
 
 
