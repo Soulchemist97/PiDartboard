@@ -244,26 +244,25 @@ def callback_handler(sender, callback_type, callback_id, value):
 def refreshWindows():
     # Refresh main window
     
-    #Throws
-    gui.set_value(value=f'1.: {SB.CurrentThrow_Round(1)}',item='throw1Text')
-    gui.set_value(value=f'2.: {SB.CurrentThrow_Round(2)}',item='throw2Text')
-    gui.set_value(value=f'3.: {SB.CurrentThrow_Round(3)}',item='throw3Text')
+    Tag_Value = {
+    "throw1Text": f'1.: {SB.CurrentThrow_Round(1)}',
+    "throw2Text": f'2.: {SB.CurrentThrow_Round(2)}',
+    "throw3Text": f'3.: {SB.CurrentThrow_Round(3)}',
+    "roundScoreItem": f'{SB.CurrentRoundPoints()}',
+    "currentPlayerItem": f"{SB.getActivePlayer()}:",
+    "currentScore": SB.getActivePlayerScore(),
+    "followingPlayer1Item": players[1],
+    "followingPlayer2Item": players[2],
+    "followingPlayer1Score": SB.getPlayerScore(players[1]),
+    "followingPlayer2Score": SB.getPlayerScore(players[2]),
+    }
 
-    # Round Score
-    gui.set_value(value=f'{SB.CurrentRoundPoints()}',item='roundScoreItem')
+    for tag, value in Tag_Value.items():
+        gui.set_value(tag, value)
 
-    ## Player Score Overview
-    gui.set_value("currentPlayerItem", f"{SB.getActivePlayer()}: ")
-    gui.set_value("currentScore", SB.getActivePlayerScore())
-
-    gui.set_value(value=players[1],item='followingPlayer1Item')
-    gui.set_value(value=SB.getPlayerScore(players[1]),item='followingPlayer1Score')
-
-    gui.set_value('followingPlayer2Item',players[2])
-    gui.set_value(value=SB.getPlayerScore(players[2]),item='followingPlayer2Score')
     
 
-###
+
 
 
 ###
