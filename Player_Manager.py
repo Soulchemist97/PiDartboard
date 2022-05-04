@@ -19,7 +19,7 @@ class ScoreBoard:
     def refresh(self):
         self.ActivePlayer = self.PlayerNames[self.n_active % len(self.PlayerNames)]
         if self.ScoreBoard[self.getActivePlayer()].get("Score") != None:
-            self.Current_Score = self.ScoreBoard[self.ActivePlayer]["Score"] - np.sum(self.Current_Throw)
+            self.Current_Score = self.ScoreBoard[self.ActivePlayer]["Score"] - sum(self.Current_Throw)
 
         for Player,Values in self.ScoreBoard.items():           
             self.PointCalculation(Player) 
@@ -30,7 +30,7 @@ class ScoreBoard:
             
 
     def PointCalculation(self,name):
-        self.ScoreBoard[name]["Points"] = np.sum(self.ScoreBoard[name]["Throws"])
+        self.ScoreBoard[name]["Points"] = sum(self.ScoreBoard[name]["Throws"])
         return self.ScoreBoard[name]["Points"]
 
     def ScoreCalculation(self,name):
@@ -79,7 +79,8 @@ class ScoreBoard:
 
 
     def CurrentRoundPoints(self):
-        return int(np.sum(self.Current_Throw))
+        self.CurrentRound_Points = int(sum(self.Current_Throw))
+        return self.CurrentRound_Points
 
 
     def getActivePlayerScore(self):
