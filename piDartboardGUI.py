@@ -328,26 +328,26 @@ with gui.window(tag="Main"):
         #         gui.add_text(f"{playerFStringHelper['name']}:", tag=f'followingPlayer{entries}Item')
         #         gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
         with gui.group(horizontal=True, tag='followingPlayers1'):
-            gui.add_text(f" {player2['name']}:", tag='followingPlayer1Item')
-            gui.add_text(f"{player2['score']}", tag='followingPlayer1Score')
+            gui.add_text(f" {player2['name']}: ", tag='followingPlayer1Item', color=(255,255,255,230))
+            gui.add_text(f"{player2['score']}", tag='followingPlayer1Score', color=(255,255,255,230))
         with gui.group(horizontal=True, tag='followingPlayers2'):
-            gui.add_text(f" {player3['name']}:", tag='followingPlayer2Item')
-            gui.add_text(f"{player3['score']}", tag='followingPlayer2Score')
+            gui.add_text(f" {player3['name']}: ", tag='followingPlayer2Item', color=(255,255,255,190))
+            gui.add_text(f"{player3['score']}", tag='followingPlayer2Score', color=(255,255,255,190))
         with gui.group(horizontal=True, tag='followingPlayers3'):
-            gui.add_text(f" {player4['name']}:", tag='followingPlayer3Item')
-            gui.add_text(f"{player4['score']}", tag='followingPlayer3Score')
+            gui.add_text(f" {player4['name']}: ", tag='followingPlayer3Item', color=(255,255,255,150))
+            gui.add_text(f"{player4['score']}", tag='followingPlayer3Score', color=(255,255,255,150))
         with gui.group(horizontal=True, tag='followingPlayers4'):
-            gui.add_text(f" {player5['name']}:", tag='followingPlayer4Item')
-            gui.add_text(f"{player5['score']}", tag='followingPlayer4Score')
+            gui.add_text(f" {player5['name']}: ", tag='followingPlayer4Item', color=(255,255,255,120))
+            gui.add_text(f"{player5['score']}", tag='followingPlayer4Score', color=(255,255,255,120))
         with gui.group(horizontal=True, tag='followingPlayers5'):
-            gui.add_text(f" {player6['name']}:", tag='followingPlayer5Item')
-            gui.add_text(f"{player6['score']}", tag='followingPlayer5Score')
+            gui.add_text(f" {player6['name']}: ", tag='followingPlayer5Item', color=(255,255,255,120))
+            gui.add_text(f"{player6['score']}", tag='followingPlayer5Score', color=(255,255,255,120))
         with gui.group(horizontal=True, tag='followingPlayers6'):
-            gui.add_text(f" {player7['name']}:", tag='followingPlayer6Item')
-            gui.add_text(f"{player7['score']}", tag='followingPlayer6Score')
+            gui.add_text(f" {player7['name']}: ", tag='followingPlayer6Item', color=(255,255,255,120))
+            gui.add_text(f"{player7['score']}", tag='followingPlayer6Score', color=(255,255,255,120))
         with gui.group(horizontal=True, tag='followingPlayers7'):
-            gui.add_text(f" {player8['name']}:", tag='followingPlayer7Item')
-            gui.add_text(f"{player8['score']}", tag='followingPlayer7Score')
+            gui.add_text(f" {player8['name']}: ", tag='followingPlayer7Item', color=(255,255,255,120))
+            gui.add_text(f"{player8['score']}", tag='followingPlayer7Score', color=(255,255,255,120))
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
@@ -400,7 +400,7 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
             gui.add_image(dartL, tag='throw1', width=50, height=50)
             gui.add_image(dartL, tag='throw2', width=50, height=50)
             gui.add_image(dartL, tag='throw3', width=50, height=50)
-        gui.add_spacer(width=40)
+        gui.add_spacer(width=65)
         gui.add_text('Round Score:')
         gui.add_text('{roundScore}')
     with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
@@ -483,8 +483,8 @@ with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=coll
 
 ###
 # Help window
-with gui.window(tag="helpWindow", show=False, width=1200, height=800, pos=(100,100), no_resize=True, no_title_bar=True):
-    gui.add_text('Help', pos=(10,10))
+with gui.window(label="Help", tag="helpWindow", show=False, width=1200, height=800, pos=(100,100), no_resize=True,):
+    gui.add_text(f'piDartboard Version: {__version__} - Help Document', pos=(5,22))
 ###
 
 
@@ -503,7 +503,7 @@ with gui.font_registry():
     robotoTitle36 = gui.add_font("./fonts/Roboto-Regular.ttf", 36)
     robotoTitle48 = gui.add_font("./fonts/Roboto-Regular.ttf", 48)
     robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
-    robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
+    robotoGiant100 = gui.add_font("./fonts/Roboto-Regular.ttf", 100)
     robotoGiant170 = gui.add_font("./fonts/Roboto-Regular.ttf", 170)
     robotoGiantBold170 = gui.add_font("./fonts/Roboto-Bold.ttf", 170)
     gui.bind_font(robotoDefault18)
@@ -512,13 +512,13 @@ with gui.font_registry():
     gui.bind_item_font('dartboardInfo', robotoTitle48)
     gui.bind_item_font('currentPlayerItem', robotoGiant170)
     gui.bind_item_font('currentScoreItem', robotoGiantBold170)
-    gui.bind_item_font('followingPlayers1', robotoTitle48)
-    gui.bind_item_font('followingPlayers2', robotoTitle48)
-    gui.bind_item_font('followingPlayers3', robotoTitle48)
-    gui.bind_item_font('followingPlayers4', robotoTitle48)
-    gui.bind_item_font('followingPlayers5', robotoTitle48)
-    gui.bind_item_font('followingPlayers6', robotoTitle48)
-    gui.bind_item_font('followingPlayers7', robotoTitle48)
+    gui.bind_item_font('followingPlayers1', robotoGiant100)
+    gui.bind_item_font('followingPlayers2', robotoGiant100)
+    gui.bind_item_font('followingPlayers3', robotoGiant100)
+    gui.bind_item_font('followingPlayers4', robotoGiant100)
+    gui.bind_item_font('followingPlayers5', robotoGiant100)
+    gui.bind_item_font('followingPlayers6', robotoGiant100)
+    gui.bind_item_font('followingPlayers7', robotoGiant100)
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
