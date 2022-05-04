@@ -121,12 +121,12 @@ def callback_handler(sender, callback_type, callback_id, value):
 
     # MainWindow - Remove Player Button
     if sender == 'mainWindowRemovePlayer':
-        currentConfig = gui.get_item_configuration("removePlayerWindow")
+        currentConfig = gui.get_item_configuration("playerManagerRemovePlayerWindow")
         if currentConfig['show'] == True:
-            gui.configure_item("removePlayerWindow", show=False)
+            gui.configure_item("playerManagerRemovePlayerWindow", show=False)
             print('Remove Player menu was open, closed')
         else:
-            gui.configure_item("removePlayerWindow", show=True)
+            gui.configure_item("playerManagerRemovePlayerWindow", show=True)
             print('Remove Player menu opened')
 
     # MainWindow - Player Manager Button
@@ -173,6 +173,15 @@ def callback_handler(sender, callback_type, callback_id, value):
         else:
             print('Player name was empty')
 
+    # Player Manager - Remove Player - Remove Button
+    if sender == 'playerManagerRemovePlayerBtn':
+        RemovePlayerName = gui.get_value("playerManagerRemovePlayerName")
+        print(f'Player {RemovePlayerName} was removed, Remove Player window closed')
+
+    # Player Manager - Remove Player - Cancel Button
+    if sender == 'playerManagerRemovePlayerCancelBtn':
+        gui.configure_item("playerManagerRemovePlayerWindow", show=False)
+        print('Remove Player window closed')
 
 
     # Test trigger for experimental functions
@@ -449,6 +458,27 @@ with gui.window(label='Add Player', tag="playerManagerAddPlayerWindow", show=Fal
         gui.add_spacer(width=10)
         gui.add_button(label=" Cancel ", tag='playerManagerAddPlayerCancelBtn', callback=callback_handler)
 ###
+
+
+###
+# Player Manager Remove Player Window
+# Player manager remove player window should be a pop-up style window in the middle of the screen
+playerManagerRemovePlayerW = 200
+playerManagerRemovePlayerH = 100
+playerManagerRemovePlayerPositionW = MonitorWidth/2 - playerManagerRemovePlayerW/2
+playerManagerRemovePlayerPositionH = MonitorHeight/2 - playerManagerRemovePlayerH/2
+with gui.window(label='Remove Player', tag="playerManagerRemovePlayerWindow", show=False, pos=(playerManagerRemovePlayerPositionW,playerManagerRemovePlayerPositionH), width=playerManagerRemovePlayerW, height=playerManagerRemovePlayerH, no_resize=True, no_title_bar=True):
+    with gui.group(horizontal=False, pos=(5,4)):
+        gui.add_text(' Remove Player:')
+        playerList = []
+        for player in players:
+            playerList.append(player)
+        gui.add_combo(items=playerList, tag=f'playerManagerRemovePlayerCombo', width=190, callback=callback_handler)
+    with gui.group(horizontal=True, pos=(4,playerManagerRemovePlayerH-35)):
+        gui.add_spacer(width=20)
+        gui.add_button(label=" Remove ", tag='playerManagerRemovePlayerBtn', callback=callback_handler)
+        gui.add_spacer(width=10)
+        gui.add_button(label=" Cancel ", tag='playerManagerRemovePlayerCancelBtn', callback=callback_handler)
 
 
 ###
