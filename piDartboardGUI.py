@@ -109,6 +109,26 @@ def callback_handler(sender, callback_type, callback_id, value):
             gui.configure_item("helpWindow", show=True)
             print('Help menu opened')
     
+    # MainWindow - Add Player Button
+    if sender == 'mainWindowAddPlayer':
+        currentConfig = gui.get_item_configuration("playerManagerAddPlayerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("playerManagerAddPlayerWindow", show=False)
+            print('Add Player menu was open, closed')
+        else:
+            gui.configure_item("playerManagerAddPlayerWindow", show=True)
+            print('Add Player menu opened')
+
+    # MainWindow - Remove Player Button
+    if sender == 'mainWindowRemovePlayer':
+        currentConfig = gui.get_item_configuration("removePlayerWindow")
+        if currentConfig['show'] == True:
+            gui.configure_item("removePlayerWindow", show=False)
+            print('Remove Player menu was open, closed')
+        else:
+            gui.configure_item("removePlayerWindow", show=True)
+            print('Remove Player menu opened')
+
     # MainWindow - Player Manager Button
     if sender == 'playerManagerButton':
         currentConfig = gui.get_item_configuration("playerManagerWindow")
@@ -295,11 +315,14 @@ with gui.window(tag="Main"):
             gui.add_text(f" {players[2]}: ", tag='followingPlayer2Item', color=(255,255,255,190))
             gui.add_text(f"{SB.getPlayerScore(players[2])}", tag='followingPlayer2Score', color=(255,255,255,190))
 
-    
+        gui.add_spacer(height=10)
         with gui.group(horizontal=True, tag='mainWindowButtons'):
             gui.add_button(label="  +  ", tag='mainWindowAddPlayer', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label="  -  ", tag='mainWindowRemovePlayer', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label=" Player Manager ", tag='playerManagerButton', callback=callback_handler)
+            gui.add_spacer(width=5)
             gui.add_button(label=" Edit ", tag="mainEditButton", callback=callback_handler)
 
     gui.add_text(f'[DBG] {str(SB)}', pos=(5,1055),tag="DebugBox")
