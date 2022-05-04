@@ -296,9 +296,9 @@ with gui.window(tag="Main"):
             gui.add_text(f"{SB.getPlayerScore(players[2])}", tag='followingPlayer2Score', color=(255,255,255,190))
 
     
-        with gui.group(horizontal=True):
-            gui.add_button(label=" + ", tag='mainWindowAddPlayer', callback=callback_handler)
-            gui.add_button(label=" - ", tag='mainWindowRemovePlayer', callback=callback_handler)
+        with gui.group(horizontal=True, tag='mainWindowButtons'):
+            gui.add_button(label="  +  ", tag='mainWindowAddPlayer', callback=callback_handler)
+            gui.add_button(label="  -  ", tag='mainWindowRemovePlayer', callback=callback_handler)
             gui.add_button(label=" Player Manager ", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label=" Edit ", tag="mainEditButton", callback=callback_handler)
 
@@ -477,7 +477,6 @@ with gui.font_registry():
     # gui.bind_item_font('followingPlayers5', robotoGiant100)
     # gui.bind_item_font('followingPlayers6', robotoGiant100)
     # gui.bind_item_font('followingPlayers7', robotoGiant100)
-
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
 ###
