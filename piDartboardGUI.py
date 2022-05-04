@@ -36,15 +36,13 @@ cwd = os.getcwd()
 ###
 
 
+###
 # Variable initialization
 currentConfig = {}
-
-
 players = SB.PlayerNames
-
 currentPlayerName = player1["name"]
 currentPlayerScore = player1["score"]
-
+###
 
 ###
 # Get information about primary monitor
