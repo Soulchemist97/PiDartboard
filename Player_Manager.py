@@ -82,20 +82,20 @@ class ScoreBoard:
         return int(np.sum(self.Current_Throw))
 
 
-    def ActivePlayerScore(self):
+    def getActivePlayerScore(self):
         """
         Returns:
             Total Score of current Player
         """
-        self.CurrentPlayerScore = self.ScoreBoard[self.getActivePlayer()]["Score"] + np.sum(self.Current_Throw)
+        self.CurrentPlayerScore = self.ScoreBoard[self.getActivePlayer()]["Score"] - self.CurrentRoundPoints()
         return self.CurrentPlayerScore
 
     def getPlayerScore(self,name):
-        return self.ScoreBoard[name]["Score"] - np.sum(self.Current_Throw)
+        return self.ScoreBoard[name]["Score"]
     
 
     def getCurrentScore(self):
-        self.Current_Score = self.target - self.ScoreBoard[self.getActivePlayer()]["Points"] - np.sum(self.Current_Throw)
+        self.Current_Score = self.target - self.ScoreBoard[self.getActivePlayer()]["Points"] - self.CurrentRoundPoints()
         return int(self.Current_Score)
     
 
@@ -140,6 +140,15 @@ class ScoreBoard:
         return self.ActivePlayer
 
     def Throw(self,Throw,Multiplicator=1):
+        """_summary_
+
+        Args:
+            Throw (int): Points of throw ("Triple 3" -> 60)
+            Multiplicator (int): Single,Double,Triple. Standard auf 1.
+
+        Returns:
+            Throw,Multiplicator (Tuple)
+        """
         self.Current_Throw.append(Throw)
         return Throw,Multiplicator
 
