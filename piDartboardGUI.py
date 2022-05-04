@@ -369,16 +369,15 @@ dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     with gui.group(horizontal=True, pos=(4,0)):
-        with gui.group(horizontal=True, pos=(4,20)):
-
-            # gui.add_text('Remaining:')
-            gui.add_image(dartL, tag='throw1', width=50, height=50)
-            gui.add_image(dartL, tag='throw2', width=50, height=50)
-            gui.add_image(dartL, tag='throw3', width=50, height=50)
-
         gui.add_spacer(width=65)
         gui.add_text('Round Score:')
         gui.add_text(f'{SB.CurrentRoundPoints()}')
+        with gui.group(horizontal=True):
+            # gui.add_text('Remaining:')
+            gui.add_image(dartR, tag='throw1Pic', width=65, height=65, pos=(dartboardW-220,20))
+            gui.add_image(dartR, tag='throw2Pic', width=65, height=65, pos=(dartboardW-155,20))
+            gui.add_image(dartR, tag='throw3Pic', width=65, height=65, pos=(dartboardW-90,20))
+        
 
     with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
         gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}')
