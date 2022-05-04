@@ -309,7 +309,7 @@ with gui.window(tag="Main"):
                 
     with gui.group(tag="playerOverview", pos=(20,30)):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
-            gui.add_text(f"{currentPlayerName}:", tag='currentPlayerItem')
+            gui.add_text(f"{currentPlayerName}: ", tag='currentPlayerItem')
             gui.add_text(f"{currentPlayerScore}", tag='currentScoreItem')
         # for entries in overviewWindowItems:
         #     with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
@@ -494,12 +494,13 @@ with gui.font_registry():
     robotoBig72 = gui.add_font("./fonts/Roboto-Regular.ttf", 72)
     robotoGiant108 = gui.add_font("./fonts/Roboto-Regular.ttf", 108)
     robotoGiant170 = gui.add_font("./fonts/Roboto-Regular.ttf", 170)
+    robotoGiantBold170 = gui.add_font("./fonts/Roboto-Bold.ttf", 170)
     gui.bind_font(robotoDefault18)
     gui.bind_item_font('exiting', robotoBig72)
     gui.bind_item_font('dartboard', robotoTitle48)
     gui.bind_item_font('dartboardInfo', robotoTitle48)
     gui.bind_item_font('currentPlayerItem', robotoGiant170)
-    gui.bind_item_font('currentScoreItem', robotoGiant170)
+    gui.bind_item_font('currentScoreItem', robotoGiantBold170)
     gui.bind_item_font('followingPlayers1', robotoTitle48)
     gui.bind_item_font('followingPlayers2', robotoTitle48)
     gui.bind_item_font('followingPlayers3', robotoTitle48)
