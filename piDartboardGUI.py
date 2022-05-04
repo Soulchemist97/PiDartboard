@@ -280,7 +280,7 @@ with gui.window(tag="Main"):
 
         with gui.group(horizontal=True, tag='CurrentPlayer'):
 
-            gui.add_text(f"{SB.getActivePlayer()}:", tag='currentPlayerItem')
+            gui.add_text(f"{SB.getActivePlayer()}: ", tag='currentPlayerItem')
             gui.add_text(f"{SB.ActivePlayerScore()}", tag='currentScoreItem')
 
         # for entries in overviewWindowItems:
@@ -297,8 +297,10 @@ with gui.window(tag="Main"):
 
     
         with gui.group(horizontal=True):
-            gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
-            gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
+            gui.add_button(label=" + ", tag='mainWindowAddPlayer', callback=callback_handler)
+            gui.add_button(label=" - ", tag='mainWindowRemovePlayer', callback=callback_handler)
+            gui.add_button(label=" Player Manager ", tag='playerManagerButton', callback=callback_handler)
+            gui.add_button(label=" Edit ", tag="mainEditButton", callback=callback_handler)
 
     gui.add_text(f'[DBG] {str(SB)}', pos=(5,1055),tag="DebugBox")
 ###
@@ -462,6 +464,7 @@ with gui.font_registry():
     robotoGiant170 = gui.add_font("./fonts/Roboto-Regular.ttf", 170)
     robotoGiantBold170 = gui.add_font("./fonts/Roboto-Bold.ttf", 170)
     gui.bind_font(robotoDefault18)
+    gui.bind_item_font('mainWindowButtons', robotoTitle36)
     gui.bind_item_font('exiting', robotoBig72)
     gui.bind_item_font('dartboard', robotoTitle48)
     gui.bind_item_font('dartboardInfo', robotoTitle48)
