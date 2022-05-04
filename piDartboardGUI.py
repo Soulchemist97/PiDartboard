@@ -277,8 +277,12 @@ with gui.window(tag="Main"):
             gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
             arrowTopBase = 148
             iterator = 52
+            i = 1
+            #generate arrows bottom up for each player except current player
             for player in players[1:]:
-                gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
+                i+=1
+                gui.draw_arrow(p1=(4,200+i*iterator), p2=(4,240+i*iterator), color=(255, 255, 255, 255), thickness=4)
+                # gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , )
             # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
@@ -353,12 +357,12 @@ dartboardMiddleH = dartboardH/2 - 8
 dartboardMiddlePos = (dartboardMiddleW, dartboardMiddleH)
 with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
     # draw circle on overlay where the dart hit
-    gui.draw_circle(center=dartboardMiddlePos, radius=10, color=(0,255,0,255), thickness=2)
+    gui.draw_circle(center=dartboardMiddlePos, radius=10, color=(0,255,0,255), thickness=3)
     # draw cross in circle
     gui.draw_line((dartboardMiddlePos[0]-7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]+7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
     gui.draw_line((dartboardMiddlePos[0]+7, dartboardMiddlePos[1]-7), (dartboardMiddlePos[0]-7, dartboardMiddlePos[1]+7), color=(0,255,0,255), thickness=2)
     # point arrow to circle
-    gui.draw_arrow(p1=(dartboardMiddlePos[0] + 8, dartboardMiddlePos[1] + 8), p2=(dartboardMiddlePos[0] + 50, dartboardMiddlePos[1] + 50), color=(100,255,255,255), thickness=5)
+    # gui.draw_arrow(p1=(dartboardMiddlePos[0] + 8, dartboardMiddlePos[1] + 8), p2=(dartboardMiddlePos[0] + 50, dartboardMiddlePos[1] + 50), color=(100,255,255,255), thickness=5)
 ###
 
 
@@ -368,21 +372,29 @@ with gui.window(tag="dartboardOverlay", pos=(dartboardPositionW,dartboardPositio
 dartboardInfoPositionW = MonitorWidth - dartboardW
 dartboardInfoPositionH = MonitorHeight - dartboardH - 155
 with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPositionH), width=dartboardW, height=dartboardH, no_title_bar=True, no_scrollbar=True, no_background=True, no_move=True, no_resize=True):
-    with gui.group(horizontal=True, pos=(4,0)):
-        gui.add_spacer(width=65)
-        gui.add_text('Round Score:')
-        gui.add_text(f'{SB.CurrentRoundPoints()}')
+    with gui.group(horizontal=False, pos=(dartboardW/3-10,10), tag="dartboardInfoGroup"):
+        gui.add_spacer(height=20)
+        gui.add_text(f'Round Score: {SB.CurrentRoundPoints()}')
+        gui.add_spacer(height=10)
+        with gui.group(horizontal=True, tag="dartboardInfoRounds"):
+            gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}')
+            gui.add_spacer(width=50)
+            gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}')
+            gui.add_spacer(width=50)
+            gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}')
+            
         with gui.group(horizontal=True):
             # gui.add_text('Remaining:')
-            gui.add_image(dartR, tag='throw1Pic', width=65, height=65, pos=(dartboardW-220,20))
-            gui.add_image(dartR, tag='throw2Pic', width=65, height=65, pos=(dartboardW-155,20))
-            gui.add_image(dartR, tag='throw3Pic', width=65, height=65, pos=(dartboardW-90,20))
+            gui.add_image(dartR, tag='throw1Pic', width=75, height=75, pos=(dartboardW-245,20))
+            gui.add_image(dartR, tag='throw2Pic', width=75, height=75, pos=(dartboardW-170,20))
+            gui.add_image(dartR, tag='throw3Pic', width=75, height=75, pos=(dartboardW-90,20))
+            gui.add_image(dartR, tag='throw1ShotPic', width=75, height=75, pos=(dartboardW-245,20), tint_color=(255,255,255,80))
+            gui.add_image(dartR, tag='throw2ShotPic', width=75, height=75, pos=(dartboardW-170,20), tint_color=(255,255,255,80))
+            gui.add_image(dartR, tag='throw3ShotPic', width=75, height=75, pos=(dartboardW-90,20), tint_color=(255,255,255,80))
+            gui.add_text(f'SHOTS REMAINING', tag='dartboardInfoRemaining', pos=(dartboardW-145,100), color=(255,255,255,60))
         
 
-    with gui.group(horizontal=False, tag='throwOverview', pos=(4,80)):
-        gui.add_text(f'1.: {SB.CurrentThrow_Round(1)}')
-        gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}')
-        gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}')
+    
 ###
 
 
@@ -499,8 +511,10 @@ with gui.font_registry():
     # gui.bind_item_font('followingPlayers5', robotoGiant100)
     # gui.bind_item_font('followingPlayers6', robotoGiant100)
     # gui.bind_item_font('followingPlayers7', robotoGiant100)
-    gui.bind_item_font('throwOverview', robotoTitle36)
+    gui.bind_item_font('dartboardInfoGroup', robotoTitle48)
+    gui.bind_item_font('dartboardInfoRounds', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
+    gui.bind_item_font('dartboardInfoRemaining', robotoDefault18)
 ###
 
 
