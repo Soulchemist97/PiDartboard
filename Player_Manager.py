@@ -82,13 +82,17 @@ class ScoreBoard:
         return int(np.sum(self.Current_Throw))
 
 
-    def CurrentPlayerScore(self):
+    def ActivePlayerScore(self):
         """
         Returns:
             Total Score of current Player
         """
         self.CurrentPlayerScore = self.ScoreBoard[self.getActivePlayer()]["Score"] + np.sum(self.Current_Throw)
         return self.CurrentPlayerScore
+
+    def getPlayerScore(self,name):
+        return self.ScoreBoard[name]["Score"] - np.sum(self.Current_Throw)
+    
 
     def getCurrentScore(self):
         self.Current_Score = self.target - self.ScoreBoard[self.getActivePlayer()]["Points"] - np.sum(self.Current_Throw)
@@ -107,7 +111,7 @@ class ScoreBoard:
             self.PlayerNames.append(name)
         ## Add to dictionary
         if self.ScoreBoard.get(name) == None: 
-            self.ScoreBoard[name] = {"Throws": [], "Score": 0, "Points": 0, "Average Points": 0, "Played rounds": 0}
+            self.ScoreBoard[name] = {"Throws": [], "Score": self.target, "Points": 0, "Average Points": 0, "Played rounds": 0}
 
     def removePlayer(self, name):
         self.PlayerNames.remove(name)

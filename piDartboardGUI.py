@@ -18,8 +18,9 @@ from Player_Manager import ScoreBoard
 ### Player Management Object / Class
 SB = ScoreBoard() #{"PlayerName": {"Throws": [[],[]], "Score": 0}}
 
-SB.addPlayer("Soulchemist97")
+SB.addPlayer("Mathusan")
 SB.addPlayer("ThisLimn0")
+SB.addPlayer("Jan B")
 
 SB.Throw(5)
 SB.Throw(15)
@@ -40,8 +41,7 @@ cwd = os.getcwd()
 # Variable initialization
 currentConfig = {}
 players = SB.PlayerNames
-currentPlayerName = player1["name"]
-currentPlayerScore = player1["score"]
+
 ###
 
 ###
@@ -257,8 +257,8 @@ with gui.window(tag="Main"):
             gui.draw_line((3, 0), (3, 145), color=(0, 255, 0, 255), thickness=8)
             arrowTopBase = 148
             iterator = 52
-            for player in players:
-                gui.draw_arrow(p1=(4, arrowTopBase+player["id"]*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
+            for player in players[1:]:
+                gui.draw_arrow(p1=(4, arrowTopBase+(players.index(player)+1)*iterator), p2=(4, arrowTopBase+2*iterator) , color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 175), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 210), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
             # gui.draw_arrow(p1=(4, 245), p2=(4, 135), color=(255, 255, 255, 255), thickness=4)
@@ -281,7 +281,7 @@ with gui.window(tag="Main"):
         with gui.group(horizontal=True, tag='CurrentPlayer'):
 
             gui.add_text(f"{SB.getActivePlayer()}:", tag='currentPlayerItem')
-            gui.add_text(f"{SB.CurrentPlayerScore()}", tag='currentScoreItem')
+            gui.add_text(f"{SB.ActivePlayerScore()}", tag='currentScoreItem')
 
         # for entries in overviewWindowItems:
         #     with gui.group(horizontal=True, tag=f'followingPlayer{entries}'):
@@ -289,26 +289,13 @@ with gui.window(tag="Main"):
         #         gui.add_text(f"{playerFStringHelper['name']}:", tag=f'followingPlayer{entries}Item')
         #         gui.add_text(f'{entries}', tag=f'followingPlayer{entries}Score')
         with gui.group(horizontal=True, tag='followingPlayers1'):
-            gui.add_text(f" {player2['name']}: ", tag='followingPlayer1Item', color=(255,255,255,230))
-            gui.add_text(f"{player2['score']}", tag='followingPlayer1Score', color=(255,255,255,230))
+            gui.add_text(f" {players[1]}: ", tag='followingPlayer1Item', color=(255,255,255,230))
+            gui.add_text(f"{SB.getPlayerScore(players[1])}", tag='followingPlayer1Score', color=(255,255,255,230))
         with gui.group(horizontal=True, tag='followingPlayers2'):
-            gui.add_text(f" {player3['name']}: ", tag='followingPlayer2Item', color=(255,255,255,190))
-            gui.add_text(f"{player3['score']}", tag='followingPlayer2Score', color=(255,255,255,190))
-        with gui.group(horizontal=True, tag='followingPlayers3'):
-            gui.add_text(f" {player4['name']}: ", tag='followingPlayer3Item', color=(255,255,255,150))
-            gui.add_text(f"{player4['score']}", tag='followingPlayer3Score', color=(255,255,255,150))
-        with gui.group(horizontal=True, tag='followingPlayers4'):
-            gui.add_text(f" {player5['name']}: ", tag='followingPlayer4Item', color=(255,255,255,120))
-            gui.add_text(f"{player5['score']}", tag='followingPlayer4Score', color=(255,255,255,120))
-        with gui.group(horizontal=True, tag='followingPlayers5'):
-            gui.add_text(f" {player6['name']}: ", tag='followingPlayer5Item', color=(255,255,255,120))
-            gui.add_text(f"{player6['score']}", tag='followingPlayer5Score', color=(255,255,255,120))
-        with gui.group(horizontal=True, tag='followingPlayers6'):
-            gui.add_text(f" {player7['name']}: ", tag='followingPlayer6Item', color=(255,255,255,120))
-            gui.add_text(f"{player7['score']}", tag='followingPlayer6Score', color=(255,255,255,120))
-        with gui.group(horizontal=True, tag='followingPlayers7'):
-            gui.add_text(f" {player8['name']}: ", tag='followingPlayer7Item', color=(255,255,255,120))
-            gui.add_text(f"{player8['score']}", tag='followingPlayer7Score', color=(255,255,255,120))
+            gui.add_text(f" {players[2]}: ", tag='followingPlayer2Item', color=(255,255,255,190))
+            gui.add_text(f"{SB.getPlayerScore(players[2])}", tag='followingPlayer2Score', color=(255,255,255,190))
+
+    
         with gui.group(horizontal=True):
             gui.add_button(label="Player Manager", tag='playerManagerButton', callback=callback_handler)
             gui.add_button(label="Edit", tag="mainEditButton", callback=callback_handler)
@@ -482,11 +469,11 @@ with gui.font_registry():
     gui.bind_item_font('currentScoreItem', robotoGiantBold170)
     gui.bind_item_font('followingPlayers1', robotoGiant100)
     gui.bind_item_font('followingPlayers2', robotoGiant100)
-    gui.bind_item_font('followingPlayers3', robotoGiant100)
-    gui.bind_item_font('followingPlayers4', robotoGiant100)
-    gui.bind_item_font('followingPlayers5', robotoGiant100)
-    gui.bind_item_font('followingPlayers6', robotoGiant100)
-    gui.bind_item_font('followingPlayers7', robotoGiant100)
+    # gui.bind_item_font('followingPlayers3', robotoGiant100)
+    # gui.bind_item_font('followingPlayers4', robotoGiant100)
+    # gui.bind_item_font('followingPlayers5', robotoGiant100)
+    # gui.bind_item_font('followingPlayers6', robotoGiant100)
+    # gui.bind_item_font('followingPlayers7', robotoGiant100)
 
     gui.bind_item_font('throwOverview', robotoTitle36)
     gui.bind_item_font('collectDartsGroup', robotoTitle48)
