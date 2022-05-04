@@ -21,7 +21,6 @@ class ScoreBoard:
         if self.ScoreBoard[self.getActivePlayer()].get("Score") != None:
             self.Current_Score = self.ScoreBoard[self.ActivePlayer]["Score"] - np.sum(self.Current_Throw)
 
-        # for Player in self.PlayerNames:
         for Player,Values in self.ScoreBoard.items():           
             self.PointCalculation(Player) 
             self.ScoreCalculation(Player)
@@ -64,13 +63,36 @@ class ScoreBoard:
             return False
 
 
-    def CurrentThrowScore(self):
-        self.CurrentThrowScore = self.ScoreBoard[self.getActivePlayer()]["Score"] + np.sum(self.Current_Throw)
-        return self.CurrentThrowScore
+    def CurrentThrow_Round(self,number):
+        """
+
+        Args:
+            number (int): Number of Throw
+
+        Returns:
+            Throw Value: Value of number-th Throw
+        """
+        try: 
+            return self.Current_Throw[number-1]
+        except IndexError:
+            return "-"
+
+
+    def CurrentRoundPoints(self):
+        return int(np.sum(self.Current_Throw))
+
+
+    def CurrentPlayerScore(self):
+        """
+        Returns:
+            Total Score of current Player
+        """
+        self.CurrentPlayerScore = self.ScoreBoard[self.getActivePlayer()]["Score"] + np.sum(self.Current_Throw)
+        return self.CurrentPlayerScore
 
     def getCurrentScore(self):
         self.Current_Score = self.target - self.ScoreBoard[self.getActivePlayer()]["Points"] - np.sum(self.Current_Throw)
-        return self.Current_Score
+        return int(self.Current_Score)
     
 
     def setTargetScore(self, target):
@@ -94,17 +116,31 @@ class ScoreBoard:
     def getPlayerNames(self):
         return self.PlayerNames
     
-    def TogglePlayer(self):
-        self.PlayerNames.append(self.PlayerNames.pop(0))
-        return self.PlayerNames[0]
 
+    def TogglePlayer(self):
+        self.PlayerNames.append(self.PlayerNames.pop(0)) #Swap first to last player
+        self.setActivePlayer(self.PlayerNames[0]) #Set active player to first player in List
+
+        self.addThrows(self.getActivePlayer(), self.Current_Throw)
+        self.ResetCurrentThrow()
+        
+        return self.ActivePlayer
+
+
+    def setActivePlayer(self, name):
+        self.ActivePlayer = name
+        return self.ActivePlayer
+
+    def getActivePlayer(self):
+        self.ActivePlayer = self.PlayerNames[0]
+        return self.ActivePlayer
 
     def Throw(self,Throw,Multiplicator=1):
         self.Current_Throw.append(Throw)
         return Throw,Multiplicator
-    
 
-    def addThrows(self, name, throws,multiplicator=1):
+    def addThrows(self, name, throws:list,multiplicator=1):
+        
         self.LastMultiplicator = multiplicator
         self.ScoreBoard[name]["Throws"].append(throws)
         return self.ScoreBoard[name]["Throws"]
@@ -130,21 +166,6 @@ class ScoreBoard:
 
     def getScoreBoardSorted(self):
         return sorted(self.ScoreBoard.items(), key=lambda x: x["Score"], reverse=True)
-
-    def getActivePlayer(self):
-        self.ActivePlayer = self.PlayerNames[self.n_active % len(self.PlayerNames)]
-        return self.ActivePlayer
-
-    def NextPlayer(self):
-        self.addThrows(self.getActivePlayer(), self.Current_Throw)
-        self.ResetCurrentThrow()
-
-        self.n_active += 1
-        if self.n_active >= len(self.PlayerNames):
-            self.n_active = 0
-        self.ActivePlayer = self.PlayerNames[self.n_active % len(self.PlayerNames)]
-
-        return self.ActivePlayer
 
     def SaveScoreBoard(self,):
         with open("Scoreboards.json", "a") as file:
@@ -175,7 +196,8 @@ if __name__ == '__main__':
     print(SB.getCurrentScore())
 
 
-    SB.NextPlayer()
+    SB.TogglePlayer()
+    SB.refresh()
 
     #Throw
     SB.Throw(np.random.randint(1,25))
@@ -185,9 +207,9 @@ if __name__ == '__main__':
     SB.Throw(np.random.randint(1,25))
     print(SB.getCurrentScore())
 
-    SB.NextPlayer()
-
-    
+    SB.TogglePlayer()   
     SB.refresh()
-    SB.SaveScoreBoard()
+
+
+    # SB.SaveScoreBoard()
     print(SB)  
