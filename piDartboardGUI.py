@@ -40,6 +40,9 @@ cwd = os.getcwd()
 ###
 # Variable initialization
 currentConfig = {}
+gameModeSingle = {}
+gameModeDouble = {}
+gameModeMaster = {}
 players = SB.PlayerNames
 
 ###
@@ -113,6 +116,46 @@ def callback_handler(sender, callback_type, callback_id, value):
         else:
             gui.configure_item("languageSelection", show=True)
             print('Language menu opened')
+
+    # Game Menu - Game Modes - Out check
+    if sender == 'GameModeSingleOut':
+        # get all current configurations
+        gameModeSingle = gui.get_value("GameModeSingleOut")
+        gameModeDouble = gui.get_value("GameModeDoubleOut")
+        gameModeMaster = gui.get_value("GameModeMasterOut")
+        print(f"[DBG] {gameModeSingle}, {gameModeDouble}, {gameModeMaster}")
+        if gameModeDouble == True:
+            gui.set_value("GameModeDoubleOut", False)
+            print('[DBG] GameModeDoubleOut was active, deactivated')
+        if gameModeMaster == True:
+            gui.set_value("GameModeMasterOut", False)
+            print('[DBG] GameModeMasterOut was active, deactivated')
+        gui.set_value("GameModeSingleOut", True)
+        print('[DBG] GameModeSingleOut is now active')
+    if sender == 'GameModeDoubleOut':
+        # get all current configurations
+        gameModeSingle = gui.get_value("GameModeSingleOut")
+        gameModeDouble = gui.get_value("GameModeDoubleOut")
+        gameModeMaster = gui.get_value("GameModeMasterOut")
+        # check if the desired mode is already active
+        if gameModeSingle == True:
+            gui.set_value("GameModeSingleOut", False)
+        if gameModeMaster == True:
+            gui.set_value("GameModeMasterOut", False)
+        gui.set_value("GameModeDoubleOut", True)
+        print('[DBG] GameModeDoubleOut is now active')
+    if sender == 'GameModeMasterOut':
+        # get all current configurations
+        gameModeSingle = gui.get_value("GameModeSingleOut")
+        gameModeDouble = gui.get_value("GameModeDoubleOut")
+        gameModeMaster = gui.get_value("GameModeMasterOut")
+        # check if the desired mode is already active
+        if gameModeSingle == True:
+            gui.set_value("GameModeSingleOut", False)          
+        if gameModeDouble == True:
+            gui.set_value("GameModeDoubleOut", False)
+        gui.set_value("GameModeMasterOut", True)
+        print('[DBG] GameModeMasterOut is now active')
     # Language Menu - Close Button
     if sender == 'langClose':
         gui.configure_item("languageSelection", show=False)
@@ -307,7 +350,9 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="301", tag='GameMode301', callback=callback_handler)
             gui.add_menu_item(label="501", tag='GameMode501', callback=callback_handler)
             gui.add_menu_item(label="701", tag='GameMode701', callback=callback_handler)
+            gui.add_menu_item(label="Single Out", tag='GameModeSingleOut', default_value=False, check=True, callback=callback_handler)
             gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', default_value=True, check=True, callback=callback_handler)
+            gui.add_menu_item(label="Master Out", tag='GameModeMasterOut', default_value=False, check=True, callback=callback_handler)
     with gui.menu(label="Settings"):
         gui.add_menu_item(label="Player Manager", tag='togglePlayerManager', callback=callback_handler)
         #Quick settings for each player if possible
