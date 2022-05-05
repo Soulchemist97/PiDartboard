@@ -24,6 +24,7 @@ SB.addPlayer("Jan B")
 
 SB.Throw(5)
 SB.Throw(15)
+###
 
 
 ### Create DearPyGui context ###
@@ -287,27 +288,23 @@ def callback_handler(sender, callback_type, callback_id, value):
 def refreshWindows():
     # Refresh main window
     
-    #Throws
-    gui.set_value(value=f'1.: {SB.CurrentThrow_Round(1)}',item='throw1Text')
-    gui.set_value(value=f'2.: {SB.CurrentThrow_Round(2)}',item='throw2Text')
-    gui.set_value(value=f'3.: {SB.CurrentThrow_Round(3)}',item='throw3Text')
+    Tag_Value = {
+    "throw1Text": f'1.: {SB.CurrentThrow_Round(1)}',
+    "throw2Text": f'2.: {SB.CurrentThrow_Round(2)}',
+    "throw3Text": f'3.: {SB.CurrentThrow_Round(3)}',
+    "roundScoreItem": f'{SB.CurrentRoundPoints()}',
+    "currentPlayerItem": f"{SB.getActivePlayer()}:",
+    "currentScore": SB.getActivePlayerScore(),
+    "followingPlayer1Item": players[1],
+    "followingPlayer2Item": players[2],
+    "followingPlayer1Score": SB.getPlayerScore(players[1]),
+    "followingPlayer2Score": SB.getPlayerScore(players[2]),
+    }
 
-    # Round Score
-    gui.set_value(value=f'{SB.CurrentRoundPoints()}',item='roundScoreItem')
-
-    ## Player Score Overview
-    gui.set_value("currentPlayerItem", f"{SB.getActivePlayer()}: ")
-    gui.set_value("currentScore", SB.getActivePlayerScore())
-
-    gui.set_value(value=players[1],item='followingPlayer1Item')
-    gui.set_value(value=SB.getPlayerScore(players[1]),item='followingPlayer1Score')
-
-    gui.set_value('followingPlayer2Item',players[2])
-    gui.set_value(value=SB.getPlayerScore(players[2]),item='followingPlayer2Score')
-    
-
+    for tag, value in Tag_Value.items():
+        gui.set_value(tag, value)
 ###
-
+    
 
 ###
 # Load Images
@@ -387,7 +384,7 @@ with gui.viewport_menu_bar():
 
 ###
 # Main window
-with gui.window(tag="Main"):
+with gui.window(tag="Main", no_scrollbar=True):
     # Fix space occupied by top bar
     gui.add_spacer(height=13)
     # Draw overlay to highlight current player
@@ -513,9 +510,7 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
             gui.add_image(dartR, tag='throw2ShotPic', width=75, height=75, pos=(dartboardW-170,20), tint_color=(255,255,255,80))
             gui.add_image(dartR, tag='throw3ShotPic', width=75, height=75, pos=(dartboardW-90,20), tint_color=(255,255,255,80))
             gui.add_text(f'SHOTS REMAINING', tag='dartboardInfoRemaining', pos=(dartboardW-145,100), color=(255,255,255,60))
-        
-
- 
+###        
 
 
 ###
@@ -588,6 +583,8 @@ with gui.window(label='Remove Player', tag="playerManagerRemovePlayerWindow", sh
 
 ###
 # Language selection window
+LanguageSelectionWindowW = 250
+LanguageSelectionWindowH = 118
 with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=(800,400), no_resize=True, no_scrollbar=True):
     gui.add_text('Select a language:', pos=(8,26))
     gui.add_combo(items=['English', 'Deutsch (German)'], tag='langCombo', width=235, pos=(8,55), callback=callback_handler)
@@ -615,6 +612,8 @@ with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=coll
 
 ###
 # Help window
+HelpWindowW = 1200
+HelpWindowH = 800
 with gui.window(label="Help", tag="helpWindow", show=False, width=1200, height=800, pos=(100,100), no_resize=True,):
     gui.add_text(f'piDartboard Version: {__version__} - Help Document', pos=(5,22))
 ###
@@ -622,6 +621,7 @@ with gui.window(label="Help", tag="helpWindow", show=False, width=1200, height=8
 
 ###
 # Exit tooltip
+ExitTooltipW = 300
 with gui.window(label="Exiting", show=False, id="exiting", width=300, pos=(800,450), no_resize=True, no_title_bar=True, no_move=True):
     gui.add_spacer(height=40)
     gui.add_text('  Exiting...', pos=(4,0))
@@ -671,7 +671,7 @@ except:
 
 
 # Start window maximized
-gui.create_viewport(title='piDartboard', decorated=False, width=1920, height=1080)
+gui.create_viewport(title='piDartboard', decorated=False, width=MonitorWidth, height=MonitorHeight)
 gui.setup_dearpygui()
 gui.show_viewport()
 gui.set_primary_window('Main', True)
