@@ -11,9 +11,11 @@ __status__ = "Development"
 # Imports
 import os
 import time
+import json
 import dearpygui.dearpygui as gui
 from screeninfo import get_monitors
 from Player_Manager import ScoreBoard
+
 
 ### Player Management Object / Class
 SB = ScoreBoard() #{"PlayerName": {"Throws": [[],[]], "Score": 0}}
@@ -39,6 +41,22 @@ cwd = os.getcwd()
 
 
 ###
+# Look for language files in the current working directory
+def findLanguageFiles():
+    languageFiles = []
+    for file in os.listdir(cwd):
+        if file.endswith(".lang"):
+            # load language name from within the file
+            languageName = json.load(open(file))["languageName"]
+            languageFiles.append(languageName)
+            languageFiles.append(file)
+    return languageFiles
+languageFiles = findLanguageFiles()
+print(f'{languageFiles}')
+###
+
+
+###
 # Variable initialization
 currentConfig = {}
 gameModeSingle = {}
@@ -47,6 +65,7 @@ gameModeMaster = {}
 players = SB.PlayerNames
 
 ###
+
 
 ###
 # Get information about primary monitor
@@ -347,6 +366,7 @@ with gui.viewport_menu_bar():
             gui.add_menu_item(label="301", tag='GameMode301', callback=callback_handler)
             gui.add_menu_item(label="501", tag='GameMode501', callback=callback_handler)
             gui.add_menu_item(label="701", tag='GameMode701', callback=callback_handler)
+            gui.add_separator()
             gui.add_menu_item(label="Single Out", tag='GameModeSingleOut', default_value=False, check=True, callback=callback_handler)
             gui.add_menu_item(label="Double Out", tag='GameModeDoubleOut', default_value=True, check=True, callback=callback_handler)
             gui.add_menu_item(label="Master Out", tag='GameModeMasterOut', default_value=False, check=True, callback=callback_handler)
