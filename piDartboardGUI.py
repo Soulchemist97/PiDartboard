@@ -37,22 +37,42 @@ gui.create_context()
 ###
 # Set current working directory
 cwd = os.getcwd()
+languageDir = "./languages/"
+imageDir = "./images/"
+fontDir = "./fonts/"
+applicationDefaults = "appDefaults.json"
+langD = os.path.join(cwd, languageDir)
+imgD = os.path.join(cwd, imageDir)
+fontD = os.path.join(cwd, fontDir)
+print(langD)
 ###
 
+
+###
+# Load application default settings from file
+def loadAppDefaults():
+    with open(applicationDefaults, 'r') as f:
+        appDefaults = json.load(f)
+#if file exists, load settings from file
+#if file does not exist, create file and load default settings
+    
+###
 
 ###
 # Look for language files in the current working directory
 def findLanguageFiles():
     languageFiles = []
-    for file in os.listdir(cwd):
+    for file in os.listdir(languageDir):
         if file.endswith(".lang"):
             # load language name from within the file
-            languageName = json.load(open(file))["languageName"]
+            languageName = json.load(open(f"{languageDir}{file}"))["languageName"]
             languageFiles.append(languageName)
             languageFiles.append(file)
+    if languageFiles == []:
+        print("No language files found!")
+        return None
     return languageFiles
 languageFiles = findLanguageFiles()
-print(f'{languageFiles}')
 ###
 
 
