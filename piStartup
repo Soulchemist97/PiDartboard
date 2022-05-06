@@ -1,7 +1,4 @@
 # Get Updates
-from gettext import install
-
-
 sudo apt-get install update
 
 # Get Upgrades
