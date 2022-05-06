@@ -1,0 +1,14 @@
+# Get Updates
+from gettext import install
+
+
+sudo apt-get install update
+
+# Get Upgrades
+sudo apt get install upgrade
+
+# Install ntp
+sudo apt-get install ntp
+
+# Set timesync
+sudo systemctl stop ntp; sudo ntpd -q -g; sudo systemctl start ntp
