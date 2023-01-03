@@ -1,6 +1,19 @@
 {
     "languageName": "Deutsch",
     "translations": {
-            
+        "MenuBarButtonGame": "Spiel",
+        "MenuBarButtonSettings": "Einstellungen",
+        "MenuBarButtonLanguage": "Sprache",
+        "MenuBarButtonHelp": "Hilfe",
+        "MenuBarButtonExit": "Beenden",
+        "MenuBarButtonDebugWindow": "Debugfenster",
+        "MenuBarButtonTestTrigger": "Testauslöser",
+        "MenuBarMenuGame": {
+            "NewGame": "Neues Spiel",
+            "LoadGame": "Spiel laden",
+            "SaveGame": "Spiel speichern",
+            "SaveGameAs": "Spiel speichern unter",
+            "Exit": "Beenden"
+        },
     }
 }
