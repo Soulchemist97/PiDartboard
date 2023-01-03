@@ -15,6 +15,7 @@ import RPi.GPIO as GPIO
 ## Edge case detection: if the listener matrix is set and the sender matrix is all nil and stuck in second loop. Timeout event?
 ## Automatic process of naming frame data after a specific list with possibility to correct last frame or to abort. Maybe even save and load a project?
 ## Save finished matrixMap to a pickle file for improved reading speed as well als a readable csv and provide a conversion tool between the two.
+## Detect if not run on RPi
 
 #NOTE############################################################
 # We need the following free RPi GPIO pins: 
