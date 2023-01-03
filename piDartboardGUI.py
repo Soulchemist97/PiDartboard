@@ -55,7 +55,6 @@ def loadAppDefaults():
         appDefaults = json.load(f)
 #if file exists, load settings from file
 #if file does not exist, create file and load default settings
-    
 ###
 
 ###
@@ -83,7 +82,6 @@ gameModeSingle = {}
 gameModeDouble = {}
 gameModeMaster = {}
 players = SB.PlayerNames
-
 ###
 
 
@@ -96,7 +94,6 @@ for m in get_monitors():
         MonitorInfo = str(m)
         MonitorHeight = m.height
         MonitorWidth = m.width
-#
 ###
 
 
@@ -116,7 +113,7 @@ def callback_handler(sender, callback_type, callback_id, value):
     if callback_type != 'None':
         print(f'Callback: {callback_type} with id {callback_id} and value {value}')
 
-    ##### Debug Code 
+    ##### Debug Code
     if sender == 'refreshWindow':
         print(sender,"was pressed")
         refreshWindows()
@@ -135,7 +132,6 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == "ResetThrows":
         SB.ResetCurrentThrow()
         refreshWindows()
-        
     #### Debug Code
 
 
@@ -146,7 +142,6 @@ def callback_handler(sender, callback_type, callback_id, value):
         print('Exiting...')
         time.sleep(0.1)
         gui.destroy_context()
-    
     # Language Button
     if sender == 'gameLanguage':
         currentConfig = gui.get_item_configuration("languageSelection")
@@ -191,7 +186,7 @@ def callback_handler(sender, callback_type, callback_id, value):
         gameModeMaster = gui.get_value("GameModeMasterOut")
         # check if the desired mode is already active
         if gameModeSingle == True:
-            gui.set_value("GameModeSingleOut", False)          
+            gui.set_value("GameModeSingleOut", False)
         if gameModeDouble == True:
             gui.set_value("GameModeDoubleOut", False)
         gui.set_value("GameModeMasterOut", True)
@@ -214,7 +209,7 @@ def callback_handler(sender, callback_type, callback_id, value):
         else:
             gui.configure_item("helpWindow", show=True)
             print('Help menu opened')
-    
+
     # MainWindow - Add Player Button
     if sender == 'mainWindowAddPlayer':
         currentConfig = gui.get_item_configuration("playerManagerAddPlayerWindow")
@@ -244,7 +239,7 @@ def callback_handler(sender, callback_type, callback_id, value):
         else:
             gui.configure_item("playerManagerWindow", show=True)
             print('Player manager opened')
-    
+
     # Settings - Player Manager Button
     if sender == 'togglePlayerManager':
         currentConfig = gui.get_item_configuration("playerManagerWindow")
@@ -254,7 +249,7 @@ def callback_handler(sender, callback_type, callback_id, value):
         else:
             gui.configure_item("playerManagerWindow", show=True)
             print('Player manager opened')
-    
+
     # Player Manager - Close Button
     if sender == 'playerManagerCloseBtn':
         gui.configure_item("playerManagerWindow", show=False)
@@ -263,17 +258,17 @@ def callback_handler(sender, callback_type, callback_id, value):
     if sender == 'playerManagerAddPlayer':
         gui.configure_item("playerManagerAddPlayerWindow", show=True)
         print('Player manager add player window opened')
-    
+
     # Player Manager - Remove Player Button
     if sender == 'playerManagerRemovePlayer':
         gui.configure_item("playerManagerRemovePlayerWindow", show=True)
         print('Player manager remove player window opened')
-    
+
     # Player Manager - Add Player - Close Button
     if sender == 'playerManagerAddPlayerCancelBtn':
         gui.configure_item("playerManagerAddPlayerWindow", show=False)
         print('Player manager add player window closed')
-    
+
     # Player Manager - Add Player - Add Button
     if sender == 'playerManagerAddPlayerBtn':
         AddPlayerName = gui.get_value("playerManagerAddPlayerName")
@@ -326,7 +321,7 @@ def callback_handler(sender, callback_type, callback_id, value):
 # Refresh all shown windows
 def refreshWindows():
     # Refresh main window
-    
+
     Tag_Value = {
     "throw1Text": f'1.: {SB.CurrentThrow_Round(1)}',
     "throw2Text": f'2.: {SB.CurrentThrow_Round(2)}',
@@ -343,7 +338,7 @@ def refreshWindows():
     for tag, value in Tag_Value.items():
         gui.set_value(tag, value)
 ###
-    
+
 
 ###
 # Load Images
@@ -402,7 +397,7 @@ with gui.viewport_menu_bar():
         # with gui.menu(label=f"{player1['name']}"):
         #     gui.add_menu_item(label=f"Edit name", tag='Player1_NameSettings', callback=callback_handler)
         #     gui.add_menu_item(label="Edit score", tag='Player1_ScoreSettings', callback=callback_handler)
-        
+
     gui.add_menu_item(label="Language", tag='gameLanguage', callback=callback_handler)
     gui.add_menu_item(label="Help", tag='gameHelp',callback=callback_handler)
     gui.add_menu_item(label="Exit", tag='gameExitNow', callback=callback_handler)
@@ -456,7 +451,6 @@ with gui.window(tag="Main", no_scrollbar=True):
     #             with gui.group(horizontal=True, tag=f'FollowingPlayer{players}'):
     #                 gui.add_text(f'{players["name"]}:', tag=f'FollowingPlayer{players["id"]}Item')
     #                 gui.add_text(f'{players["score"]}', tag=f'FollowingPlayer{str({players["id"]})}ScoreItem')
-                
     with gui.group(tag="playerOverview", pos=(20,30)):
 
         with gui.group(horizontal=True, tag='CurrentPlayer'):
@@ -539,7 +533,6 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
             gui.add_text(f'2.: {SB.CurrentThrow_Round(2)}',tag='throw2Text')
             gui.add_spacer(width=50)
             gui.add_text(f'3.: {SB.CurrentThrow_Round(3)}',tag='throw3Text')
-            
         with gui.group(horizontal=True):
             # gui.add_text('Remaining:')
 
@@ -550,7 +543,7 @@ with gui.window(tag="dartboardInfo", pos=(dartboardInfoPositionW,dartboardInfoPo
             gui.add_image(dartR, tag='throw2ShotPic', width=75, height=75, pos=(dartboardW-170,20), tint_color=(255,255,255,80))
             gui.add_image(dartR, tag='throw3ShotPic', width=75, height=75, pos=(dartboardW-90,20), tint_color=(255,255,255,80))
             gui.add_text(f'SHOTS REMAINING', tag='dartboardInfoRemaining', pos=(dartboardW-145,100), color=(255,255,255,60))
-###        
+###
 
 
 ###
@@ -628,7 +621,6 @@ LanguageSelectionWindowH = 118
 with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=(800,400), no_resize=True, no_scrollbar=True):
     gui.add_text('Select a language:', pos=(8,26))
     gui.add_combo(items=['English', 'Deutsch (German)'], tag='langCombo', width=235, pos=(8,55), callback=callback_handler)
-    
     with gui.group(horizontal=True, pos=(135,86)):
         gui.add_button(label=" OK ", tag='langOK', callback=callback_handler)
         gui.add_button(label=" Cancel ", tag='langClose', callback=callback_handler)
@@ -639,7 +631,7 @@ with gui.window(tag="languageSelection", show=False, width=250, height=118, pos=
 # Collect your darts window
 collectDartsW = 800
 collectDartsH = 180
-collectDartsPositionW = MonitorWidth / 2- collectDartsW 
+collectDartsPositionW = MonitorWidth / 2- collectDartsW
 collectDartsPositionH = (MonitorHeight + 20) / 2 - collectDartsH + 120
 dartImageResponsiveSideLength = collectDartsH - 20
 with gui.window(tag="collectDarts", show=False, width=collectDartsW, height=collectDartsH, pos=(collectDartsPositionW,collectDartsPositionH), no_resize=True, no_scrollbar=True, no_title_bar=True):
