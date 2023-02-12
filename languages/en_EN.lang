@@ -1,7 +1,52 @@
 {
-    "languageName": "English",
+    "localLanguageName": "English",
+    "internationalLanguageName": "English",
+    "languageCode": "en",
     "translations": {
-        
+        "MenuBar_ButtonGame": "Game",
+        "MenuBar_ButtonSettings": "Settings",
+        "MenuBar_ButtonLanguage": "Language",
+        "MenuBar_ButtonHelp": "Help",
+        "MenuBar_ButtonExit": "Quit",
+        "MenuBar_ButtonDebugWindow": "DebugWindow",
+        "MenuBar_ButtonTestTrigger": "TestTrigger",
+        "MenuBar_MenuGame": {
+            "Restart": "Restart game",
+            "NewGame": "New game",
+            "LoadGame": "Load game...",
+            "SaveGame": "Save game",
+            "SaveGameAs": "Save game as...",
+            "Exit": "Exit game",
+            "MenuBar_MenuGame_SubmenuGameModes": {
+                "301": "301",
+                "501": "501",
+                "701": "701",
+                "Single Out": "Single Out",
+                "Double Out": "Double Out",
+                "Master Out": "Master Out"
+            }
+        },
+        "MenuBar_MenuSettings": {
+            "PlayerManager": "Manage players"
+        },
+        "PlayerManager_PlayerManagerWindow": {
+            "PlayerManager_PlayerManagerTitle": "Player Manager",
+            "PlayerManager_ButtonAddPlayer": "Add player",
+            "PlayerManager_ButtonRemovePlayer": "Remove player",
+            "PlayerManager_ButtonEditPlayer": "Edit player",
+            "PlayerManager_ButtonClose": "Close",
+            "PlayerManager_ButtonCloseModifiedState": "Save and close"
+        },
+        "PlayerManager_AddPlayerWindow": {
+            "PlayerManager_AddPlayerWindow_Title": "Add player",
+            "PlayerManager_AddPlayerWindow_NamePlaceholder": "Name",
+            "PlayerManager_AddPlayerWindow_ButtonAdd": "Add",
+            "PlayerManager_AddPlayerWindow_ButtonCancel": "Cancel"
+        },
+        "PlayerManager_RemovePlayerWindow": {
+            "PlayerManager_RemovePlayerWindow_Title": "Remove player",
+            "PlayerManager_RemovePlayerWindow_ButtonRemove": "Remove",
+            "PlayerManager_RemovePlayerWindow_ButtonCancel": "Cancel"
+        }
     }
 }
-

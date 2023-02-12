@@ -1,19 +1,52 @@
 {
-    "languageName": "Deutsch",
+    "localLanguageName": "Deutsch",
+    "internationalLanguageName": "German",
+    "languageCode": "de",
     "translations": {
-        "MenuBarButtonGame": "Spiel",
-        "MenuBarButtonSettings": "Einstellungen",
-        "MenuBarButtonLanguage": "Sprache",
-        "MenuBarButtonHelp": "Hilfe",
-        "MenuBarButtonExit": "Beenden",
-        "MenuBarButtonDebugWindow": "Debugfenster",
-        "MenuBarButtonTestTrigger": "Testauslöser",
-        "MenuBarMenuGame": {
+        "MenuBar_ButtonGame": "Spiel",
+        "MenuBar_ButtonSettings": "Einstellungen",
+        "MenuBar_ButtonLanguage": "Sprache",
+        "MenuBar_ButtonHelp": "Hilfe",
+        "MenuBar_ButtonExit": "Beenden",
+        "MenuBar_ButtonDebugWindow": "Debugfenster",
+        "MenuBar_ButtonTestTrigger": "Testauslöser",
+        "MenuBar_MenuGame": {
+            "Restart": "Neustart",
             "NewGame": "Neues Spiel",
             "LoadGame": "Spiel laden",
             "SaveGame": "Spiel speichern",
-            "SaveGameAs": "Spiel speichern unter",
-            "Exit": "Beenden"
+            "SaveGameAs": "Spiel speichern unter...",
+            "Exit": "Beenden",
+            "MenuBar_MenuGame_SubmenuGameModes": {
+                "301": "301",
+                "501": "501",
+                "701": "701",
+                "Single Out": "Single Out",
+                "Double Out": "Double Out",
+                "Master Out": "Master Out"
+            }
         },
+        "MenuBar_MenuSettings": {
+            "PlayerManager": "Spieler verwalten..."
+        },
+        "PlayerManager_PlayerManagerWindow": {
+            "PlayerManager_PlayerManagerTitle": "Spielerverwaltung",
+            "PlayerManager_ButtonAddPlayer": "Spieler hinzufügen",
+            "PlayerManager_ButtonRemovePlayer": "Spieler entfernen",
+            "PlayerManager_ButtonEditPlayer": "Spieler bearbeiten",
+            "PlayerManager_ButtonClose": "Schließen",
+            "PlayerManager_ButtonCloseModifiedState": "Speichern und schließen"
+        },
+        "PlayerManager_AddPlayerWindow": {
+            "PlayerManager_AddPlayerWindow_Title": "Spieler hinzufügen",
+            "PlayerManager_AddPlayerWindow_NamePlaceholder": "Name",
+            "PlayerManager_AddPlayerWindow_ButtonAdd": "Hinzufügen",
+            "PlayerManager_AddPlayerWindow_ButtonCancel": "Abbrechen"
+        },
+        "PlayerManager_RemovePlayerWindow": {
+            "PlayerManager_RemovePlayerWindow_Title": "Spieler entfernen:",
+            "PlayerManager_RemovePlayerWindow_ButtonRemove": "Entfernen",
+            "PlayerManager_RemovePlayerWindow_ButtonCancel": "Abbrechen"
+        }
     }
 }
