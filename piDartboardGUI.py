@@ -106,7 +106,9 @@ try:
     if n == 0:
         print("No primary monitor found!")
 except:
-    print("No monitor found!")
+    print("No monitor found! Setting default values.")
+    MonitorWidth = 1920
+    MonitorHeight = 1080
     pass
 ###
 
