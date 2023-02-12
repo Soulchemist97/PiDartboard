@@ -71,8 +71,8 @@ def findLanguageFiles():
     for file in os.listdir(languageDir):
         if file.endswith(".lang"):
             # load language name from within the file
-            languageName = json.load(open(f"{languageDir}{file}"))["languageName"]
-            languageFiles.append(languageName)
+            localLanguageName = json.load(open(f"{languageDir}{file}"))["localLanguageName"]
+            languageFiles.append(localLanguageName)
             languageFiles.append(file)
     if languageFiles == []:
         print("No language files found!")
