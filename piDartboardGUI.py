@@ -96,11 +96,18 @@ players = SB.PlayerNames
 # Get information about primary monitor
 n = 0
 MonitorInfo = []
-for m in get_monitors():
-    if m.is_primary:
-        MonitorInfo = str(m)
-        MonitorHeight = m.height
-        MonitorWidth = m.width
+try:
+    for m in get_monitors():
+        if m.is_primary:
+            MonitorInfo = str(m)
+            MonitorHeight = m.height
+            MonitorWidth = m.width
+            n += 1
+    if n == 0:
+        print("No primary monitor found!")
+except:
+    print("No monitor found!")
+    pass
 ###
 
 
