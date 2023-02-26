@@ -200,7 +200,7 @@ class MainWindow(QMainWindow):
         shot_one = self.findChild(QLabel, 'Shot1Indicator')
         shot_two = self.findChild(QLabel, 'Shot2Indicator')
         shot_three = self.findChild(QLabel, 'Shot3Indicator')
-        shot_x_base = screen_width - 120 # outer x position of the shots - 1920-120=1800
+        shot_x_base = screen_width - 110 # outer x position of the shots - 1920-120=1800
         shot_one.setGeometry(shot_x_base - 135, 5, 100, 100) #x, y, width, height
         shot_two.setGeometry(shot_x_base - 70, 5, 100, 100) #x, y, width, height
         shot_three.setGeometry(shot_x_base, 5, 100, 100) #x, y, width, height
@@ -225,6 +225,34 @@ class MainWindow(QMainWindow):
         CurrentScoreLabel = self.findChild(QLabel, 'CurrentScore')
         CurrentScoreLabel.setFont(QFont('Roboto', 60, QFont.Bold))
         CurrentScoreLabel.setGeometry(550, 0, 500, 200) #x, y, width, height
+
+        PlayerScoreAreaX = screen_width - 850
+        PlayerScoreAreaY = 15
+        PlayerRoundScoreLabel = self.findChild(QLabel, 'RoundScoreLabel')
+        PlayerRoundScoreLabel.setFont(QFont('Roboto', 25))
+        PlayerRoundScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY, 200, 30) #x, y, width, height
+        PlayerRoundScoreCumulativeLabel = self.findChild(QLabel, 'RoundScoreCumulated')
+        PlayerRoundScoreCumulativeLabel.setFont(QFont('Roboto', 25, QFont.Bold))
+        PlayerRoundScoreCumulativeLabel.setGeometry(PlayerScoreAreaX + 210, PlayerScoreAreaY, 200, 30) #x, y, width, height
+
+        PlayerRoundOneScoreLabel = self.findChild(QLabel, 'RoundScoreFirstLabel')
+        PlayerRoundOneScoreLabel.setFont(QFont('Roboto', 18))
+        PlayerRoundOneScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY + 40, 200, 30) #x, y, width, height
+        PlayerRoundOneScoreNumberLabel = self.findChild(QLabel, 'RoundScoreFirstThrow')
+        PlayerRoundOneScoreNumberLabel.setFont(QFont('Roboto', 18, QFont.Bold))
+        PlayerRoundOneScoreNumberLabel.setGeometry(PlayerScoreAreaX + 60, PlayerScoreAreaY + 40, 200, 30) #x, y, width, height
+        PlayerRoundTwoScoreLabel = self.findChild(QLabel, 'RoundScoreSecondLabel')
+        PlayerRoundTwoScoreLabel.setFont(QFont('Roboto', 18))
+        PlayerRoundTwoScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY + 80, 200, 30) #x, y, width, height
+        PlayerRoundTwoScoreNumberLabel = self.findChild(QLabel, 'RoundScoreSecondThrow')
+        PlayerRoundTwoScoreNumberLabel.setFont(QFont('Roboto', 18, QFont.Bold))
+        PlayerRoundTwoScoreNumberLabel.setGeometry(PlayerScoreAreaX + 60, PlayerScoreAreaY + 80, 200, 30) #x, y, width, height
+        PlayerRoundThreeScoreLabel = self.findChild(QLabel, 'RoundScoreThirdLabel')
+        PlayerRoundThreeScoreLabel.setFont(QFont('Roboto', 18))
+        PlayerRoundThreeScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY + 120, 200, 30) #x, y, width, height
+        PlayerRoundThreeScoreNumberLabel = self.findChild(QLabel, 'RoundScoreThirdThrow')
+        PlayerRoundThreeScoreNumberLabel.setFont(QFont('Roboto', 18, QFont.Bold))
+        PlayerRoundThreeScoreNumberLabel.setGeometry(PlayerScoreAreaX + 60, PlayerScoreAreaY + 120, 200, 30) #x, y, width, height
 
         NextPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerCombo')
         NextPlayerLabel.setFont(QFont('Roboto', 40))
