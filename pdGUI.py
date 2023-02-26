@@ -123,7 +123,56 @@ class MainWindow(QMainWindow):
         uic.loadUi(os.path.join(ui_dir, "MainWindow.ui"), self)
 
         # Menu bar actions
-        
+        MenubarGame_actionRestart = self.findChild(QAction, 'menubar_Game_actionRestart')
+        MenubarGame_actionRestart.triggered.connect(self.Restart)
+        MenubarGame_actionSave = self.findChild(QAction, 'menubar_Game_actionSave')
+        MenubarGame_actionSave.triggered.connect(self.Save)
+        MenubarGame_actionSaveAs = self.findChild(QAction, 'menubar_Game_actionSaveAs')
+        MenubarGame_actionSaveAs.triggered.connect(self.SaveAs)
+        MenubarGame_actionManualMode = self.findChild(QAction, 'menubar_Game_actionManualMode')
+        MenubarGame_actionManualMode.setCheckable(True)
+        MenubarGame_actionManualMode.triggered.connect(self.ManualMode)
+
+        GameModes_action301 = self.findChild(QAction, 'menuGame_Modes_action301')
+        GameModes_action301.setCheckable(True)
+        GameModes_action301.triggered.connect(self.GameMode)
+        GameModes_action301.setChecked(True) # Set default game mode
+
+        GameModes_action501 = self.findChild(QAction, 'menuGame_Modes_action501')
+        GameModes_action501.setCheckable(True)
+        GameModes_action501.triggered.connect(self.GameMode)
+
+        GameModes_action701 = self.findChild(QAction, 'menuGame_Modes_action701')
+        GameModes_action701.setCheckable(True)
+        GameModes_action701.triggered.connect(self.GameMode)
+
+        GameModes_SingleOut = self.findChild(QAction, 'menuGame_Modes_actionSingle_Out')
+        GameModes_SingleOut.setCheckable(True)
+        GameModes_SingleOut.triggered.connect(self.GameMode)
+
+        GameModes_DoubleOut = self.findChild(QAction, 'menuGame_Modes_actionDouble_Out')
+        GameModes_DoubleOut.setCheckable(True)
+        GameModes_DoubleOut.setChecked(True) # Set default game mode
+        GameModes_DoubleOut.triggered.connect(self.GameMode)
+
+        GameModes_MasterOut = self.findChild(QAction, 'menuGame_Modes_actionMaster_Out')
+        GameModes_MasterOut.setCheckable(True)
+        GameModes_MasterOut.triggered.connect(self.GameMode)
+
+        MenubarSettings_Undo = self.findChild(QAction, 'menubar_Settings_actionUndo')
+        MenubarSettings_Undo.triggered.connect(self.UndoAction)
+        MenubarSettings_Redo = self.findChild(QAction, 'menubar_Settings_actionRedo')
+        MenubarSettings_Redo.triggered.connect(self.RedoAction)
+        MenubarSettings_Language = self.findChild(QAction, 'menubar_Settings_actionLanguage')
+        MenubarSettings_Language.triggered.connect(self.LanguageSettings)
+        MenubarSettings_PlayerManager = self.findChild(QAction, 'menubar_Settings_actionPlayerManager')
+        MenubarSettings_PlayerManager.triggered.connect(self.PlayerManager_show)
+        MenubarSettings_PlayerPlaceholder = self.findChild(QAction, 'menubar_Settings_actionPlayerPlaceholder')
+        MenubarSettings_PlayerPlaceholder.triggered.connect(self.PlayerPlaceholder)
+
+        # Status bar
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Finished loading!")
         #dartboardImage = self.findChild(QGraphicsView, 'dartboardView')
         #dartboardImage.setPixmap(dartboardI) #Doesn't work!!!! FUCK!
         PlayerManagerShowButton = self.findChild(QPushButton, 'MainWindowButtonPlayerManager')
@@ -138,21 +187,56 @@ class MainWindow(QMainWindow):
         UndoButton.clicked.connect(self.UndoAction)
 
     def PlayerManager_show(self):
-        print("Player Manager")
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Player Manager button!", 2000)
 
     def AddPlayer(self):
-        print("Add Player")
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Add Player button!", 2000)
 
     def RemovePlayer(self):
-        print("Remove Player")
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Remove Player button!", 2000)
 
     def EditPlayer(self):
-        print("Edit Player")
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Edit Player button!", 2000)
 
     def UndoAction(self):
-        print("Undo Action")
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Undo button!", 2000)
 
+    def RedoAction(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Redo button!", 2000)
 
+    def Save(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Save button!", 2000)
+
+    def SaveAs(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Save As button!", 2000)
+
+    def GameMode(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Game Mode button!", 2000)
+
+    def LanguageSettings(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Language button!", 2000)
+
+    def PlayerPlaceholder(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Nothing happened...", 2000)
+
+    def ManualMode(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Manual Mode button!", 2000)
+
+    def Restart(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Restart button!", 2000)
 
 
 
