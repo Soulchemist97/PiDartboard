@@ -32,6 +32,7 @@ image_dir = os.path.join(cwd, "images\\") # Image files
 font_dir = os.path.join(cwd, "fonts\\") # Font files
 ui_dir = os.path.join(cwd, "ui\\") # PyQt5 ui files
 application_defaults = os.path.join(cwd, "appDefaults.json") # Application defaults
+game_is_running = False # Game flag
 
 
 # Set application information
@@ -135,29 +136,39 @@ class MainWindow(QMainWindow):
 
         GameModes_action301 = self.findChild(QAction, 'menuGame_Modes_action301')
         GameModes_action301.setCheckable(True)
-        GameModes_action301.triggered.connect(self.GameModeSwitch, 301)
+        GameModes_action301.triggered.connect(lambda: self.GameModeSwitch("301", game_is_running))
         GameModes_action301.setChecked(True) # Set default game mode
 
         GameModes_action501 = self.findChild(QAction, 'menuGame_Modes_action501')
         GameModes_action501.setCheckable(True)
-        GameModes_action501.triggered.connect(self.GameModeSwitch, 501)
+        GameModes_action501.triggered.connect(lambda: self.GameModeSwitch("501", game_is_running))
 
         GameModes_action701 = self.findChild(QAction, 'menuGame_Modes_action701')
         GameModes_action701.setCheckable(True)
-        GameModes_action701.triggered.connect(self.GameModeSwitch, 701)
+        GameModes_action701.triggered.connect(lambda: self.GameModeSwitch("701", game_is_running))
 
         GameModes_SingleOut = self.findChild(QAction, 'menuGame_Modes_actionSingle_Out')
         GameModes_SingleOut.setCheckable(True)
-        GameModes_SingleOut.triggered.connect(self.GameModeSwitch, "SingleOut")
+        GameModes_SingleOut.triggered.connect(lambda: self.GameModeSwitch("SingleOut", game_is_running))
 
         GameModes_DoubleOut = self.findChild(QAction, 'menuGame_Modes_actionDouble_Out')
         GameModes_DoubleOut.setCheckable(True)
         GameModes_DoubleOut.setChecked(True) # Set default game mode
-        GameModes_DoubleOut.triggered.connect(self.GameModeSwitch, "DoubleOut")
+        GameModes_DoubleOut.triggered.connect(lambda: self.GameModeSwitch("Double Out", game_is_running))
 
         GameModes_MasterOut = self.findChild(QAction, 'menuGame_Modes_actionMaster_Out')
         GameModes_MasterOut.setCheckable(True)
-        GameModes_MasterOut.triggered.connect(self.GameModeSwitch, "MasterOut")
+        GameModes_MasterOut.triggered.connect(lambda: self.GameModeSwitch("MasterOut", game_is_running))
+
+        # Transform checkable actions into radio buttons
+        ActionGroupGameModeScoring = QActionGroup(self)
+        ActionGroupGameModeScoring.addAction(GameModes_action301)
+        ActionGroupGameModeScoring.addAction(GameModes_action501)
+        ActionGroupGameModeScoring.addAction(GameModes_action701)
+        ActionGroupGameMode = QActionGroup(self)
+        ActionGroupGameMode.addAction(GameModes_SingleOut)
+        ActionGroupGameMode.addAction(GameModes_DoubleOut)
+        ActionGroupGameMode.addAction(GameModes_MasterOut)
 
         MenubarSettings_Undo = self.findChild(QAction, 'menubar_Settings_actionUndo')
         MenubarSettings_Undo.triggered.connect(self.UndoAction)
@@ -218,9 +229,14 @@ class MainWindow(QMainWindow):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Save As button!", 2000)
 
-    def GameModeSwitch(self, mode):
+    def GameModeSwitch(self, modeswitch, game_is_running):
+        if game_is_running:
+            StatusBar = self.findChild(QStatusBar, 'statusBar')
+            StatusBar.showMessage("You cannot change the game mode while a game is running!", 2000)
+            return
         StatusBar = self.findChild(QStatusBar, 'statusBar')
-        StatusBar.showMessage(f"Clicked Game Mode {mode} button!", 2000)
+        StatusBar.showMessage(f"Clicked Game Mode {modeswitch} button!", 2000)
+        game_is_running = True
 
     def LanguageSettings(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
