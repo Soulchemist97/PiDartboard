@@ -135,29 +135,29 @@ class MainWindow(QMainWindow):
 
         GameModes_action301 = self.findChild(QAction, 'menuGame_Modes_action301')
         GameModes_action301.setCheckable(True)
-        GameModes_action301.triggered.connect(self.GameMode)
+        GameModes_action301.triggered.connect(self.GameModeSwitch, 301)
         GameModes_action301.setChecked(True) # Set default game mode
 
         GameModes_action501 = self.findChild(QAction, 'menuGame_Modes_action501')
         GameModes_action501.setCheckable(True)
-        GameModes_action501.triggered.connect(self.GameMode)
+        GameModes_action501.triggered.connect(self.GameModeSwitch, 501)
 
         GameModes_action701 = self.findChild(QAction, 'menuGame_Modes_action701')
         GameModes_action701.setCheckable(True)
-        GameModes_action701.triggered.connect(self.GameMode)
+        GameModes_action701.triggered.connect(self.GameModeSwitch, 701)
 
         GameModes_SingleOut = self.findChild(QAction, 'menuGame_Modes_actionSingle_Out')
         GameModes_SingleOut.setCheckable(True)
-        GameModes_SingleOut.triggered.connect(self.GameMode)
+        GameModes_SingleOut.triggered.connect(self.GameModeSwitch, "SingleOut")
 
         GameModes_DoubleOut = self.findChild(QAction, 'menuGame_Modes_actionDouble_Out')
         GameModes_DoubleOut.setCheckable(True)
         GameModes_DoubleOut.setChecked(True) # Set default game mode
-        GameModes_DoubleOut.triggered.connect(self.GameMode)
+        GameModes_DoubleOut.triggered.connect(self.GameModeSwitch, "DoubleOut")
 
         GameModes_MasterOut = self.findChild(QAction, 'menuGame_Modes_actionMaster_Out')
         GameModes_MasterOut.setCheckable(True)
-        GameModes_MasterOut.triggered.connect(self.GameMode)
+        GameModes_MasterOut.triggered.connect(self.GameModeSwitch, "MasterOut")
 
         MenubarSettings_Undo = self.findChild(QAction, 'menubar_Settings_actionUndo')
         MenubarSettings_Undo.triggered.connect(self.UndoAction)
@@ -218,9 +218,9 @@ class MainWindow(QMainWindow):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Save As button!", 2000)
 
-    def GameMode(self):
+    def GameModeSwitch(self, mode):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
-        StatusBar.showMessage("Clicked Game Mode button!", 2000)
+        StatusBar.showMessage(f"Clicked Game Mode {mode} button!", 2000)
 
     def LanguageSettings(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
