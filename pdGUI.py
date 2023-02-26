@@ -16,7 +16,7 @@ from PyQt5.QtCore import * # pip install PyQt5
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-from screeninfo import get_monitors # pip install screeninfo
+from tkinter import Tk # pip install tkinter
 from Player_Manager import ScoreBoard
 
 print("piDartboardGUI: GUI for the piDartboard project.")
@@ -37,10 +37,10 @@ game_is_running = False # Game flag
 
 # Set application information
 app.setApplicationName("piDartboard.GUI")
-app.setApplicationDisplayName(f"piDartboard - {__version__}")
+app.setApplicationDisplayName(f"piDartboard")
 app.setApplicationVersion(__version__)
 app.setWindowIcon(QIcon(os.path.join(image_dir, "favicon.png")))
-app.setStyle('Fusion')
+app.setStyle('Breeze')
 app.setFont(QFont("Roboto", 10))
 
 
@@ -77,22 +77,10 @@ language_files = find_language_files()
 
 
 # Get information about primary monitor
-n = 0
-MonitorInfo = []
-try:
-    for m in get_monitors():
-        if m.is_primary:
-            MonitorInfo = str(m)
-            MonitorHeight = m.height
-            MonitorWidth = m.width
-            n += 1
-    if n == 0:
-        print("No primary monitor found!")
-except:
-    print("No monitor found! Setting default values.")
-    MonitorWidth = 1920
-    MonitorHeight = 1080
-    pass
+Screen = QDesktopWidget().screenGeometry()
+screen_width = Screen.width()
+screen_height = Screen.height()
+screen_center = QDesktopWidget().availableGeometry().center()
 
 
 # Register custom fonts
@@ -101,10 +89,14 @@ QFontDatabase.addApplicationFont(os.path.join(font_dir, "Roboto-Bold.ttf"))
 
 
 # Load images as pixmaps
-dartL = QPixmap(os.path.join(image_dir, "dartL.png"))
-dartR = QPixmap(os.path.join(image_dir, "dartR.png"))
-dartboardI = QPixmap(os.path.join(image_dir, "dartboard.png"))
-logoSmall = QPixmap(os.path.join(image_dir, "piDartboardLogoSmall.png"))
+dartL = QPixmap()
+dartL.load(os.path.join(image_dir, "dartL.png"))
+dartR = QPixmap()
+dartR.load(os.path.join(image_dir, "dartR.png"))
+dartboardI = QImage()
+dartboardI.load(os.path.join(image_dir, "dartboard.png"))
+logoSmall = QPixmap()
+logoSmall.load(os.path.join(image_dir, "piDartboardLogoSmall.png"))
 
 
 # Player manager dialog
@@ -122,17 +114,30 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
         uic.loadUi(os.path.join(ui_dir, "MainWindow.ui"), self)
+        self.setWindowTitle("Game Setup")
 
-        # Menu bar actions
+        # Connect menu bar actions
         MenubarGame_actionRestart = self.findChild(QAction, 'menubar_Game_actionRestart')
         MenubarGame_actionRestart.triggered.connect(self.Restart)
+        MenubarGame_actionRestart.setStatusTip("Restart the game (all unsaved data will be lost)")
+
+        MenubarGame_actionLoad = self.findChild(QAction, 'menubar_Game_actionLoad')
+        MenubarGame_actionLoad.triggered.connect(self.Load)
+        MenubarGame_actionLoad.setStatusTip("Load a saved game")
+
         MenubarGame_actionSave = self.findChild(QAction, 'menubar_Game_actionSave')
         MenubarGame_actionSave.triggered.connect(self.Save)
+        MenubarGame_actionSave.setStatusTip("Save your current game")
+        MenubarGame_actionSave.setShortcut("F5")
+
         MenubarGame_actionSaveAs = self.findChild(QAction, 'menubar_Game_actionSaveAs')
         MenubarGame_actionSaveAs.triggered.connect(self.SaveAs)
+        MenubarGame_actionSaveAs.setStatusTip("Save your current game at a custom location")
+
         MenubarGame_actionManualMode = self.findChild(QAction, 'menubar_Game_actionManualMode')
         MenubarGame_actionManualMode.setCheckable(True)
         MenubarGame_actionManualMode.triggered.connect(self.ManualMode)
+        MenubarGame_actionManualMode.setStatusTip("Enable manual shot input mode")
 
         GameModes_action301 = self.findChild(QAction, 'menuGame_Modes_action301')
         GameModes_action301.setCheckable(True)
@@ -181,11 +186,60 @@ class MainWindow(QMainWindow):
         MenubarSettings_PlayerPlaceholder = self.findChild(QAction, 'menubar_Settings_actionPlayerPlaceholder')
         MenubarSettings_PlayerPlaceholder.triggered.connect(self.PlayerPlaceholder)
 
-        # Status bar
-        StatusBar = self.findChild(QStatusBar, 'statusBar')
-        StatusBar.showMessage("Finished loading!")
-        #dartboardImage = self.findChild(QGraphicsView, 'dartboardView')
-        #dartboardImage.setPixmap(dartboardI) #Doesn't work!!!! FUCK!
+        # Load dartboard image
+        dartboardImage = self.findChild(QLabel, 'dartboardView')
+        dartboardImage.setGeometry(screen_width - 820, screen_height - 910, 800, 800) #x, y, width, height
+        dartboardImageFile = QPixmap()
+        dartboardImageFile.load(os.path.join(image_dir, "dartboard.png"))
+        dartboardImage.setScaledContents(True)
+        dartboardImage.setPixmap(dartboardImageFile)
+
+        # Load shot indicators
+        shot_file = QPixmap()
+        shot_file.load(os.path.join(image_dir, "dartR.png"))
+        shot_one = self.findChild(QLabel, 'Shot1Indicator')
+        shot_two = self.findChild(QLabel, 'Shot2Indicator')
+        shot_three = self.findChild(QLabel, 'Shot3Indicator')
+        shot_x_base = screen_width - 120 # outer x position of the shots - 1920-120=1800
+        shot_one.setGeometry(shot_x_base - 135, 5, 100, 100) #x, y, width, height
+        shot_two.setGeometry(shot_x_base - 70, 5, 100, 100) #x, y, width, height
+        shot_three.setGeometry(shot_x_base, 5, 100, 100) #x, y, width, height
+        shot_one.setScaledContents(True)
+        shot_two.setScaledContents(True)
+        shot_three.setScaledContents(True)
+        shot_one.setPixmap(shot_file)
+        shot_two.setPixmap(shot_file)
+        shot_three.setPixmap(shot_file)
+
+        shots_remaining = self.findChild(QLabel, 'darts_ShotsRemaining')
+        shots_remaining.setGeometry(screen_width - 180, 60, 200, 120) #x, y, width, height
+        shots_remaining.setFont(QFont('Roboto', 14, QFont.Bold))
+        shots_remaining.opacity_effect = QGraphicsOpacityEffect()
+        shots_remaining.opacity_effect.setOpacity(0.4)
+        shots_remaining.setGraphicsEffect(shots_remaining.opacity_effect)
+
+        # Player data
+        CurrentPlayerLabel = self.findChild(QLabel, 'CurrentPlayer')
+        CurrentPlayerLabel.setFont(QFont('Roboto', 60))
+        CurrentPlayerLabel.setGeometry(20, 0, 550, 200) #x, y, width, height
+        CurrentScoreLabel = self.findChild(QLabel, 'CurrentScore')
+        CurrentScoreLabel.setFont(QFont('Roboto', 60, QFont.Bold))
+        CurrentScoreLabel.setGeometry(550, 0, 500, 200) #x, y, width, height
+
+        NextPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerCombo')
+        NextPlayerLabel.setFont(QFont('Roboto', 40))
+        NextPlayerLabel.setGeometry(25, 100, 650, 200) #x, y, width, height
+        NextPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
+        NextPlayerLabel.opacity_effect.setOpacity(0.8)
+        NextPlayerLabel.setGraphicsEffect(NextPlayerLabel.opacity_effect)
+
+        UpcomingPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerAfterCombo')
+        UpcomingPlayerLabel.setFont(QFont('Roboto', 40))
+        UpcomingPlayerLabel.setGeometry(25, 180, 650, 200) #x, y, width, height
+        UpcomingPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
+        UpcomingPlayerLabel.opacity_effect.setOpacity(0.8)
+        UpcomingPlayerLabel.setGraphicsEffect(UpcomingPlayerLabel.opacity_effect)
+
         PlayerManagerShowButton = self.findChild(QPushButton, 'MainWindowButtonPlayerManager')
         PlayerManagerShowButton.clicked.connect(self.PlayerManager_show)
         PlayerAddButton = self.findChild(QPushButton, 'MainWindowButtonAddPlayer')
@@ -197,9 +251,14 @@ class MainWindow(QMainWindow):
         UndoButton = self.findChild(QPushButton, 'MainWindowButtonRevertAction')
         UndoButton.clicked.connect(self.UndoAction)
 
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage(f"Finished loading! - PiDartboard v{__version__} - Monitor1: {screen_width}x{screen_height}")
+
     def PlayerManager_show(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Player Manager button!", 2000)
+        self.PlayerManager = PlayerManager()
+        self.PlayerManager.show()
 
     def AddPlayer(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
@@ -220,6 +279,10 @@ class MainWindow(QMainWindow):
     def RedoAction(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Redo button!", 2000)
+
+    def Load(self):
+        StatusBar = self.findChild(QStatusBar, 'statusBar')
+        StatusBar.showMessage("Clicked Load button!", 2000)
 
     def Save(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
@@ -245,6 +308,7 @@ class MainWindow(QMainWindow):
     def PlayerPlaceholder(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Nothing happened...", 2000)
+        self.CurrentPlayerStatus()
 
     def ManualMode(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
@@ -253,6 +317,9 @@ class MainWindow(QMainWindow):
     def Restart(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Restart button!", 2000)
+
+    def CurrentPlayerStatus(self):
+        StatusLine = self.findChild(QLine, 'CurrentPlayerStatusLine')
 
 
 
@@ -289,7 +356,6 @@ class Window(QWidget):
 
 if __name__ == "__main__":
     print(f"Available Languages: {language_files}")
-    print(f"Primary Monitor: {MonitorWidth}x{MonitorHeight}")
     AppWindow = MainWindow()
-    AppWindow.show()
+    AppWindow.showMaximized()
     sys.exit(app.exec_())

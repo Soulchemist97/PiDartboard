@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1740</width>
-    <height>980</height>
+    <height>977</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -37,7 +37,7 @@
      </font>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="text">
      <string>CurrentPlayer:</string>
@@ -58,10 +58,10 @@
      </font>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="text">
-     <string>UpcomingPlayer:UpcomingPlayerScore</string>
+     <string>UpcomingPlayer: UpcomingPlayerScore</string>
     </property>
    </widget>
    <widget class="QLabel" name="UpcomingPlayerAfterCombo">
@@ -79,10 +79,10 @@
      </font>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="text">
-     <string>UpcomingPlayer:UpcomingPlayerScore</string>
+     <string>UpcomingPlayer: UpcomingPlayerScore</string>
     </property>
    </widget>
    <widget class="QPushButton" name="MainWindowButtonAddPlayer">
@@ -161,48 +161,6 @@
      <string>Edit</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="Shot3Indicator">
-    <property name="geometry">
-     <rect>
-      <x>1670</x>
-      <y>0</y>
-      <width>71</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="Shot2Indicator">
-    <property name="geometry">
-     <rect>
-      <x>1600</x>
-      <y>0</y>
-      <width>71</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="Shot1Indicator">
-    <property name="geometry">
-     <rect>
-      <x>1530</x>
-      <y>0</y>
-      <width>71</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
-    </property>
-   </widget>
    <widget class="QLabel" name="darts_ShotsRemaining">
     <property name="geometry">
      <rect>
@@ -242,26 +200,13 @@
      </font>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="text">
      <string>CurrentScore</string>
     </property>
-   </widget>
-   <widget class="QGraphicsView" name="dartboardView">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>150</y>
-      <width>890</width>
-      <height>890</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
+    <property name="scaledContents">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLabel" name="RoundScoreLabel">
@@ -439,6 +384,76 @@
      <string>UNDO</string>
     </property>
    </widget>
+   <widget class="QLabel" name="dartboardView">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>150</y>
+      <width>800</width>
+      <height>800</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Shot1Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>0</y>
+      <width>80</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Shot2Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1600</x>
+      <y>0</y>
+      <width>80</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Shot3Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1660</x>
+      <y>0</y>
+      <width>80</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -466,6 +481,7 @@
      <addaction name="menuGame_Modes_actionMaster_Out"/>
     </widget>
     <addaction name="menubar_Game_actionRestart"/>
+    <addaction name="menubar_Game_actionLoad"/>
     <addaction name="menubar_Game_actionSave"/>
     <addaction name="menubar_Game_actionSaveAs"/>
     <addaction name="menubar_Game_actionManualMode"/>
@@ -550,6 +566,11 @@
      <string>TestTrigger</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuSwitchPalette">
+    <property name="title">
+     <string>Dark Mode</string>
+    </property>
+   </widget>
    <addaction name="menubar_Game"/>
    <addaction name="menubar_Settings"/>
    <addaction name="menubarHelp"/>
@@ -558,6 +579,7 @@
    <addaction name="menu"/>
    <addaction name="menubarDevTools"/>
    <addaction name="menubarTestTrigger"/>
+   <addaction name="menuSwitchPalette"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="menubar_Game_actionRestart">
@@ -633,6 +655,11 @@
   <action name="menubar_Settings_actionPlayerPlaceholder">
    <property name="text">
     <string>$Player.Placeholder</string>
+   </property>
+  </action>
+  <action name="menubar_Game_actionLoad">
+   <property name="text">
+    <string>Load</string>
    </property>
   </action>
  </widget>
