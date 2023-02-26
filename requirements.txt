@@ -1,3 +1,4 @@
 screeninfo
 numpy
 dearpygui
+PyQt5

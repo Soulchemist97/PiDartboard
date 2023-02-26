@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1740</width>
+    <height>980</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="CurrentPlayer">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>341</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>32</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>CurrentPlayer:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UpcomingPlayerCombo">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>331</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>UpcomingPlayer:UpcomingPlayerScore</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UpcomingPlayerAfterCombo">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>300</y>
+      <width>331</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>UpcomingPlayer:UpcomingPlayerScore</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MainWindowButtonAddPlayer">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>61</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MainWindowButtonRemovePlayer">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>430</y>
+      <width>61</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MainWindowButtonPlayerManager">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>430</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Player Manager</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MainWindowButtonEditPlayer">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>430</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Edit</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="Shot3Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1670</x>
+      <y>0</y>
+      <width>71</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="Shot2Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1600</x>
+      <y>0</y>
+      <width>71</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="Shot1Indicator">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>0</y>
+      <width>71</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="darts_ShotsRemaining">
+    <property name="geometry">
+     <rect>
+      <x>1630</x>
+      <y>70</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>SHOTS REMAINING</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CurrentScore">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>10</y>
+      <width>341</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>32</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>CurrentScore</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="dartboardView">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>150</y>
+      <width>890</width>
+      <height>890</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreLabel">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>0</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Round Score:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreCumulated">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>0</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>RoundScore</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreFirstLabel">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>70</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>1.:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreSecondLabel">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>70</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>2.:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreThirdLabel">
+    <property name="geometry">
+     <rect>
+      <x>1350</x>
+      <y>70</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>3.:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreFirstThrow">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>80</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>FirstThrowScore</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreSecondThrow">
+    <property name="geometry">
+     <rect>
+      <x>1230</x>
+      <y>80</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SecondThrowScore</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="RoundScoreThirdThrow">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>80</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ThirdThrowScore</string>
+    </property>
+   </widget>
+   <widget class="Line" name="CurrentPlayerStatusLine">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-20</y>
+      <width>16</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>5</pointsize>
+     </font>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>4</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MainWindowButtonRevertAction">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>430</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>UNDO</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1740</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuGame">
+    <property name="title">
+     <string>Game</string>
+    </property>
+    <widget class="QMenu" name="menuGame_Modes">
+     <property name="title">
+      <string>Game Modes</string>
+     </property>
+     <addaction name="action301"/>
+     <addaction name="action501"/>
+     <addaction name="action701"/>
+     <addaction name="separator"/>
+     <addaction name="actionSingle_Out"/>
+     <addaction name="actionDouble_Out"/>
+     <addaction name="actionMaster_Out"/>
+    </widget>
+    <addaction name="actionRestart"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="actionManual_Mode"/>
+    <addaction name="separator"/>
+    <addaction name="menuGame_Modes"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionPlayer_Manager"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlayer_Manager_2"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSpacer">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::PreventContextMenu</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>true</bool>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDebugWindows">
+    <property name="title">
+     <string>DebugWindow</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::PreventContextMenu</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>true</bool>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDevTools">
+    <property name="title">
+     <string>DevTools</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuTestTrigger">
+    <property name="title">
+     <string>TestTrigger</string>
+    </property>
+   </widget>
+   <addaction name="menuGame"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuLanguage"/>
+   <addaction name="menuHelp"/>
+   <addaction name="menuSpacer"/>
+   <addaction name="menuDebugWindows"/>
+   <addaction name="menu"/>
+   <addaction name="menuDevTools"/>
+   <addaction name="menuTestTrigger"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionRestart">
+   <property name="text">
+    <string>Restart</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionManual_Mode">
+   <property name="text">
+    <string>Manual Mode</string>
+   </property>
+  </action>
+  <action name="action301">
+   <property name="text">
+    <string>301</string>
+   </property>
+  </action>
+  <action name="action501">
+   <property name="text">
+    <string>501</string>
+   </property>
+  </action>
+  <action name="action701">
+   <property name="text">
+    <string>701</string>
+   </property>
+  </action>
+  <action name="actionSingle_Out">
+   <property name="text">
+    <string>Single Out</string>
+   </property>
+  </action>
+  <action name="actionDouble_Out">
+   <property name="text">
+    <string>Double Out</string>
+   </property>
+  </action>
+  <action name="actionMaster_Out">
+   <property name="text">
+    <string>Master Out</string>
+   </property>
+  </action>
+  <action name="actionPlayer_Manager">
+   <property name="text">
+    <string>Undo...</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo...</string>
+   </property>
+  </action>
+  <action name="actionPlayer_Manager_2">
+   <property name="text">
+    <string>Player Manager</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
