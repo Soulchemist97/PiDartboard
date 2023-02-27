@@ -18,6 +18,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 import qdarktheme # pip install PyQtDarkTheme
 from tkinter import Tk # pip install tkinter
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+
 from Player_Manager import ScoreBoard
 
 print("piDartboardGUI: GUI for the piDartboard project.")
@@ -190,12 +192,31 @@ class MainWindow(QMainWindow):
         MenubarSettings_PlayerPlaceholder.triggered.connect(self.PlayerPlaceholder)
 
         # Load dartboard image
+        dartboardSize = 800
         dartboardImage = self.findChild(QLabel, 'dartboardView')
-        dartboardImage.setGeometry(screen_width - 820, screen_height - 910, 800, 800) #x, y, width, height
+        dartboardImage.setGeometry(screen_width - 820, screen_height - 910, dartboardSize, dartboardSize) #x, y, width, height
         dartboardImageFile = QPixmap()
         dartboardImageFile.load(os.path.join(image_dir, "dartboard.png"))
         dartboardImage.setScaledContents(True)
         dartboardImage.setPixmap(dartboardImageFile)
+        #draw point in center of dartboard
+        dartboardCenter = (screen_width - 835 + (dartboardSize / 2), screen_height - 922 + (dartboardSize / 2), 25, 25)
+        dartboardShot1 = self.findChild(QLabel, 'darts_Shot1')
+        dartboardShot1.setGeometry(int(dartboardCenter[0]), int(dartboardCenter[1]), int(dartboardCenter[2]), int(dartboardCenter[3]))
+        dartboardShot1.setFont(QFont("Roboto", 16, QFont.Bold))
+        dartboardShot1.setStyleSheet("QLabel { color : black; border: 1px solid white; }")
+        dartboardShot1.setText("1.")
+        dartboardShot2 = self.findChild(QLabel, 'darts_Shot2')
+        dartboardShot2.setGeometry(int(dartboardCenter[0]+70), int(dartboardCenter[1]), int(dartboardCenter[2]), int(dartboardCenter[3]))
+        dartboardShot2.setFont(QFont("Roboto", 16, QFont.Bold))
+        dartboardShot2.setStyleSheet("QLabel { color : black; border: 1px solid white; }")
+        dartboardShot2.setText("2.")
+        dartboardShot3 = self.findChild(QLabel, 'darts_Shot3')
+        dartboardShot3.setGeometry(int(dartboardCenter[0]), int(dartboardCenter[1] + 280), int(dartboardCenter[2]), int(dartboardCenter[3]))
+        dartboardShot3.setFont(QFont("Roboto", 16, QFont.Bold))
+        dartboardShot3.setStyleSheet("QLabel { color : black; border: 1px solid white; }")
+        dartboardShot3.setText("3.")
+
 
         # Load shot indicators
         shot_file = QPixmap()
@@ -279,7 +300,7 @@ class MainWindow(QMainWindow):
         PlayerScoreAreaY = 15
         PlayerRoundScoreLabel = self.findChild(QLabel, 'RoundScoreLabel')
         PlayerRoundScoreLabel.setFont(QFont('Roboto', 25))
-        PlayerRoundScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY, 200, 30) #x, y, width, height
+        PlayerRoundScoreLabel.setGeometry(PlayerScoreAreaX, PlayerScoreAreaY, 220, 30) #x, y, width, height
         PlayerRoundScoreCumulativeLabel = self.findChild(QLabel, 'RoundScoreCumulated')
         PlayerRoundScoreCumulativeLabel.setFont(QFont('Roboto', 25, QFont.Bold))
         PlayerRoundScoreCumulativeLabel.setGeometry(PlayerScoreAreaX + 210, PlayerScoreAreaY, 200, 30) #x, y, width, height
@@ -317,6 +338,7 @@ class MainWindow(QMainWindow):
         PlayerAddButton.clicked.connect(self.AddPlayer)
         PlayerRemoveButton = self.findChild(QPushButton, 'MainWindowButtonRemovePlayer')
         PlayerRemoveButton.clicked.connect(self.RemovePlayer)
+        PlayerRemoveButton.setStatusTip("Remove the currently selected player from the game.")
         PlayerEditButton = self.findChild(QPushButton, 'MainWindowButtonEditPlayer')
         PlayerEditButton.clicked.connect(self.EditPlayer)
         UndoButton = self.findChild(QPushButton, 'MainWindowButtonRevertAction')
@@ -369,10 +391,16 @@ class MainWindow(QMainWindow):
         StatusBar.showMessage("Clicked Redo button!", 2000)
 
     def Load(self):
+        Tk().withdraw()
+        filename = askopenfilename() # "Open" dialog box, return path of selected file
+        print(filename)
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Load button!", 2000)
 
     def Save(self):
+        #Tk.withdraw()
+        #filename = asksaveasfilename(filetypes=("JSON","*.json")) # "Save" dialog box, return path of selected file
+        #print(filename)
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Save button!", 2000)
 

@@ -2,3 +2,5 @@ screeninfo
 numpy
 dearpygui
 PyQt5
+PyQtDarkTheme
+tkinter

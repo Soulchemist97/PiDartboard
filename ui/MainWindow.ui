@@ -699,6 +699,45 @@
      <string>I</string>
     </property>
    </widget>
+   <widget class="QLabel" name="darts_Shot1">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>690</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="darts_Shot2">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>930</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="darts_Shot3">
+    <property name="geometry">
+     <rect>
+      <x>1250</x>
+      <y>930</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x</string>
+    </property>
+   </widget>
    <zorder>LogBook</zorder>
    <zorder>CurrentPlayer</zorder>
    <zorder>UpcomingPlayerCombo</zorder>
@@ -741,6 +780,9 @@
    <zorder>STAT0</zorder>
    <zorder>STAT6</zorder>
    <zorder>STAT7</zorder>
+   <zorder>darts_Shot1</zorder>
+   <zorder>darts_Shot2</zorder>
+   <zorder>darts_Shot3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

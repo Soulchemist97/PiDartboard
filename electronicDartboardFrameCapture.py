@@ -18,10 +18,10 @@ import RPi.GPIO as GPIO
 ## Detect if not run on RPi
 
 #NOTE############################################################
-# We need the following free RPi GPIO pins: 
+# We need the following free RPi GPIO pins:
 # [11,GPIO17;12,GPIO18;13,GPIO27;15,GPIO22;29,GPIO5;31,GPIO6;33,GPIO13;35,GPIO19;37,GPIO26;16,GPIO23;18,GPIO24;22,GPIO25;32,GPIO12;36,GPIO16;38,GPIO20;40,GPIO21]
 # Half of them should send a signal to the upper matrix layer
-# Half of them should listen on the pins of the lower matrix layer   
+# Half of them should listen on the pins of the lower matrix layer
 #
 # IMOPRTANT:
 #   You have to wire up the GPIO pins the same way to the upper and lower dartboard matrix you wire them up later as a finished game machine. We wired the SenderPins to the lower matrix layer and the ListenerPins to the upper matrix layer. But you obviously don't have to do it like us.
@@ -32,7 +32,7 @@ import RPi.GPIO as GPIO
 #     [1] [2] [3] [4] [5] [6] [7] [8]                |   |   |   |   |   |   |   |
 #      |   |   |   |   |   |   |   |                 |   |   |   |   |   |   |   |
 #     [11][12][13][15][16][18][29][22]              [31][32][33][35][36][37][38][40]
-#   [                             RaspberryPi3 GPIO                                ]  
+#   [                             RaspberryPi3 GPIO                                ]
 
 GPIOMODE = GPIO.BOARD
 freeGPIOSenderPins = [11,12,13,15,16,18,22,29]
@@ -87,14 +87,14 @@ def RPiGPIOSetup(frameName):
         except:
             pass
         GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        
+
     # Get a reference matrix when nothing is pressed (startup)
     referenceMatrix = []
     for pin in freeGPIOListenerPins:
         referenceMatrix.append(GPIO.input(pin))
     print(f'{lightGrey}Reference Matrix: {referenceMatrix}{reset}')
     return referenceMatrix
-    
+
 def getListenerMatrix(referenceMatrix):
     #Grab listener matrix by checking for changes on the GPIO pin signals
     #Example output is: [0, 0, 0, 1, 0, 0, 0, 0]
@@ -126,7 +126,7 @@ def getSenderMatrix(referenceMatrix, listenerMatrixIndex):
     senderMatrix = []
     while True:
         for pin in freeGPIOSenderPins:
-            GPIO.output(pin, GPIO.LOW) 
+            GPIO.output(pin, GPIO.LOW)
             GPIO.output(pin, GPIO.HIGH)
             senderMatrix.append(GPIO.input(freeGPIOListenerPins[listenerMatrixIndex]))
             if not senderMatrix == referenceMatrix:
@@ -138,7 +138,7 @@ def getSenderMatrix(referenceMatrix, listenerMatrixIndex):
         print(f"{green}You're good!{reset}")
         break
     return senderMatrix
-        
+
 def cleanUp():
     print(f'{lightGrey}Cleaning up...{reset}')
     for pin in freeGPIOSenderPins:
