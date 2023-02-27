@@ -16,14 +16,17 @@ from PyQt5.QtCore import * # pip install PyQt5
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+import qdarktheme # pip install PyQtDarkTheme
 from tkinter import Tk # pip install tkinter
 from Player_Manager import ScoreBoard
 
 print("piDartboardGUI: GUI for the piDartboard project.")
 
+qdarktheme.enable_hi_dpi()
+
 # Create QApplication object
 app = QApplication([])
-
+qdarktheme.setup_theme()
 
 # Global Variables
 cwd = os.getcwd() # Current Working Directory
@@ -218,13 +221,60 @@ class MainWindow(QMainWindow):
         shots_remaining.opacity_effect.setOpacity(0.4)
         shots_remaining.setGraphicsEffect(shots_remaining.opacity_effect)
 
+        shooter = self.findChild(QLabel, 'darts_Shooter')
+        shooter.setGeometry(screen_width - screen_width + 36, 10, 200, 20) #x, y, width, height
+        shooter.setFont(QFont('Roboto', 14, QFont.Bold))
+        shooter.setText("CURRENT SHOOTER")
+        shooter.opacity_effect = QGraphicsOpacityEffect()
+        shooter.opacity_effect.setOpacity(0.4)
+        shooter.setGraphicsEffect(shooter.opacity_effect)
+        up_next = self.findChild(QLabel, 'darts_UpNext')
+        up_next.setGeometry(screen_width - screen_width + 36, 180, 200, 20) #x, y, width, height
+        up_next.setFont(QFont('Roboto', 12))
+        up_next.opacity_effect = QGraphicsOpacityEffect()
+        up_next.opacity_effect.setOpacity(0.4)
+        up_next.setGraphicsEffect(up_next.opacity_effect)
+
+        #upcoming arrows
+        for i in range(8):
+            up_i = self.findChild(QLabel, f'UP{i}')
+            up_i.setGeometry(screen_width - screen_width + 5, 185 + 20*i, 200, 20) #x, y, width, height
+            up_i.setFont(QFont('Roboto', 12))
+            up_i.opacity_effect = QGraphicsOpacityEffect()
+            up_i.opacity_effect.setOpacity(0.9 - 0.1*i)
+            up_i.setGraphicsEffect(up_i.opacity_effect)
+
+        # CurrentPlayer Status Bar
+        for i in range(8):
+            stat_i = self.findChild(QLabel, f'STAT{i}')
+            stat_i.setGeometry(4, 0 + 17*i, 200, 20) #x, y, width, height
+            stat_i.setFont(QFont('Roboto', 28, QFont.Bold))
+            stat_i.setStyleSheet("color: #FFFFFF")
+            stat_i.setStyleSheet("color: green")
+
         # Player data
+        CurrentPlayerStatusLine = self.findChild(QLine, 'CurrentPlayerStatusLine')
+        #CurrentPlayerStatusLine.setGeometry(0, 0, 900, 170) #x, y, width, height
         CurrentPlayerLabel = self.findChild(QLabel, 'CurrentPlayer')
-        CurrentPlayerLabel.setFont(QFont('Roboto', 60))
-        CurrentPlayerLabel.setGeometry(20, 0, 550, 200) #x, y, width, height
+        CurrentPlayerLabel.setFont(QFont('Roboto', 90))
+        CurrentPlayerLabel.setGeometry(5, 0, 900, 170) #x, y, width, height
         CurrentScoreLabel = self.findChild(QLabel, 'CurrentScore')
-        CurrentScoreLabel.setFont(QFont('Roboto', 60, QFont.Bold))
-        CurrentScoreLabel.setGeometry(550, 0, 500, 200) #x, y, width, height
+        CurrentScoreLabel.setFont(QFont('Roboto', 65, QFont.Bold))
+        CurrentScoreLabel.setGeometry(550, 0, 500, 150) #x, y, width, height
+
+        NextPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerCombo')
+        NextPlayerLabel.setFont(QFont('Roboto', 40))
+        NextPlayerLabel.setGeometry(25, 130, 650, 200) #x, y, width, height
+        NextPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
+        NextPlayerLabel.opacity_effect.setOpacity(0.8)
+        NextPlayerLabel.setGraphicsEffect(NextPlayerLabel.opacity_effect)
+
+        UpcomingPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerAfterCombo')
+        UpcomingPlayerLabel.setFont(QFont('Roboto', 40))
+        UpcomingPlayerLabel.setGeometry(25, 200, 650, 200) #x, y, width, height
+        UpcomingPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
+        UpcomingPlayerLabel.opacity_effect.setOpacity(0.8)
+        UpcomingPlayerLabel.setGraphicsEffect(UpcomingPlayerLabel.opacity_effect)
 
         PlayerScoreAreaX = screen_width - 850
         PlayerScoreAreaY = 15
@@ -254,19 +304,13 @@ class MainWindow(QMainWindow):
         PlayerRoundThreeScoreNumberLabel.setFont(QFont('Roboto', 18, QFont.Bold))
         PlayerRoundThreeScoreNumberLabel.setGeometry(PlayerScoreAreaX + 60, PlayerScoreAreaY + 120, 200, 30) #x, y, width, height
 
-        NextPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerCombo')
-        NextPlayerLabel.setFont(QFont('Roboto', 40))
-        NextPlayerLabel.setGeometry(25, 100, 650, 200) #x, y, width, height
-        NextPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
-        NextPlayerLabel.opacity_effect.setOpacity(0.8)
-        NextPlayerLabel.setGraphicsEffect(NextPlayerLabel.opacity_effect)
-
-        UpcomingPlayerLabel = self.findChild(QLabel, 'UpcomingPlayerAfterCombo')
-        UpcomingPlayerLabel.setFont(QFont('Roboto', 40))
-        UpcomingPlayerLabel.setGeometry(25, 180, 650, 200) #x, y, width, height
-        UpcomingPlayerLabel.opacity_effect = QGraphicsOpacityEffect()
-        UpcomingPlayerLabel.opacity_effect.setOpacity(0.8)
-        UpcomingPlayerLabel.setGraphicsEffect(UpcomingPlayerLabel.opacity_effect)
+        LogBookArea = self.findChild(QGroupBox, 'LogBook')
+        LogBookArea.setGeometry(screen_width - screen_width + 10, 530, 790, 420) #x, y, width, height
+        LogBookArea.setTitle("Player Log")
+        TextLog = self.findChild(QTextEdit, 'TextLog')
+        TextLog.setPlaceholderText("It is now Limno's turn!\nMathusan threw 20, 20, 20.\nGame started with {n} players.\n") #placeholder for text log functionality
+        TextLog.setFont(QFont('Roboto', 10))
+        TextLog.setGeometry(screen_width - screen_width + 15, 545, 780, 399) #x, y, width, height
 
         PlayerManagerShowButton = self.findChild(QPushButton, 'MainWindowButtonPlayerManager')
         PlayerManagerShowButton.clicked.connect(self.PlayerManager_show)
@@ -279,8 +323,25 @@ class MainWindow(QMainWindow):
         UndoButton = self.findChild(QPushButton, 'MainWindowButtonRevertAction')
         UndoButton.clicked.connect(self.UndoAction)
 
+        LightDarkSwitch = QComboBox()
+        LightDarkSwitch.addItems(qdarktheme.get_themes())
+        LightDarkSwitch.currentTextChanged.connect(qdarktheme.setup_theme)
+
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage(f"Finished loading! - PiDartboard v{__version__} - Monitor1: {screen_width}x{screen_height}")
+
+        #test label alterations
+        CurrentPlayerLabel.setText("Mathusan: 112")
+        CurrentScoreLabel.setText(" ")
+        NextPlayerLabel.setText("Limn0: 144")
+        UpcomingPlayerLabel.setText("Jan B.: 112")
+        PlayerRoundScoreLabel.setText("Round Score:")
+        PlayerRoundScoreCumulativeLabel.setText("60")
+        PlayerRoundOneScoreNumberLabel.setText("20")
+        PlayerRoundTwoScoreNumberLabel.setText("20")
+        PlayerRoundThreeScoreNumberLabel.setText("20")
+        PlayerLog = self.findChild(QTextEdit, 'TextLog')
+        PlayerLog.setPlaceholderText("No actions have been performed yet.")
 
     def PlayerManager_show(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
@@ -348,6 +409,12 @@ class MainWindow(QMainWindow):
 
     def CurrentPlayerStatus(self):
         StatusLine = self.findChild(QLine, 'CurrentPlayerStatusLine')
+
+    def AddToPlayerLog(self):
+        pass
+
+
+
 
 
 

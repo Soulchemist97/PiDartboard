@@ -340,30 +340,6 @@
      <string>ThirdThrowScore</string>
     </property>
    </widget>
-   <widget class="Line" name="CurrentPlayerStatusLine">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>-20</y>
-      <width>16</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>5</pointsize>
-     </font>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="lineWidth">
-     <number>4</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
    <widget class="QPushButton" name="MainWindowButtonRevertAction">
     <property name="geometry">
      <rect>
@@ -454,6 +430,317 @@
      <string>TextLabel</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="LogBook">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>500</y>
+      <width>791</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Log</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="TextLog">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>160</y>
+      <width>771</width>
+      <height>391</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="darts_Shooter">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>5</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SHOOTER</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="darts_UpNext">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>150</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UP NEXT</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>290</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>330</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="UP0">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>210</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>^</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT1">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>30</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>70</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT5">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT0">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>20</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT6">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>130</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="STAT7">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>I</string>
+    </property>
+   </widget>
+   <zorder>LogBook</zorder>
+   <zorder>CurrentPlayer</zorder>
+   <zorder>UpcomingPlayerCombo</zorder>
+   <zorder>UpcomingPlayerAfterCombo</zorder>
+   <zorder>MainWindowButtonAddPlayer</zorder>
+   <zorder>MainWindowButtonRemovePlayer</zorder>
+   <zorder>MainWindowButtonPlayerManager</zorder>
+   <zorder>MainWindowButtonEditPlayer</zorder>
+   <zorder>darts_ShotsRemaining</zorder>
+   <zorder>CurrentScore</zorder>
+   <zorder>RoundScoreLabel</zorder>
+   <zorder>RoundScoreCumulated</zorder>
+   <zorder>RoundScoreFirstLabel</zorder>
+   <zorder>RoundScoreSecondLabel</zorder>
+   <zorder>RoundScoreThirdLabel</zorder>
+   <zorder>RoundScoreFirstThrow</zorder>
+   <zorder>RoundScoreSecondThrow</zorder>
+   <zorder>RoundScoreThirdThrow</zorder>
+   <zorder>MainWindowButtonRevertAction</zorder>
+   <zorder>dartboardView</zorder>
+   <zorder>Shot1Indicator</zorder>
+   <zorder>Shot2Indicator</zorder>
+   <zorder>Shot3Indicator</zorder>
+   <zorder>TextLog</zorder>
+   <zorder>darts_Shooter</zorder>
+   <zorder>darts_UpNext</zorder>
+   <zorder>UP1</zorder>
+   <zorder>UP2</zorder>
+   <zorder>UP3</zorder>
+   <zorder>UP4</zorder>
+   <zorder>UP5</zorder>
+   <zorder>UP6</zorder>
+   <zorder>UP7</zorder>
+   <zorder>UP0</zorder>
+   <zorder>STAT1</zorder>
+   <zorder>STAT2</zorder>
+   <zorder>STAT3</zorder>
+   <zorder>STAT4</zorder>
+   <zorder>STAT5</zorder>
+   <zorder>STAT0</zorder>
+   <zorder>STAT6</zorder>
+   <zorder>STAT7</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
