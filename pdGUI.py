@@ -249,7 +249,6 @@ class MainWindow(QMainWindow):
             stat_i = self.findChild(QLabel, f'STAT{i}')
             stat_i.setGeometry(4, 0 + 17*i, 200, 20) #x, y, width, height
             stat_i.setFont(QFont('Roboto', 28, QFont.Bold))
-            stat_i.setStyleSheet("color: #FFFFFF")
             stat_i.setStyleSheet("color: green")
 
         # Player data
