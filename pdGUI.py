@@ -36,6 +36,7 @@ language_dir = os.path.join(cwd, "languages\\") # Language files
 image_dir = os.path.join(cwd, "images\\") # Image files
 font_dir = os.path.join(cwd, "fonts\\") # Font files
 ui_dir = os.path.join(cwd, "ui\\") # PyQt5 ui files
+saves_dir = os.path.join(cwd, "saves\\") # Save files
 application_defaults = os.path.join(cwd, "appDefaults.json") # Application defaults
 game_is_running = False # Game flag
 
@@ -96,8 +97,12 @@ QFontDatabase.addApplicationFont(os.path.join(font_dir, "Roboto-Bold.ttf"))
 # Load images as pixmaps
 dartL = QPixmap()
 dartL.load(os.path.join(image_dir, "dartL.png"))
+dartLshot = QPixmap()
+dartLshot.load(os.path.join(image_dir, "dartLshot.png"))
 dartR = QPixmap()
 dartR.load(os.path.join(image_dir, "dartR.png"))
+dartRshot = QPixmap()
+dartRshot.load(os.path.join(image_dir, "dartRshot.png"))
 dartboardI = QImage()
 dartboardI.load(os.path.join(image_dir, "dartboard.png"))
 logoSmall = QPixmap()
@@ -224,9 +229,9 @@ class MainWindow(QMainWindow):
         shot_one = self.findChild(QLabel, 'Shot1Indicator')
         shot_two = self.findChild(QLabel, 'Shot2Indicator')
         shot_three = self.findChild(QLabel, 'Shot3Indicator')
-        shot_x_base = screen_width - 110 # outer x position of the shots - 1920-120=1800
-        shot_one.setGeometry(shot_x_base - 135, 5, 100, 100) #x, y, width, height
-        shot_two.setGeometry(shot_x_base - 70, 5, 100, 100) #x, y, width, height
+        shot_x_base = screen_width - 110 # outer x position of the shots
+        shot_one.setGeometry(shot_x_base - 160, 5, 100, 100) #x, y, width, height
+        shot_two.setGeometry(shot_x_base - 80, 5, 100, 100) #x, y, width, height
         shot_three.setGeometry(shot_x_base, 5, 100, 100) #x, y, width, height
         shot_one.setScaledContents(True)
         shot_two.setScaledContents(True)
@@ -259,16 +264,16 @@ class MainWindow(QMainWindow):
         #upcoming arrows
         for i in range(8):
             up_i = self.findChild(QLabel, f'UP{i}')
-            up_i.setGeometry(screen_width - screen_width + 5, 185 + 20*i, 200, 20) #x, y, width, height
+            up_i.setGeometry(screen_width - screen_width + 11, 182 + 42 * i, 200, 20) #x, y, width, height
             up_i.setFont(QFont('Roboto', 12))
             up_i.opacity_effect = QGraphicsOpacityEffect()
-            up_i.opacity_effect.setOpacity(0.9 - 0.1*i)
+            up_i.opacity_effect.setOpacity(0.9 - 0.1 * i)
             up_i.setGraphicsEffect(up_i.opacity_effect)
 
         # CurrentPlayer Status Bar
         for i in range(8):
             stat_i = self.findChild(QLabel, f'STAT{i}')
-            stat_i.setGeometry(4, 0 + 17*i, 200, 20) #x, y, width, height
+            stat_i.setGeometry(4, 0 + 17 * i, 200, 20) #x, y, width, height
             stat_i.setFont(QFont('Roboto', 28, QFont.Bold))
             stat_i.setStyleSheet("color: green")
 
@@ -325,24 +330,34 @@ class MainWindow(QMainWindow):
         PlayerRoundThreeScoreNumberLabel.setGeometry(PlayerScoreAreaX + 60, PlayerScoreAreaY + 120, 200, 30) #x, y, width, height
 
         LogBookArea = self.findChild(QGroupBox, 'LogBook')
-        LogBookArea.setGeometry(screen_width - screen_width + 10, 530, 790, 420) #x, y, width, height
+        LogBookArea.setGeometry(530, 730, 550, 220) #x, y, width, height
         LogBookArea.setTitle("Player Log")
         TextLog = self.findChild(QTextEdit, 'TextLog')
         TextLog.setPlaceholderText("It is now Limno's turn!\nMathusan threw 20, 20, 20.\nGame started with {n} players.\n") #placeholder for text log functionality
-        TextLog.setFont(QFont('Roboto', 10))
-        TextLog.setGeometry(screen_width - screen_width + 15, 545, 780, 399) #x, y, width, height
+        TextLog.setFont(QFont('Roboto', 15))
+        TextLog.setGeometry(535, 745, 540, 199) #x, y, width, height
 
-        PlayerManagerShowButton = self.findChild(QPushButton, 'MainWindowButtonPlayerManager')
-        PlayerManagerShowButton.clicked.connect(self.PlayerManager_show)
+
         PlayerAddButton = self.findChild(QPushButton, 'MainWindowButtonAddPlayer')
         PlayerAddButton.clicked.connect(self.AddPlayer)
+        PlayerAddButton.setGeometry(10, 900, 60, 50) #x, y, width, height
+        PlayerAddButton.setStatusTip("Add a new player to the game.")
         PlayerRemoveButton = self.findChild(QPushButton, 'MainWindowButtonRemovePlayer')
         PlayerRemoveButton.clicked.connect(self.RemovePlayer)
-        PlayerRemoveButton.setStatusTip("Remove the currently selected player from the game.")
+        PlayerRemoveButton.setGeometry(80, 900, 60, 50) #x, y, width, height
+        PlayerRemoveButton.setStatusTip("Remove the current player from the game.")
+        PlayerManagerShowButton = self.findChild(QPushButton, 'MainWindowButtonPlayerManager')
+        PlayerManagerShowButton.clicked.connect(self.PlayerManager_show)
+        PlayerManagerShowButton.setGeometry(150, 900, 140, 50) #x, y, width, height
+        PlayerManagerShowButton.setStatusTip("Open the player manager window.")
         PlayerEditButton = self.findChild(QPushButton, 'MainWindowButtonEditPlayer')
         PlayerEditButton.clicked.connect(self.EditPlayer)
+        PlayerEditButton.setGeometry(300, 900, 90, 50) #x, y, width, height
+        PlayerEditButton.setStatusTip("Edit the current player's name and score.")
         UndoButton = self.findChild(QPushButton, 'MainWindowButtonRevertAction')
         UndoButton.clicked.connect(self.UndoAction)
+        UndoButton.setGeometry(400, 900, 90, 50) #x, y, width, height
+        UndoButton.setStatusTip("Undo the last action.")
 
         LightDarkSwitch = QComboBox()
         LightDarkSwitch.addItems(qdarktheme.get_themes())
@@ -362,7 +377,8 @@ class MainWindow(QMainWindow):
         PlayerRoundTwoScoreNumberLabel.setText("20")
         PlayerRoundThreeScoreNumberLabel.setText("20")
         PlayerLog = self.findChild(QTextEdit, 'TextLog')
-        PlayerLog.setPlaceholderText("No actions have been performed yet.")
+        #PlayerLog.setPlaceholderText("No actions have been performed yet.")
+        shot_one.setPixmap(dartRshot)
 
     def PlayerManager_show(self):
         StatusBar = self.findChild(QStatusBar, 'statusBar')
@@ -391,8 +407,13 @@ class MainWindow(QMainWindow):
         StatusBar.showMessage("Clicked Redo button!", 2000)
 
     def Load(self):
+        if not os.path.exists("saves"):
+            os.makedirs("saves")
+        for obj in os.scandir("saves"):
+            if obj.is_file():
+                print(obj.name)
         Tk().withdraw()
-        filename = askopenfilename() # "Open" dialog box, return path of selected file
+        filename = askopenfilename(initialdir=saves_dir ,title="Load saved game...", filetypes = (("Save Files","*.sav"),)) # "Open" dialog box, return path of selected file
         print(filename)
         StatusBar = self.findChild(QStatusBar, 'statusBar')
         StatusBar.showMessage("Clicked Load button!", 2000)
